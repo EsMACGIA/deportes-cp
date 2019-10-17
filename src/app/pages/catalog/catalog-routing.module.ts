@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { CatalogComponent } from './catalog.component';
-import { UserComponent } from './users/users.component';
+import { UsersComponent } from './users/users.component';
 
 const routes: Routes = [{
   path: '',
@@ -10,7 +10,7 @@ const routes: Routes = [{
   children: [
     {
       path: 'users',
-      component: UserComponent,
+      component: UsersComponent,
     },
   ],
 }];
@@ -19,9 +19,9 @@ const routes: Routes = [{
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class TablesRoutingModule { }
+export class CatalogRoutingModule { }
 
 export const routedComponents = [
   CatalogComponent,
-  UserComponent
+  UsersComponent
 ];
