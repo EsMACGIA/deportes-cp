@@ -23,6 +23,10 @@ export const MENU_ITEMS: NbMenuItem[] = [
       {
         title : 'Users',
         link : '/catalog/users',
+      },
+      {
+        title : 'Disciplines',
+        link : '/catalog/disciplines',
       }
     ]
   },
