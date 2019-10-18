@@ -9,4 +9,5 @@ export class UserModel {
     lastname:string;
     type:number;
     ci:string;
+    email: string;
 }
