@@ -26,7 +26,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },
       {
         title : 'Disciplines',
-        link : '/catalog/disciplines',
+        link : '/pages/catalog/disciplines',
       }
     ]
   },
