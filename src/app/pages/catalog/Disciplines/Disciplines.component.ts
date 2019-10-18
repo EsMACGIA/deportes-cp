@@ -30,7 +30,7 @@ export class DisciplinesComponent {
         title: 'ID',
         type: 'number',
       },
-      firstName: {
+      name: {
         title: 'Name',
         type: 'string',
       },
@@ -41,7 +41,29 @@ export class DisciplinesComponent {
 
   constructor(private service: SmartTableData) {
     const data = this.service.getData();
-    this.source.load(data);
+    const data1= [
+      {
+        id: 1,
+        name: "Natación",
+      },
+      {
+        id: 2,
+        name: "Fútbol",
+      },
+      {
+        id: 3,
+        name: "Tenis",
+      },
+      {
+        id: 4,
+        name: "Karate"
+      },
+      {
+        id: 5,
+        name: "Gimnasio"
+      }
+    ]
+    this.source.load(data1);
   }
 
   onDeleteConfirm(event): void {
