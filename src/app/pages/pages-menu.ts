@@ -22,7 +22,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
     children : [
       {
         title : 'Users',
-        link : '/catalog/users',
+        link : '/pages/catalog/users',
       },
       {
         title : 'Disciplines',
