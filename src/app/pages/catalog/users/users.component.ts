@@ -30,26 +30,26 @@ export class UsersComponent {
         title: 'ID',
         type: 'number',
       },
-      firstName: {
-        title: 'First Name',
+      name: {
+        title: 'Primer nombre',
         type: 'string',
       },
       lastName: {
-        title: 'Last Name',
-        type: 'string',
-      },
-      username: {
-        title: 'Username',
+        title: 'Apellido',
         type: 'string',
       },
       email: {
         title: 'E-mail',
         type: 'string',
       },
-      age: {
-        title: 'Age',
+      type: {
+        title: 'Tipo',
         type: 'number',
       },
+      ci: {
+        title: 'Cedula',
+        type: 'string'
+      }
     },
   };
 
@@ -57,7 +57,16 @@ export class UsersComponent {
 
   constructor(private service: SmartTableData) {
     const data = this.service.getData();
-    this.source.load(data);
+    const data1= [{
+      id: 2,
+      name: 'Juan',
+      lastName : 'El Negro Moran',
+      email : 'juanelnegromoran@gmail.com',
+      type: 4,
+      ci: '324324'
+
+    }]
+    this.source.load(data1);
   }
 
   onDeleteConfirm(event): void {
