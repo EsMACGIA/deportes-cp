@@ -7,6 +7,9 @@ import {UsersService} from '../users/users.service';
 import {UserModel} from '../users/user.model';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import {NgForm} from '@angular/forms';
+import { ToasterConfig } from 'angular2-toaster';
+import {NbToastrService,NbComponentStatus,NbGlobalLogicalPosition, NbGlobalPosition, NbGlobalPhysicalPosition} from '@nebular/theme';
+
 
 
 @Component({
@@ -64,12 +67,20 @@ export class UsersComponent {
   source: LocalDataSource = new LocalDataSource();
   private UserList:UserModel[];
   private user:UserModel = new UserModel();
-
+  config:ToasterConfig;
+  position:NbGlobalPosition = NbGlobalPhysicalPosition.TOP_RIGHT;
+  status: NbComponentStatus = 'success'
+  duration = 4000;
+  destroyByClick = false;
+  hasIcon = true;
+  index = 1;
+  preventDuplicates = false;
   constructor(
     private service: SmartTableData,
     private http: HttpClient,
     private usersService: UsersService,
-    private modalService: NgbModal) {
+    private modalService: NgbModal,
+    private toastrService: NbToastrService) {
 
       this.loadUsers();
   }
@@ -111,13 +122,40 @@ export class UsersComponent {
     this.usersService.createUser(this.user).subscribe(data=>{
       console.log(userForm.value)
       if(data){
-        this.modalService.dismissAll();
-        this.loadUsers();
-        console.log(data);
+        if(!data.error){
+          this.modalService.dismissAll();
+          this.loadUsers();
+          this.showToast('success','Se ha creado un usuario exitosamente','Se ha creado el usuario ' + this.user.name + ' de manera exitosa.')
+          console.log(data);
+        }else{
+          console.log(data.error)
+          this.modalService.dismissAll();
+          this.showToast('danger','Hubo un error al crear usuario',data.error.error)
+        }
+
+
       }
     })
   }
-  
+
+  /* Function to show toast*/
+  private showToast(type: NbComponentStatus, title: string, body: string) {
+    const config = {
+      status: type,
+      destroyByClick: this.destroyByClick,
+      duration: this.duration,
+      hasIcon: this.hasIcon,
+      position: this.position,
+      preventDuplicates: this.preventDuplicates,
+    };
+
+    this.index += 1;
+    this.toastrService.show(
+      body,
+      title,
+      config);
+  }
+    
 
 
 }

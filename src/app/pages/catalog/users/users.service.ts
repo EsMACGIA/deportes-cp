@@ -6,22 +6,19 @@ import {UserModel} from './user.model';
 @Injectable()
 export class UsersService extends BaseService{
 
-    verifyBack():Observable<Object>{
-        return this.getBase('')
-    }
-    getUserList():Observable<UserModel[]>{
+    getUserList():Observable<any>{
         return this.getBase('users/')
     }
 
-    createUser(user:UserModel):Observable<UserModel>{
+    createUser(user:UserModel):Observable<any>{
         return this.postBase(user,'users/')
     }
 
-    deleteUser(user:UserModel):Observable<Object>{
+    deleteUser(user:UserModel):Observable<any>{
         return this.deleteBase(user,'users/')
     }
 
-    updateUser(user:UserModel):Observable<UserModel>{
+    updateUser(user:UserModel):Observable<any>{
         return this.putBase(user,'users/')
     }
 }
