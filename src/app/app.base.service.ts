@@ -18,7 +18,7 @@ const httpOptions = {
 @Injectable()
 export class BaseService {
 
-    API_URL:string = "https://mactaquilla.herokuapp.com/taquilla-api/"
+    API_URL:string = "https://deportes-cp-api.herokuapp.com/api/"
 
     /**
      *Creates an instance of BaseService.
@@ -53,10 +53,10 @@ export class BaseService {
      * or error if not
      * @memberof BaseService
      */
-    addBase(element: Object, endpoint: string):Observable<any>{
+    postBase(element: Object, endpoint: string):Observable<any>{
         let apiURL =  `${this.API_URL}${endpoint}`
         return this.http.post(apiURL, element, httpOptions).pipe(
-            catchError(this.handleError<any>('addBase'))
+            catchError(this.handleError<any>('postBase'))
         )
     }
 
@@ -69,10 +69,10 @@ export class BaseService {
      * or error if not
      * @memberof BaseService
      */
-    updateBase(element: Object, endpoint: string):Observable<any>{
+    putBase(element: Object, endpoint: string):Observable<any>{
         let apiURL =  `${this.API_URL}${endpoint}`
         return this.http.put(apiURL, element, httpOptions).pipe(
-            catchError(this.handleError<any>('updateBase'))
+            catchError(this.handleError<any>('putBase'))
         )
     }
 

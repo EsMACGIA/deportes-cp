@@ -1,12 +1,23 @@
 import { NgModule } from '@angular/core';
-import { NbCardModule, NbIconModule, NbInputModule, NbTreeGridModule } from '@nebular/theme';
+import { 
+  NbCardModule, 
+  NbIconModule, 
+  NbInputModule, 
+  NbTreeGridModule, 
+  NbSelectModule,
+  NbActionsModule,
+  NbButtonModule,
+
+  NbRadioModule,
+  NbUserModule,} from '@nebular/theme';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 
 import { ThemeModule } from '../../@theme/theme.module';
 import { CatalogRoutingModule, routedComponents } from './catalog-routing.module';
-import { ToasterService, ToasterConfig, Toast, BodyOutputType, ToasterModule } from 'angular2-toaster';
 import { FormsModule } from '@angular/forms';
-import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import {UsersService} from './users/users.service';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
 
 
 
@@ -20,15 +31,20 @@ import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
     ThemeModule,
     CatalogRoutingModule,
     Ng2SmartTableModule,
-    ToasterModule,
     FormsModule,
+    NgbModule,
+    NbSelectModule,
+    NbActionsModule,
+    NbButtonModule,
+    NbRadioModule,
+    NbUserModule,
+
   ],
   declarations: [
     ...routedComponents,
   ],
   providers: [
-    ToasterService,
-    NgbModal,
-  ]
+    UsersService
+  ],
 })
 export class CatalogModule { }

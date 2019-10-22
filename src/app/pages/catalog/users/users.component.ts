@@ -2,11 +2,11 @@ import { Component, PLATFORM_ID, Inject, Injector} from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 
 import { SmartTableData } from '../../../@core/data/smart-table';
-import { ToasterService, ToasterConfig, Toast, BodyOutputType } from 'angular2-toaster';
-import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';;
-import {UserModel} from './user.model';
-import { NgModel } from '@angular/forms';
-import { isPlatformBrowser } from '@angular/common';
+import {HttpClient} from '@angular/common/http';
+import {UsersService} from '../users/users.service';
+import {UserModel} from '../users/user.model';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {NgForm} from '@angular/forms';
 
 
 @Component({
@@ -16,16 +16,22 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class UsersComponent {
 
+  closeResult: string;
   settings = {
     mode: 'external',
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
+      createButtonContent: '<i class="nb-checkmark"></i>',
+      cancelButtonContent: '<i class="nb-close"></i>',
     },
     edit: {
       editButtonContent: '<i class="nb-edit"></i>',
+      saveButtonContent: '<i class="nb-checkmark"></i>',
+      cancelButtonContent: '<i class="nb-close"></i>',
     },
     delete: {
       deleteButtonContent: '<i class="nb-trash"></i>',
+      confirmDelete: true,
     },
     columns: {
       id: {
@@ -36,7 +42,7 @@ export class UsersComponent {
         title: 'Primer nombre',
         type: 'string',
       },
-      lastName: {
+      lastname: {
         title: 'Apellido',
         type: 'string',
       },
@@ -56,136 +62,63 @@ export class UsersComponent {
   };
 
   source: LocalDataSource = new LocalDataSource();
-  activeModal:any;
-  private UserList:any;
-  edit:boolean; //Var to differece when edit and create
-  user:UserModel = new UserModel();
-  private modalService: NgbModal;
+  private UserList:UserModel[];
+  private user:UserModel = new UserModel();
 
-  config:ToasterConfig = new ToasterConfig({
-    positionClass: 'toast-top-full-width',
-    timeout: 30000,
-    tapToDismiss: true,
-    showCloseButton: true,
-
-  })
   constructor(
-    @Inject(PLATFORM_ID) private platformId: Object,
     private service: SmartTableData,
-    private injector: Injector) {
+    private http: HttpClient,
+    private usersService: UsersService,
+    private modalService: NgbModal) {
 
-    if (isPlatformBrowser(this.platformId)){
-      this.modalService = this.injector.get(NgbModal);
-    }
-    const data = this.service.getData();
-    const data1= [{
-      id: 1,
-      name: 'Juan',
-      lastName : 'Oropeza',
-      email : 'joropeza@gmail.com',
-      type: 4,
-      ci: 'V-2424336'
-    },
-    {
-      id: 2,
-      name: 'Manuel',
-      lastName : 'Faria',
-      email : 'manuelfari@gmail.com',
-      type: 4,
-      ci: 'V-2324332'
-    },
-    {
-      id: 3,
-      name: 'Wilfredo',
-      lastName: 'Graterol',
-      email: '15-10639@usb.ve',
-      type: 2,
-      ci: 'V-2233241'
-    },
-    {
-      id: 4,
-      name: 'Carlos',
-      lastName: 'Rivero',
-      email: 'crivero@gmail.com',
-      type: 4,
-      ci: 'V-2142492'
-    },
-    {
-      id: 1,
-      name: 'Jose',
-      lastName: 'Basanta',
-      email: 'josedavidb6@gmail.com',
-      type: 1,
-      ci: 'v-21759574'
-    }
-  ]
-    this.source.load(data1);
+      this.loadUsers();
   }
 
-  //Function to show modal when create in smart table
-  addUserModal(content): void{
-    this.activeModal =  this.modalService.open(content, { size: 'lg'})
-  }
+  /*Load the User to table */
 
-  //Function to show modal when edit in smart table
-  editProductModal(content, event): void{
-    this.edit = true
-    Object.assign(this.user, event.data)
-    const modal_options : NgbModalOptions = {
-      size: 'lg',
-      beforeDismiss: () => {
-        this.user = new UserModel();
-        this.edit = false
-        return true
+  loadUsers(){
+    this.usersService.getUserList().subscribe(data=>{
+      if (data){
+        this.UserList = data
+        this.source.load(this.UserList)
       }
-    }
-    this.activeModal = this.modalService.open(content, modal_options)
+    })
+
   }
 
-  onDeleteConfirm(event): void {
-    if (window.confirm('Are you sure you want to delete?')) {
-      event.confirm.resolve();
+  /*Function to open modal with form for create user */
+  addUser(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  /*Function to close modal */
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
     } else {
-      event.confirm.reject();
+      return  `with: ${reason}`;
     }
   }
 
-    //The following methods are for interact on DB
-
-
-     /**
-   * Get users from service/DB and show their info on smart-table
-   *
-   * @memberof UsersComponent
-   */
-  getUsers() {
-    this.source.load(this.UserList);
-    }
-
-        /**
-   * Method that makes to add a new user to service/DB
-   *
-   * @memberof UsersComponent
-   */
-  addUsers() {
-    this.UserList.push(this.user);
-    this.getUsers();
+  /*Function to process create User Form */
+  addUserForm(userForm:NgForm){
+    this.usersService.createUser(this.user).subscribe(data=>{
+      console.log(userForm.value)
+      if(data){
+        this.modalService.dismissAll();
+        this.loadUsers();
+        console.log(data);
+      }
+    })
   }
+  
 
-     /**
-   * Method that makes the update for a user info on service/DB
-   *
-   * @memberof UsersComponent
-   */
-  editProduct(){
-
-    // var pos = this.UserList.indexOf(this.user);
-
-    // var elementoEliminado = this.UserList.splice(pos, 1); // así es como se elimina un elemento
-    this.UserList.push(this.user);
-    this.getUsers();
-
-  }
 
 }
 
