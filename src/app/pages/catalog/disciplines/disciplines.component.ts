@@ -7,6 +7,8 @@ import {DisciplinesService} from '../disciplines/disciplines.service';
 import {DisciplinesModel} from '../disciplines/disciplines.model';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import {NgForm} from '@angular/forms';
+import { ToasterConfig } from 'angular2-toaster';
+import {NbToastrService,NbComponentStatus,NbGlobalLogicalPosition, NbGlobalPosition, NbGlobalPhysicalPosition} from '@nebular/theme';
 
 @Component({
   selector: 'ngx-smart-table',
@@ -47,16 +49,25 @@ export class DisciplinesComponent {
   source: LocalDataSource = new LocalDataSource();
   private DisciplineList:DisciplinesModel[];
   private discipline:DisciplinesModel = new DisciplinesModel();
+  config:ToasterConfig;
+  position:NbGlobalPosition = NbGlobalPhysicalPosition.TOP_RIGHT;
+  status: NbComponentStatus = 'success'
+  duration = 4000;
+  destroyByClick = false;
+  hasIcon = true;
+  index = 1;
+  preventDuplicates = false;
 
   constructor(
     private service: SmartTableData,
     private http: HttpClient,
     private disciplinesService: DisciplinesService,
-    private modalService: NgbModal) {
+    private modalService: NgbModal,
+    private toastrService: NbToastrService) {
       this.loadDisciplines();
     }
 
-    // Load the Disciplline to table
+    // Load the Discipline to table
   loadDisciplines(){
     this.disciplinesService.getDisciplineList().subscribe(data=>{
       if (data){
@@ -88,14 +99,38 @@ export class DisciplinesComponent {
 
   //Function to process create Discipline Form
   addDisciplineForm(disciplineForm:NgForm){
-    this.disciplinesService.createDiscipline(this.discipline).subscribe(data=>{
-      console.log(disciplineForm.value)
+    this.disciplinesService.createDiscipline(this.discipline).subscribe(data =>{
+      console.log(disciplineForm.value);
       if(data){
-        this.modalService.dismissAll();
-        this.loadDisciplines();
-        console.log(data);
+        if(!data.error){
+          this.modalService.dismissAll();
+          this.loadDisciplines();
+          this.showToast('success','Se ha creado una disciplina exitosamente','Se ha creado la disciplina ' + this.discipline.name + ' de manera exitosa.')
+          console.log(data);
+        }else{
+          console.log(data.error)
+          this.modalService.dismissAll();
+          this.showToast('danger','Hubo un error al crear disciplina',data.error.error)
+        }
       }
     })
+  }
+
+  private showToast(type: NbComponentStatus, title: string, body: string){
+    const config = {
+      status: type,
+      destroyByClick: this.destroyByClick,
+      duration: this.duration,
+      hasIcon: this.hasIcon,
+      position: this.position,
+      preventDuplicates: this.preventDuplicates,
+    };
+
+    this.index += 1;
+    this.toastrService.show(
+      body,
+      title,
+      config);
   }
 
 
