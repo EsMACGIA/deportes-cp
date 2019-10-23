@@ -129,7 +129,6 @@ export class UsersComponent {
           console.log(data);
         }else{
           console.log(data.error)
-          this.modalService.dismissAll();
           this.showToast('danger','Hubo un error al crear usuario',data.error.error)
         }
 

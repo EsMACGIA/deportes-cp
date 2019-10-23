@@ -5,7 +5,7 @@
   
     <nb-card-body>
       <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)"
-      (create)="addUser(createUserModal)"  >
+      (create)="addUser(createUserModal)" >
       </ng2-smart-table>
 
 
@@ -20,50 +20,98 @@
         <div class="modal-body">
           <form #userForm="ngForm" (ngSubmit)="addUserForm(userForm)">
             <div class="form-group">
-            <label for="email" class="label col-sm-3 col-form-label">Email</label>
+              <label for="email" class="label col-sm-3 col-form-label">Email (*)</label>
               <div class="input-group">
                 <input id="email" class="form-control" nbInput fullWidth placeholder="ejemplo@gmail.com" name="email"
-                [(ngModel)]="user.email">
+                [(ngModel)]="user.email" #email="ngModel" pattern="^[a-zA-Z0-9.!#$%&''*+/=?^_\`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" required>
               </div>
             </div>
+              <div *ngIf="email.errors && userForm.submitted" class="alert alert-danger">
+                <div *ngIf="email.errors.required">
+                   El email es obligatorio
+                 </div>
+                 <div *ngIf="email.errors.pattern">
+                   El email no tiene formato de correo
+                 </div>
+              </div>
             <div class="form-group">
-            <label for="name" class="label col-sm-3 col-form-label">Nombre</label>
+              <label for="name" class="label col-sm-3 col-form-label">Nombre <span class="danger">(*)</span></label>
               <div class="input-group">
                 <input id="name" class="form-control" nbInput fullWidth placeholder="Juan" name="name"
-                [(ngModel)]="user.name">
+                [(ngModel)]="user.name" #name="ngModel" required >
+              </div>
+            </div>
+            <div *ngIf="name.errors && userForm.submitted" class="alert alert-danger">
+             <div *ngIf="name.errors.required">
+                El nombre es obligatorio
+              </div>
+              <div *ngIf="name.errors.pattern">
+                El nombre no puede tener caracteres especiales
               </div>
             </div>
             <div class="form-group">
-            <label for="lastname" class="label col-sm-3 col-form-label">Apellido</label>
+              <label for="lastname" class="label col-sm-3 col-form-label">Apellido (*)</label>
               <div class="input-group">
                 <input id="lastname" class="form-control" nbInput fullWidth placeholder="Oropeza" name="lastname"
-                [(ngModel)]="user.lastname">
+                [(ngModel)]="user.lastname" #lastname="ngModel" required>
               </div>
             </div>
+            <div *ngIf="lastname.errors && userForm.submitted" class="alert alert-danger">
+                <div *ngIf="lastname.errors.required">
+                   El apellido es obligatorio
+                 </div>
+                 <div *ngIf="lastname.errors.pattern">
+                   El apellido no puede tener caracteres especiales
+                 </div>
+              </div>
             <div class="form-group">
-            <label for="password" class="label col-sm-3 col-form-label">Contraseña</label>
+              <label for="password" class="label col-sm-6 col-form-label">Contraseña (*)</label>
               <div class="input-group">
                 <input type="password" id="password" class="form-control" nbInput fullWidth placeholder="Contraseña" name="password"
-                [(ngModel)]="user.password">
+                [(ngModel)]="user.password" #password="ngModel" required>
               </div>
             </div>
+            <div *ngIf="password.errors && userForm.submitted" class="alert alert-danger">
+                <div *ngIf="password.errors.required">
+                   La contraseña es obligatoria
+                 </div>
+                 <div *ngIf="name.errors.pattern">
+                   La contraseña no puede tener caracteres especiales
+                 </div>
+            </div>
             <div class="form-group">
-            <label for="CI" class="label col-sm-3 col-form-label">Cédula</label>
+            <label for="CI" class="label col-sm-3 col-form-label">Cédula (*)</label>
               <div class="input-group">
                 <input type="number" id="CI" class="form-control" nbInput fullWidth placeholder="XXXXXXXX" name="CI"
-                [(ngModel)]="user.CI">
+                [(ngModel)]="user.CI" #CI="ngModel" required>
               </div>
             </div>
+            <div *ngIf="CI.errors && userForm.submitted" class="alert alert-danger">
+                <div *ngIf="CI.errors.required">
+                   La cédula es obligatoria
+                 </div>
+                 <div *ngIf="CI.errors.pattern">
+                   La cédula no puede tener caracteres especiales
+                 </div>
+            </div>
             <div class="form-group">
-              <label for="type" class="label col-sm-3 col-form-label">Tipo</label>
-              <select [(ngModel)]="user.type" name="type">
-                  <option value=1 selected>Administrador</option>
+              <label for="type" class="label col-sm-3 col-form-label">Tipo (*)</label>
+              <select [(ngModel)]="user.type" name="type" #type="ngModel" required>
+                  <option value=1 selected="selected">Administrador</option>
                   <option value=2>Comision</option>
                   <option value=3>Entrenador</option>
               </select>
             </div>
+            <div *ngIf="type.errors && userForm.submitted" class="alert alert-danger">
+              <div *ngIf="type.errors.required">
+                El tipo es obligatorio
+                </div>
+              <div *ngIf="type.errors.pattern">
+                El tipo no puede tener caracteres especiales
+              </div>
+            </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-outline-dark">Save</button>
+                <button type="submit" class="btn btn-outline-dark">Guardar</button>
             </div>
           </form>
         </div>
