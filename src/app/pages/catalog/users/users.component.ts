@@ -59,7 +59,7 @@ export class UsersComponent {
         title: 'Tipo',
         type: 'number',
       },
-      CI: {
+      ci: {
         title: 'Cedula',
         type: 'number'
       }
@@ -101,6 +101,7 @@ export class UsersComponent {
   loadUsers(){
     this.usersService.getUserList().subscribe(data=>{
       if (data){
+        console.log('Estoy recibiendo los usuarios',data)
         this.UserList = data
         this.source.load(this.UserList)
       }
@@ -177,6 +178,7 @@ export class UsersComponent {
     if (userForm.valid){
       this.user.type = Number(userForm.value.type)
       this.usersService.createUser(this.user).subscribe(data=>{
+      console.log("Este es el usuario que estoy agregando ",this.user)
       console.log(this.user)
       console.log(this.user.type)
         if(data){
@@ -190,7 +192,7 @@ export class UsersComponent {
             this.showToast('danger','Hubo un error al crear usuario',data.error.error)
           }
   
-  
+          this.user = new UserModel();
         }
       })
     }
@@ -199,6 +201,8 @@ export class UsersComponent {
   editUserForm(userForm:NgForm){
     if (userForm.valid){
       console.log(userForm)
+      console.log("Este es el usuario que estoy editando",this.user)
+      delete this.user.id;
       this.usersService.updateUser(this.user).subscribe(data=>{
         if(data){
           this.modalService.dismissAll();
@@ -210,6 +214,7 @@ export class UsersComponent {
             console.log(data.error)
             this.showToast('danger', 'Hubo un error al actualizar el usuario', data.error.error)
           }
+          this.user = new UserModel();
         }
       })
     }
@@ -225,8 +230,9 @@ export class UsersComponent {
         }else{
           this.showToast('danger','Hubo un error al eliminar el usuario', data.error.error)
         }
-      }
+        this.user = new UserModel();
 
+      }
     })
   }
 
