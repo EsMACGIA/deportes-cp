@@ -7,7 +7,10 @@ import {DisciplinesModel} from './disciplines.model';
 export class DisciplinesService extends BaseService{
 
     getDisciplineList():Observable<any>{
-        return this.getBase('disciplines/')
+        console.log("antes de get")
+        var lista = this.getBase('disciplines/')
+        console.log("despues de get")
+        return lista
     }
 
     createDiscipline(discipline:DisciplinesModel):Observable<any>{
@@ -15,7 +18,7 @@ export class DisciplinesService extends BaseService{
     }
 
     deleteDiscipline(discipline:DisciplinesModel):Observable<any>{
-        return this.deleteBase(discipline,'disciplines/')
+        return this.deleteBase(discipline,'disciplines/' + discipline.id + '/')
     }
 
     updateDiscipline(discipline:DisciplinesModel):Observable<any>{

@@ -77,9 +77,10 @@ export class DisciplinesComponent {
       this.loadDisciplines();
     }
 
-    // Load the Discipline to table
+  // Load the Discipline to table
   loadDisciplines(){
     this.disciplinesService.getDisciplineList().subscribe(data=>{
+      console.log('Data: ', data)
       if (data){
         this.DisciplineList = data
         this.source.load(this.DisciplineList)
@@ -116,6 +117,15 @@ export class DisciplinesComponent {
     });
   }
 
+  deleteDiscipline(content,event){
+    Object.assign(this.discipline,event.data)
+    this.modalService.open(content,{ariaLabelledBy: 'modal-basic-title'}).result.then((result) =>{
+      this.closeResult = 'Closed with: ${result}';
+    }, (reason) => {
+      this.closeResult = 'Dismissed ${this.getDismissReason(reason)}'
+    });
+  }
+
   // Function to close modal
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -135,7 +145,7 @@ export class DisciplinesComponent {
           console.log(this.discipline)
         if(data){
           if(!data.error){
-            this.modalService.dismissAll();
+            this.modalService.dismissAll(); 
             this.loadDisciplines();
             this.showToast('success','Se ha creado una disciplina exitosamente','Se ha creado la disciplina ' + this.discipline.name + ' de manera exitosa.')
             console.log(data);
@@ -143,6 +153,7 @@ export class DisciplinesComponent {
             console.log(data.error)
             this.showToast('danger','Hubo un error al crear la disciplina',data.error.error)
           }
+          this.discipline = new DisciplinesModel();
         }
       })
     }
@@ -156,7 +167,7 @@ export class DisciplinesComponent {
           this.modalService.dismissAll();
           if(!data.error){
             this.loadDisciplines();
-            this.showToast('success','Se ha actualizado la disciplina exitosamente','Se ha actualizado la disciplina' + this.discipline.name + 'de manera exitosa')
+            this.showToast('success','Se ha actualizado la disciplina exitosamente','Se ha actualizado la disciplina ' + this.discipline.name + ' de manera exitosa')
             console.log(data);
           }else{
             console.log(data.error)
@@ -165,6 +176,21 @@ export class DisciplinesComponent {
         }
       })
     }
+  }
+
+  deleteDisciplineConfirm(){
+    this.disciplinesService.deleteDiscipline(this.discipline).subscribe(data =>{
+      if(data){
+        this.modalService.dismissAll();
+        if(!data.error){
+          this.loadDisciplines();
+          this.showToast('success','Se ha eliminado la disciplina exitosamente','Se ha eliminado la disciplina ' + this.discipline.name + ' de forma exitosa')
+        }else{
+          this.showToast('danger','Hubo un error al eliminar la disciplina', data.error.error)
+        }
+        this.discipline = new DisciplinesModel();
+      }
+    })
   }
 
   private showToast(type: NbComponentStatus, title: string, body: string){
