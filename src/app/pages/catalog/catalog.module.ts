@@ -16,6 +16,7 @@ import { ThemeModule } from '../../@theme/theme.module';
 import { CatalogRoutingModule, routedComponents } from './catalog-routing.module';
 import { FormsModule } from '@angular/forms';
 import {UsersService} from './users/users.service';
+import {TrainersService} from './trainers/trainers.service';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 
@@ -44,7 +45,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     ...routedComponents,
   ],
   providers: [
-    UsersService
+    UsersService,
+    TrainersService
   ],
 })
 export class CatalogModule { }
