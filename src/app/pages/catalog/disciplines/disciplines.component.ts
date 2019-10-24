@@ -5,10 +5,11 @@ import { SmartTableData } from '../../../@core/data/smart-table';
 import {HttpClient} from '@angular/common/http';
 import {DisciplinesService} from '../disciplines/disciplines.service';
 import {DisciplinesModel} from '../disciplines/disciplines.model';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {NgForm} from '@angular/forms';
 import { ToasterConfig } from 'angular2-toaster';
 import {NbToastrService,NbComponentStatus,NbGlobalLogicalPosition, NbGlobalPosition, NbGlobalPhysicalPosition} from '@nebular/theme';
+import { truncateSync } from 'fs';
 
 @Component({
   selector: 'ngx-smart-table',
@@ -18,6 +19,8 @@ import {NbToastrService,NbComponentStatus,NbGlobalLogicalPosition, NbGlobalPosit
 export class DisciplinesComponent {
 
   closeResult: string;
+
+  //Settings for Smart Table
   settings = {
     mode:'external',
     add: {
@@ -46,9 +49,14 @@ export class DisciplinesComponent {
     },
   };
 
+  //Variable to Load info to Smart Table
   source: LocalDataSource = new LocalDataSource();
+  
+  //Objects for Discipline model
   private DisciplineList:DisciplinesModel[];
   private discipline:DisciplinesModel = new DisciplinesModel();
+  
+  //Toastr configuration
   config:ToasterConfig;
   position:NbGlobalPosition = NbGlobalPhysicalPosition.TOP_RIGHT;
   status: NbComponentStatus = 'success'
@@ -57,6 +65,8 @@ export class DisciplinesComponent {
   hasIcon = true;
   index = 1;
   preventDuplicates = false;
+
+  edit: boolean = false;
 
   constructor(
     private service: SmartTableData,
@@ -77,7 +87,7 @@ export class DisciplinesComponent {
     })
   }
 
-    //Function to open modal with form to create discipline
+  //Function to open modal with form to create discipline
   addDiscipline(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) =>{
       this.closeResult = 'Closed with: ${result}';
@@ -86,7 +96,27 @@ export class DisciplinesComponent {
     });
   }
 
-    // Function to close modal
+  editDiscipline(content,event):void{
+    this.edit = true
+    console.log(event.data)
+    Object.assign(this.discipline,event.data)
+    const modal_options:NgbModalOptions = {
+      size: 'lg',
+      beforeDismiss: () => {
+        this.discipline = new DisciplinesModel();
+        this.edit = false
+        return true
+      },
+      ariaLabelledBy: 'modal-basic-title'
+    }
+    this.modalService.open(content, modal_options).result.then((result) =>{
+      this.closeResult = 'Closed with: ${result}';
+    }, (reason) => {
+      this.closeResult = 'Dismissed ${this.getDismissReason(reason)}';
+    });
+  }
+
+  // Function to close modal
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
@@ -99,20 +129,42 @@ export class DisciplinesComponent {
 
   //Function to process create Discipline Form
   addDisciplineForm(disciplineForm:NgForm){
-    this.disciplinesService.createDiscipline(this.discipline).subscribe(data =>{
       console.log(disciplineForm.value);
-      if(data){
-        if(!data.error){
-          this.modalService.dismissAll();
-          this.loadDisciplines();
-          this.showToast('success','Se ha creado una disciplina exitosamente','Se ha creado la disciplina ' + this.discipline.name + ' de manera exitosa.')
-          console.log(data);
-        }else{
-          console.log(data.error)
-          this.showToast('danger','Hubo un error al crear la disciplina',data.error.error)
+      if (disciplineForm.valid){
+        this.disciplinesService.createDiscipline(this.discipline).subscribe(data =>{
+          console.log(this.discipline)
+        if(data){
+          if(!data.error){
+            this.modalService.dismissAll();
+            this.loadDisciplines();
+            this.showToast('success','Se ha creado una disciplina exitosamente','Se ha creado la disciplina ' + this.discipline.name + ' de manera exitosa.')
+            console.log(data);
+          }else{
+            console.log(data.error)
+            this.showToast('danger','Hubo un error al crear la disciplina',data.error.error)
+          }
         }
-      }
-    })
+      })
+    }
+  }
+
+  editDisciplineForm(disciplineForm:NgForm){
+    if (disciplineForm.valid){
+      console.log(disciplineForm)
+      this.disciplinesService.updateDiscipline(this.discipline).subscribe(data=>{
+        if(data){
+          this.modalService.dismissAll();
+          if(!data.error){
+            this.loadDisciplines();
+            this.showToast('success','Se ha actualizado la disciplina exitosamente','Se ha actualizado la disciplina' + this.discipline.name + 'de manera exitosa')
+            console.log(data);
+          }else{
+            console.log(data.error)
+            this.showToast('danger','Hubo un error al actualizar la disciplina',data.error.error)
+          }
+        }
+      })
+    }
   }
 
   private showToast(type: NbComponentStatus, title: string, body: string){
