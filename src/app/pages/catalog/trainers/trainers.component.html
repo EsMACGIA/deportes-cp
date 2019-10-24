@@ -23,12 +23,12 @@
               <div class="input-group">
 
                   <input id="email" class="form-control" nbInput fullWidth placeholder="ejemplo@gmail.com" name="email"
-                  [(ngModel)]="trainers.email" #email="ngModel" pattern="^[a-zA-Z0-9.!#$%&''*+/=?^_\`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" required
+                  [(ngModel)]="trainer.email" #email="ngModel" pattern="^[a-zA-Z0-9.!#$%&''*+/=?^_\`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" required
                   *ngIf="!edit; else noModifyEmail">
 
                   <ng-template #noModifyEmail>
                     <input id="email" class="form-control" nbInput fullWidth placeholder="ejemplo@gmail.com" name="email"
-                    [(ngModel)]="trainers.email" #email="ngModel" pattern="^[a-zA-Z0-9.!#$%&''*+/=?^_\`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" required
+                    [(ngModel)]="trainer.email" #email="ngModel" pattern="^[a-zA-Z0-9.!#$%&''*+/=?^_\`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" required
                     *ngIf="edit" disabled>
                   </ng-template>
               </div>
@@ -45,7 +45,7 @@
               <label for="name" class="label col-sm-3 col-form-label">Nombre <span class="danger">(*)</span></label>
               <div class="input-group">
                 <input id="name" class="form-control" nbInput fullWidth placeholder="Juan" name="name"
-                [(ngModel)]="trainers.name" #name="ngModel" required >
+                [(ngModel)]="trainer.name" #name="ngModel" required >
               </div>
             </div>
             <div *ngIf="name.errors && trainersForm.submitted" class="alert alert-danger">
@@ -60,7 +60,7 @@
               <label for="lastname" class="label col-sm-3 col-form-label">Apellido (*)</label>
               <div class="input-group">
                 <input id="lastname" class="form-control" nbInput fullWidth placeholder="Oropeza" name="lastname"
-                [(ngModel)]="trainers.lastname" #lastname="ngModel" required>
+                [(ngModel)]="trainer.lastname" #lastname="ngModel" required>
               </div>
             </div>
             <div *ngIf="lastname.errors && trainersForm.submitted" class="alert alert-danger">
@@ -71,23 +71,40 @@
                    El apellido no puede tener caracteres especiales
                  </div>
               </div>
+              
             <div class="form-group">
               <label for="password" class="label col-sm-6 col-form-label">Contraseña (*)</label>
               <div class="input-group">
                 <input type="password" id="password" class="form-control" nbInput fullWidth placeholder="Contraseña" name="password"
-                [(ngModel)]="trainers.password" #password="ngModel" required>
+                [(ngModel)]="trainer.password" #password="ngModel" required>
               </div>
             </div>
             <div *ngIf="password.errors && trainersForm.submitted" class="alert alert-danger">
-                <div *ngIf="password.errors.required">
-                   La contraseña es obligatoria
-                 </div>
+              <div *ngIf="password.errors.required">
+                  La contraseña es obligatoria
+              </div>
             </div>
+            <div class="form-group">
+                <label for="confirmPassword" class="label col-sm-6 col-form-label">Repetir Contraseña (*)</label>
+                <div class="input-group">
+                  <input type="password" id="confirmPassword" class="form-control" nbInput fullWidth placeholder="Repetir Contraseña" name="confirmPassword"
+                  [(ngModel)]="trainer.confirmPassword" #confirmPassword="ngModel" pattern="{{ password.value }}" required>
+                </div>
+              </div>
+              <div *ngIf="confirmPassword.errors && trainersForm.submitted" class="alert alert-danger">
+                <div *ngIf="confirmPassword.errors.required">
+                    La contraseña es obligatoria
+                </div>
+                <div *ngIf="confirmPassword.errors.pattern">
+                  Las contraseñas deben ser iguales
+                </div>
+              </div>
+
             <div class="form-group">
             <label for="ci" class="label col-sm-3 col-form-label">Cédula (*)</label>
               <div class="input-group">
                 <input type="number" id="ci" class="form-control" nbInput fullWidth placeholder="XXXXXXXX" name="CI"
-                [(ngModel)]="trainers.ci" #ci="ngModel" required>
+                [(ngModel)]="trainer.ci" #ci="ngModel" required>
               </div>
             </div>
             <div *ngIf="ci.errors && trainersForm.submitted" class="alert alert-danger">
@@ -95,7 +112,7 @@
                    La cédula es obligatoria
                  </div>
                  <div *ngIf="CI.errors.pattern">
-                   La cédula no puede tener caracteres especiales
+                    La cédula no puede tener caracteres especiales
                  </div>
             </div>
             <div class="modal-footer">
@@ -114,7 +131,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <p>¿Esta seguro de eliminar al usuario {{trainers.name}}?</p>
+          <p>¿Esta seguro de eliminar al usuario {{trainer.name}}?</p>
           <button type="submit" class="btn btn-outline-dark" (click)="deleteTrainerConfirm()">Confirmar</button>
           <button type="submit" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancelar</button>
 

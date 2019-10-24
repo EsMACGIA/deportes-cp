@@ -71,7 +71,9 @@ export class TrainersComponent {
 
   //Objects for Model Trainer
   private TrainerList:TrainersModel[];
-  private trainers:TrainersModel = new TrainersModel();
+  private trainer:TrainersModel = new TrainersModel();
+  private trainer2:TrainersModel = new TrainersModel();
+
 
   //Variables to Toastr configuration
   config:ToasterConfig;
@@ -101,7 +103,7 @@ export class TrainersComponent {
   loadTrainers(){
     this.trainersService.getTrainerList().subscribe(data=>{
       if (data){
-        console.log('Estoy recibiendo los entrenadors',data)
+        console.log('Estoy recibiendo los entrenadores',data)
         this.TrainerList = data
         this.source.load(this.TrainerList)
       }
@@ -125,11 +127,11 @@ export class TrainersComponent {
   editTrainer(content,event):void{
     this.edit = true
     console.log(event.data)
-    Object.assign(this.trainers,event.data) //Instance all fields of trainers with the event data
+    Object.assign(this.trainer,event.data) //Instance all fields of trainers with the event data
     const modal_options:NgbModalOptions = {
       size: 'lg',
       beforeDismiss: () => {
-        this.trainers = new TrainersModel();
+        this.trainer = new TrainersModel();
         this.edit = false
         return true
       },
@@ -145,14 +147,14 @@ export class TrainersComponent {
 
   /*Function to open modal to confirmation for delete trainers*/
   deleteTrainer(content,event){
-    Object.assign(this.trainers,event.data) //Instance all fields of trainers with the event data
+    Object.assign(this.trainer,event.data) //Instance all fields of trainers with the event data
     this.modalService.open(content,{ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
 
-    this.trainers = event.data;
+    this.trainer = event.data;
   }
   
 
@@ -176,23 +178,24 @@ export class TrainersComponent {
   /*Function to process create Trainer Form */
   addTrainerForm(trainersForm:NgForm){
     if (trainersForm.valid){
-      this.trainers.type = 3
-      this.trainersService.createTrainer(this.trainers).subscribe(data=>{
-      console.log("Este es el entrenador que estoy agregando ",this.trainers)
-      console.log(this.trainers)
-      console.log(this.trainers.type)
+      Object.assign(this.trainer2, this.trainer)
+      this.trainer2.type = 3
+      delete this.trainer2.confirmPassword;
+      this.trainersService.createTrainer(this.trainer2).subscribe(data=>{
+        console.log("Este es el entrenador que estoy agregando ",this.trainer2)
+        console.log(this.trainer2)
         if(data){
           this.modalService.dismissAll();
           if(!data.error){
             this.loadTrainers();
-            this.showToast('success','Se ha creado un entrenador exitosamente','Se ha creado el entrenador ' + this.trainers.name + ' de manera exitosa.')
+            this.showToast('success','Se ha creado un entrenador exitosamente','Se ha creado el entrenador ' + this.trainer2.name + ' de manera exitosa.')
             console.log(data);
           }else{
             console.log(data.error)
             this.showToast('danger','Hubo un error al crear entrenador',data.error.error)
           }
   
-          this.trainers = new TrainersModel();
+          this.trainer = new TrainersModel();
         }
       })
     }
@@ -201,36 +204,39 @@ export class TrainersComponent {
   editTrainerForm(trainersForm:NgForm){
     if (trainersForm.valid){
       console.log(trainersForm)
-      console.log("Este es el entrenador que estoy editando",this.trainers)
-      delete this.trainers.id;
-      this.trainersService.updateTrainer(this.trainers).subscribe(data=>{
+      console.log("Este es el entrenador que estoy editando",this.trainer)
+      Object.assign(this.trainer2, this.trainer)
+      this.trainer2.type = 3
+      delete this.trainer2.confirmPassword;
+      delete this.trainer2.id;
+      this.trainersService.updateTrainer(this.trainer2).subscribe(data=>{
         if(data){
           this.modalService.dismissAll();
           if(!data.error){
             this.loadTrainers();
-            this.showToast('success','Se ha actualizado el entrenador exitosamente', 'Se ha actualizado el entrenador ' + this.trainers.name + ' de manera exitosa.')
+            this.showToast('success','Se ha actualizado el entrenador exitosamente', 'Se ha actualizado el entrenador ' + this.trainer2.name + ' de manera exitosa.')
             console.log(data);
           }else{
             console.log(data.error)
             this.showToast('danger', 'Hubo un error al actualizar el entrenador', data.error.error)
           }
-          this.trainers = new TrainersModel();
+          this.trainer = new TrainersModel();
         }
       })
     }
   }
 
   deleteTrainerConfirm(){
-    this.trainersService.deleteTrainer(this.trainers).subscribe(data=>{
+    this.trainersService.deleteTrainer(this.trainer).subscribe(data=>{
       if(data){
         this.modalService.dismissAll();
         if (!data.error){
           this.loadTrainers();
-          this.showToast('success', 'Se ha eliminado el entrenador exitosamente', 'Se ha eliminado el entrenador ' + this.trainers.name + ' de manera exitosa.')
+          this.showToast('success', 'Se ha eliminado el entrenador exitosamente', 'Se ha eliminado el entrenador ' + this.trainer.name + ' de manera exitosa.')
         }else{
           this.showToast('danger','Hubo un error al eliminar el entrenador', data.error.error)
         }
-        this.trainers = new TrainersModel();
+        this.trainer = new TrainersModel();
 
       }
     })
@@ -255,8 +261,7 @@ export class TrainersComponent {
       title,
       config);
   }
-    
-
+  
 
 }
 
