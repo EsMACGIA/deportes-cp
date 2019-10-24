@@ -1,6 +1,6 @@
 <nb-card>
     <nb-card-header>
-      Usuarios
+      Comisiones
     </nb-card-header>
   
     <nb-card-body>
@@ -12,8 +12,8 @@
 
       <ng-template #createUserModal let-modal>
         <div class="modal-header">
-          <h4 class="modal-title" id="modal-basic-title" *ngIf="!edit">Crear usuario</h4>
-          <h4 class="modal-title" id="modal-basic-title" *ngIf="edit">Editar usuario</h4>
+          <h4 class="modal-title" id="modal-basic-title" *ngIf="!edit">Crear Comisión</h4>
+          <h4 class="modal-title" id="modal-basic-title" *ngIf="edit">Editar Comisión</h4>
           <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -102,22 +102,6 @@
                  <div *ngIf="CI.errors.pattern">
                    La cédula no puede tener caracteres especiales
                  </div>
-            </div>
-            <div class="form-group">
-              <label for="type" class="label col-sm-3 col-form-label">Tipo (*)</label>
-              <select [(ngModel)]="user.type" name="type" #type="ngModel" required>
-                  <option value=1 selected="selected">Administrador</option>
-                  <option value=2>Comision</option>
-                  <option value=3>Entrenador</option>
-              </select>
-            </div>
-            <div *ngIf="type.errors && userForm.submitted" class="alert alert-danger">
-              <div *ngIf="type.errors.required">
-                El tipo es obligatorio
-                </div>
-              <div *ngIf="type.errors.pattern">
-                El tipo no puede tener caracteres especiales
-              </div>
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-outline-dark">Guardar</button>

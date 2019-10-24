@@ -55,10 +55,6 @@ export class UsersComponent {
         title: 'E-mail',
         type: 'string',
       },
-      type: {
-        title: 'Tipo',
-        type: 'number',
-      },
       ci: {
         title: 'Cedula',
         type: 'number'
@@ -176,7 +172,7 @@ export class UsersComponent {
   /*Function to process create User Form */
   addUserForm(userForm:NgForm){
     if (userForm.valid){
-      this.user.type = Number(userForm.value.type)
+      this.user.type = 2
       this.usersService.createUser(this.user).subscribe(data=>{
       console.log("Este es el usuario que estoy agregando ",this.user)
       console.log(this.user)
@@ -185,11 +181,11 @@ export class UsersComponent {
           this.modalService.dismissAll();
           if(!data.error){
             this.loadUsers();
-            this.showToast('success','Se ha creado un usuario exitosamente','Se ha creado el usuario ' + this.user.name + ' de manera exitosa.')
+            this.showToast('success','Se ha creado una comisión exitosamente','Se ha creado la comisión ' + this.user.name + ' de manera exitosa.')
             console.log(data);
           }else{
             console.log(data.error)
-            this.showToast('danger','Hubo un error al crear usuario',data.error.error)
+            this.showToast('danger','Hubo un error al crear comisión',data.error.error)
           }
   
           this.user = new UserModel();
@@ -203,16 +199,17 @@ export class UsersComponent {
       console.log(userForm)
       console.log("Este es el usuario que estoy editando",this.user)
       delete this.user.id;
+      this.user.type = 2
       this.usersService.updateUser(this.user).subscribe(data=>{
         if(data){
           this.modalService.dismissAll();
           if(!data.error){
             this.loadUsers();
-            this.showToast('success','Se ha actualizado el usuario exitosamente', 'Se ha actualizado el usuario ' + this.user.name + ' de manera exitosa.')
+            this.showToast('success','Se ha actualizado la comisión exitosamente', 'Se ha actualizado la comisión ' + this.user.name + ' de manera exitosa.')
             console.log(data);
           }else{
             console.log(data.error)
-            this.showToast('danger', 'Hubo un error al actualizar el usuario', data.error.error)
+            this.showToast('danger', 'Hubo un error al actualizar la comisión', data.error.error)
           }
           this.user = new UserModel();
         }
@@ -221,14 +218,15 @@ export class UsersComponent {
   }
 
   deleteUserConfirm(){
+    this.user.type = 2
     this.usersService.deleteUser(this.user).subscribe(data=>{
       if(data){
         this.modalService.dismissAll();
         if (!data.error){
           this.loadUsers();
-          this.showToast('success', 'Se ha eliminado el usuario exitosamente', 'Se ha eliminado el usuario ' + this.user.name + ' de manera exitosa.')
+          this.showToast('success', 'Se ha eliminado la comisión exitosamente', 'Se ha eliminado la comisión ' + this.user.name + ' de manera exitosa.')
         }else{
-          this.showToast('danger','Hubo un error al eliminar el usuario', data.error.error)
+          this.showToast('danger','Hubo un error al eliminar la comisión', data.error.error)
         }
         this.user = new UserModel();
 
