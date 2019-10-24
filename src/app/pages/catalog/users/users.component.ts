@@ -9,6 +9,7 @@ import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-b
 import {NgForm} from '@angular/forms';
 import { ToasterConfig } from 'angular2-toaster';
 import {NbToastrService,NbComponentStatus,NbGlobalLogicalPosition, NbGlobalPosition, NbGlobalPhysicalPosition} from '@nebular/theme';
+import { User } from '../../../@core/data/users';
 
 
 
@@ -68,6 +69,7 @@ export class UsersComponent {
   //Objects for Model User
   private UserList:UserModel[];
   private user:UserModel = new UserModel();
+  private user2:UserModel = new UserModel();
 
   //Variables to Toastr configuration
   config:ToasterConfig;
@@ -173,15 +175,14 @@ export class UsersComponent {
   addUserForm(userForm:NgForm){
     if (userForm.valid){
       this.user.type = 2
-      this.usersService.createUser(this.user).subscribe(data=>{
-      console.log("Este es el usuario que estoy agregando ",this.user)
-      console.log(this.user)
-      console.log(this.user.type)
+      Object.assign(this.user2, this.user)
+      delete this.user2.confirmPassword;
+      this.usersService.createUser(this.user2).subscribe(data=>{
         if(data){
           this.modalService.dismissAll();
           if(!data.error){
             this.loadUsers();
-            this.showToast('success','Se ha creado una comisión exitosamente','Se ha creado la comisión ' + this.user.name + ' de manera exitosa.')
+            this.showToast('success','Se ha creado una comisión exitosamente','Se ha creado la comisión ' + this.user2.name + ' de manera exitosa.')
             console.log(data);
           }else{
             console.log(data.error)
@@ -198,14 +199,18 @@ export class UsersComponent {
     if (userForm.valid){
       console.log(userForm)
       console.log("Este es el usuario que estoy editando",this.user)
-      delete this.user.id;
+      Object.assign(this.user2, this.user)
+      delete this.user2.id;
+      delete this.user2.confirmPassword;
+      console.log("Este es el user original" ,this.user)
       this.user.type = 2
-      this.usersService.updateUser(this.user).subscribe(data=>{
+      this.usersService.updateUser(this.user2).subscribe(data=>{
         if(data){
           this.modalService.dismissAll();
           if(!data.error){
             this.loadUsers();
-            this.showToast('success','Se ha actualizado la comisión exitosamente', 'Se ha actualizado la comisión ' + this.user.name + ' de manera exitosa.')
+            console.log(this.user);
+            this.showToast('success','Se ha actualizado la comisión exitosamente', 'Se ha actualizado la comisión ' + this.user2.name + ' de manera exitosa.')
             console.log(data);
           }else{
             console.log(data.error)

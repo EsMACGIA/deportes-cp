@@ -80,13 +80,25 @@
                 [(ngModel)]="user.password" #password="ngModel" required>
               </div>
             </div>
-            <div *ngIf="password.errors && userForm.submitted" class="alert alert-danger">
-                <div *ngIf="password.errors.required">
+            <div *ngIf="password?.errors && userForm.submitted" class="alert alert-danger">
+                <div *ngIf="password?.errors.required">
                    La contraseña es obligatoria
                  </div>
-                 <div *ngIf="name.errors.pattern">
-                   La contraseña no puede tener caracteres especiales
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword" class="label col-sm-6 col-form-label">Repetir contraseña (*)</label>
+                <div class="input-group">
+                  <input type="password" id="confirmPassword" class="form-control" nbInput fullWidth placeholder="Repetir Contraseña" name="confirmPassword" pattern="{{password.value}}"
+                  [(ngModel)]="user.confirmPassword" #confirmPassword="ngModel" required>
+                </div>
+            </div>
+            <div *ngIf="confirmPassword.errors && userForm.submitted" class="alert alert-danger">
+                <div *ngIf="confirmPassword.errors.required">
+                   La confirmacion de contraseña es obligatoria
                  </div>
+                 <div *ngIf="confirmPassword?.errors.pattern">
+                    Las contraseñas deben de ser iguales
+                  </div>
             </div>
             <div class="form-group">
             <label for="ci" class="label col-sm-3 col-form-label">Cédula (*)</label>

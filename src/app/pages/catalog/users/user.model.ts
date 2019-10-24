@@ -10,4 +10,5 @@ export class UserModel {
     type:number;
     ci:number;
     email: string;
+    confirmPassword: string;
 }
