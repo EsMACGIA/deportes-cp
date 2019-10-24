@@ -5,20 +5,21 @@
   
     <nb-card-body>
       <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)"
-      (create)="addUser(createUserModal)" >
+      (create)="addUser(createUserModal)" (edit)="editUser(createUserModal,$event)">
       </ng2-smart-table>
 
 
 
       <ng-template #createUserModal let-modal>
         <div class="modal-header">
-          <h4 class="modal-title" id="modal-basic-title">Crear usuario</h4>
+          <h4 class="modal-title" id="modal-basic-title" *ngIf="!edit">Crear usuario</h4>
+          <h4 class="modal-title" id="modal-basic-title" *ngIf="edit">Editar usuario</h4>
           <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <form #userForm="ngForm" (ngSubmit)="addUserForm(userForm)">
+          <form #userForm="ngForm" (ngSubmit)="!edit ? addUserForm(userForm) : editUserForm(userForm)">
             <div class="form-group">
               <label for="email" class="label col-sm-3 col-form-label">Email (*)</label>
               <div class="input-group">
@@ -83,7 +84,7 @@
             <label for="CI" class="label col-sm-3 col-form-label">Cédula (*)</label>
               <div class="input-group">
                 <input type="number" id="CI" class="form-control" nbInput fullWidth placeholder="XXXXXXXX" name="CI"
-                [(ngModel)]="user.CI" #CI="ngModel" required>
+                [(ngModel)]="user.ci" #CI="ngModel" required>
               </div>
             </div>
             <div *ngIf="CI.errors && userForm.submitted" class="alert alert-danger">

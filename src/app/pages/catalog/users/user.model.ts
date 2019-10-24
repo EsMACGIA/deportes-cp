@@ -8,6 +8,6 @@ export class UserModel {
     name:string;
     lastname:string;
     type:number;
-    CI:string;
+    CI:number;
     email: string;
 }

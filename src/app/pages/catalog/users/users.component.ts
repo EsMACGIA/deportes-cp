@@ -5,7 +5,7 @@ import { SmartTableData } from '../../../@core/data/smart-table';
 import {HttpClient} from '@angular/common/http';
 import {UsersService} from '../users/users.service';
 import {UserModel} from '../users/user.model';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {NgForm} from '@angular/forms';
 import { ToasterConfig } from 'angular2-toaster';
 import {NbToastrService,NbComponentStatus,NbGlobalLogicalPosition, NbGlobalPosition, NbGlobalPhysicalPosition} from '@nebular/theme';
@@ -20,6 +20,8 @@ import {NbToastrService,NbComponentStatus,NbGlobalLogicalPosition, NbGlobalPosit
 export class UsersComponent {
 
   closeResult: string;
+
+  //Settings of Smart Table
   settings = {
     mode: 'external',
     add: {
@@ -59,14 +61,19 @@ export class UsersComponent {
       },
       ci: {
         title: 'Cedula',
-        type: 'string'
+        type: 'number'
       }
     },
   };
 
+  //Variable to load info to smart table
   source: LocalDataSource = new LocalDataSource();
+
+  //Objects for Model User
   private UserList:UserModel[];
   private user:UserModel = new UserModel();
+
+  //Variables to Toastr configuration
   config:ToasterConfig;
   position:NbGlobalPosition = NbGlobalPhysicalPosition.TOP_RIGHT;
   status: NbComponentStatus = 'success'
@@ -75,6 +82,10 @@ export class UsersComponent {
   hasIcon = true;
   index = 1;
   preventDuplicates = false;
+
+  //Var to difference if open edit modal or add modal
+  edit: boolean = false; 
+
   constructor(
     private service: SmartTableData,
     private http: HttpClient,
@@ -97,6 +108,9 @@ export class UsersComponent {
 
   }
 
+  
+  /*----FUNCTIONS TO HANDLE MODALS----*/
+
   /*Function to open modal with form for create user */
   addUser(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
@@ -106,6 +120,29 @@ export class UsersComponent {
     });
   }
 
+  /*Function to open modal with form for edit user */
+  editUser(content,event):void{
+    this.edit = true
+    console.log(event.data)
+    Object.assign(this.user,event.data) //Instance all fields of user with the event data
+    const modal_options:NgbModalOptions = {
+      size: 'lg',
+      beforeDismiss: () => {
+        this.user = new UserModel();
+        this.edit = false
+        return true
+      },
+      ariaLabelledBy: 'modal-basic-title'
+
+    } 
+    this.modalService.open(content, modal_options).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  
   /*Function to close modal */
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -117,25 +154,55 @@ export class UsersComponent {
     }
   }
 
+  /*------------------------*/
+
+
+  /* ----Functions to Handle Forms Submit---- */
+
   /*Function to process create User Form */
   addUserForm(userForm:NgForm){
-    this.usersService.createUser(this.user).subscribe(data=>{
-      console.log(userForm.value)
-      if(data){
-        if(!data.error){
+    if (userForm.valid){
+      this.user.type = Number(userForm.value.type)
+      this.usersService.createUser(this.user).subscribe(data=>{
+      console.log(this.user)
+      console.log(this.user.type)
+        if(data){
           this.modalService.dismissAll();
-          this.loadUsers();
-          this.showToast('success','Se ha creado un usuario exitosamente','Se ha creado el usuario ' + this.user.name + ' de manera exitosa.')
-          console.log(data);
-        }else{
-          console.log(data.error)
-          this.showToast('danger','Hubo un error al crear usuario',data.error.error)
+          if(!data.error){
+            this.loadUsers();
+            this.showToast('success','Se ha creado un usuario exitosamente','Se ha creado el usuario ' + this.user.name + ' de manera exitosa.')
+            console.log(data);
+          }else{
+            console.log(data.error)
+            this.showToast('danger','Hubo un error al crear usuario',data.error.error)
+          }
+  
+  
         }
-
-
-      }
-    })
+      })
+    }
   }
+
+  editUserForm(userForm:NgForm){
+    if (userForm.valid){
+      console.log(userForm)
+      this.usersService.updateUser(this.user).subscribe(data=>{
+        if(data){
+          this.modalService.dismissAll();
+          if(!data.error){
+            this.loadUsers();
+            this.showToast('success','Se ha actualizado el usuario exitosamente', 'Se ha actualizado el usuario ' + this.user.name + ' de manera exitosa.')
+            console.log(data);
+          }else{
+            console.log(data.error)
+            this.showToast('danger', 'Hubo un error al actualizar el usuario', data.error.error)
+          }
+        }
+      })
+    }
+  }
+
+  /*------------------------*/
 
   /* Function to show toast*/
   private showToast(type: NbComponentStatus, title: string, body: string) {
