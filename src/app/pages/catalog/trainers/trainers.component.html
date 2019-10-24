@@ -75,31 +75,37 @@
             <div class="form-group">
               <label for="password" class="label col-sm-6 col-form-label">Contraseña (*)</label>
               <div class="input-group">
-                <input type="password" id="password" class="form-control" nbInput fullWidth placeholder="Contraseña" name="password"
-                [(ngModel)]="trainer.password" #password="ngModel" required>
+                
+                <input *ngIf="!edit" type="password" id="password" class="form-control"  nbInput fullWidth placeholder="Si no desea cambiar la contraseña, debe dejar este campo vacío"
+                name="password" [(ngModel)]="trainer.password" #password="ngModel" required>
+                <input *ngIf="edit" type="password" id="password" class="form-control"  nbInput fullWidth placeholder="Si no desea cambiar la contraseña, debe dejar este campo vacío"
+                 name="password" [(ngModel)]="trainer.password" #password="ngModel">
+
               </div>
             </div>
-            <div *ngIf="password.errors && trainersForm.submitted" class="alert alert-danger">
-              <div *ngIf="password.errors.required">
+            <div *ngIf="password?.errors && trainersForm.submitted" class="alert alert-danger">
+              <div *ngIf="password?.errors.required && !edit">
                   La contraseña es obligatoria
               </div>
             </div>
             <div class="form-group">
                 <label for="confirmPassword" class="label col-sm-6 col-form-label">Repetir Contraseña (*)</label>
                 <div class="input-group">
-                  <input type="password" id="confirmPassword" class="form-control" nbInput fullWidth placeholder="Repetir Contraseña" name="confirmPassword"
-                  [(ngModel)]="trainer.confirmPassword" #confirmPassword="ngModel" pattern="{{ password.value }}" required>
-                </div>
-              </div>
-              <div *ngIf="confirmPassword.errors && trainersForm.submitted" class="alert alert-danger">
-                <div *ngIf="confirmPassword.errors.required">
-                    La contraseña es obligatoria
-                </div>
-                <div *ngIf="confirmPassword.errors.pattern">
-                  Las contraseñas deben ser iguales
+                  <input type="password" id="confirmPassword" class="form-control" nbInput fullWidth placeholder="Si no desea cambiar la contraseña, debe dejar este campo vacío"
+                  name="confirmPassword" [(ngModel)]="trainer.confirmPassword" #confirmPassword="ngModel" *ngIf="!edit" pattern="{{ password?.value }}" required>
+                  <input type="password" id="confirmPassword" class="form-control" nbInput fullWidth placeholder="Si no desea cambiar la contraseña, debe dejar este campo vacío"
+                  name="confirmPassword" [(ngModel)]="trainer.confirmPassword" #confirmPassword="ngModel" *ngIf="edit" pattern="{{ password?.value }}">
                 </div>
               </div>
 
+              <div *ngIf="confirmPassword?.errors && trainersForm.submitted" class="alert alert-danger">
+                <div *ngIf="confirmPassword?.errors.required && !edit">
+                    La contraseña es obligatoria
+                </div>
+                <div *ngIf="confirmPassword?.errors.pattern">
+                  Las contraseñas deben ser iguales
+                </div>
+              </div>
             <div class="form-group">
             <label for="ci" class="label col-sm-3 col-form-label">Cédula (*)</label>
               <div class="input-group">

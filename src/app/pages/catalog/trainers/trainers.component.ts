@@ -128,6 +128,7 @@ export class TrainersComponent {
     this.edit = true
     console.log(event.data)
     Object.assign(this.trainer,event.data) //Instance all fields of trainers with the event data
+    this.trainer.password = ""
     const modal_options:NgbModalOptions = {
       size: 'lg',
       beforeDismiss: () => {
@@ -156,8 +157,6 @@ export class TrainersComponent {
 
     this.trainer = event.data;
   }
-  
-
   
   /*Function to close modal */
   private getDismissReason(reason: any): string {
@@ -240,6 +239,10 @@ export class TrainersComponent {
 
       }
     })
+  }
+
+  validatePassword(password1,password2){
+    return password1 == password2
   }
 
   /*------------------------*/
