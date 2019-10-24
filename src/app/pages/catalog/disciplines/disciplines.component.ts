@@ -109,8 +109,7 @@ export class DisciplinesComponent {
           console.log(data);
         }else{
           console.log(data.error)
-          this.modalService.dismissAll();
-          this.showToast('danger','Hubo un error al crear disciplina',data.error.error)
+          this.showToast('danger','Hubo un error al crear la disciplina',data.error.error)
         }
       }
     })

@@ -19,10 +19,18 @@
       <div class="modal-body">
         <form #disciplineForm="ngForm" (ngSubmit)="addDisciplineForm(disciplineForm)">
           <div class="form-group">
-          <label for="name" class="label col-sm-3 col-form-label">Nombre de Disciplina</label>
+            <label for="name" class="label col-sm-3 col-form-label">Nombre de Disciplina <span class="danger">(*)</span></label>
             <div class="input-group">
               <input id="name" class="form-control" nbInput fullWidth placeholder="Deporte" name="name"
-              [(ngModel)]="discipline.name">
+              [(ngModel)]="discipline.name" #name="ngModel" pattern="[a-zA-Z ]*" required>
+            </div>
+          </div>
+          <div *ngIf="name.errors && disciplineForm.submitted" class="alert alert-danger">
+            <div *ngIf="name.errors.required">
+              El nombre es obligatorio
+            </div>
+            <div *ngIf="name.errors.pattern">
+              El nombre no puede tener caracteres especiales
             </div>
           </div>
 
