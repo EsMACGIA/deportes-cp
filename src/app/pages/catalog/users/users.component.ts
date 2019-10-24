@@ -59,7 +59,7 @@ export class UsersComponent {
         title: 'Tipo',
         type: 'number',
       },
-      ci: {
+      CI: {
         title: 'Cedula',
         type: 'number'
       }
@@ -142,6 +142,19 @@ export class UsersComponent {
     });
   }
 
+  /*Function to open modal to confirmation for delete user*/
+  deleteUser(content,event){
+    Object.assign(this.user,event.data) //Instance all fields of user with the event data
+    this.modalService.open(content,{ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+
+    this.user = event.data;
+  }
+  
+
   
   /*Function to close modal */
   private getDismissReason(reason: any): string {
@@ -200,6 +213,21 @@ export class UsersComponent {
         }
       })
     }
+  }
+
+  deleteUserConfirm(){
+    this.usersService.deleteUser(this.user).subscribe(data=>{
+      if(data){
+        this.modalService.dismissAll();
+        if (!data.error){
+          this.loadUsers();
+          this.showToast('success', 'Se ha eliminado el usuario exitosamente', 'Se ha eliminado el usuario ' + this.user.name + ' de manera exitosa.')
+        }else{
+          this.showToast('danger','Hubo un error al eliminar el usuario', data.error.error)
+        }
+      }
+
+    })
   }
 
   /*------------------------*/

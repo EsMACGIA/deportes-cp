@@ -14,11 +14,11 @@ export class UsersService extends BaseService{
         return this.postBase(user,'users/')
     }
 
-    deleteUser(user:UserModel):Observable<any>{
-        return this.deleteBase(user,'users/')
-    }
-
     updateUser(user:UserModel):Observable<any>{
         return this.putBase(user,'users/')
+    }
+
+    deleteUser(user:UserModel):Observable<any>{
+        return this.deleteBase(user,'users/' + user.id + '/')
     }
 }
