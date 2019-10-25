@@ -1,6 +1,7 @@
 import { NbMenuItem } from '@nebular/theme';
 
 export const MENU_ITEMS: NbMenuItem[] = [
+/*
   {
     title: 'E-commerce',
     icon: 'shopping-cart-outline',
@@ -16,16 +17,17 @@ export const MENU_ITEMS: NbMenuItem[] = [
     title: 'FEATURES',
     group: true,
   },
+*/
   {
-    title: 'Catalog',
+    title: 'Catálogo',
     icon: 'edit-2-outline',
     children : [
       {
-        title : 'Users',
+        title : 'Comisiones',
         link : '/pages/catalog/users',
       },
       {
-        title : 'Disciplines',
+        title : 'Disciplinas',
         link : '/pages/catalog/disciplines',
       },
       {
@@ -34,6 +36,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
       }
     ]
   },
+/*
   {
     title: 'Layout',
     icon: 'layout-outline',
@@ -262,4 +265,5 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },
     ],
   },
+*/
 ];

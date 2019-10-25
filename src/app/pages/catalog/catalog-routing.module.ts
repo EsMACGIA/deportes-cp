@@ -3,8 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { CatalogComponent } from './catalog.component';
 import { UsersComponent } from './users/users.component';
-import { DisciplinesComponent } from './Disciplines/Disciplines.component';
 import { TrainersComponent } from './trainers/trainers.component';
+import { DisciplinesComponent } from './disciplines/disciplines.component';
 
 const routes: Routes = [{
   path: '',

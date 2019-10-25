@@ -11,18 +11,13 @@ import {
   NbRadioModule,
   NbUserModule,} from '@nebular/theme';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
-
 import { ThemeModule } from '../../@theme/theme.module';
 import { CatalogRoutingModule, routedComponents } from './catalog-routing.module';
 import { FormsModule } from '@angular/forms';
 import {UsersService} from './users/users.service';
 import {TrainersService} from './trainers/trainers.service';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-
-
-
-
-
+import {DisciplinesService} from './disciplines/disciplines.service';
 @NgModule({
   imports: [
     NbCardModule,
@@ -46,7 +41,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
   ],
   providers: [
     UsersService,
-    TrainersService
+    TrainersService,
+    DisciplinesService
   ],
 })
 export class CatalogModule { }

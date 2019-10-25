@@ -9,7 +9,7 @@ export class TrainersModel {
     confirmPassword:string;
     name:string;
     lastname:string;
-    type:number;
     ci:number;
     email: string;
+    discipline_id: number;
 }
