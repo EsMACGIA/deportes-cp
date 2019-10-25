@@ -28,6 +28,7 @@ export class NgxLoginComponent extends NbLoginComponent {
     private toastrService: NbToastrService
   ) {
     super(service, options, cd, router);
+    localStorage.removeItem('token');
   }
 
   auth(user) {
