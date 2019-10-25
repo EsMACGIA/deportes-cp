@@ -19,15 +19,15 @@ export const MENU_ITEMS: NbMenuItem[] = [
   },
 */
   {
-    title: 'Catalog',
+    title: 'Catálogo',
     icon: 'edit-2-outline',
     children : [
       {
-        title : 'Users',
+        title : 'Comisiones',
         link : '/pages/catalog/users',
       },
       {
-        title : 'Disciplines',
+        title : 'Disciplinas',
         link : '/pages/catalog/disciplines',
       }
     ]

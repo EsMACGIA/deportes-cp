@@ -12,8 +12,12 @@ import {
   NbInputModule
 } from '@nebular/theme';
 
+// Components
 import { NgxLoginComponent } from './login/login.component';
 import { NbRequestPasswordComponent } from './request-password/request-password.component';
+
+// Providers
+import { AuthService } from './auth.service';
 
 @NgModule({
   imports: [
@@ -31,6 +35,9 @@ import { NbRequestPasswordComponent } from './request-password/request-password.
     NgxLoginComponent,
     NbRequestPasswordComponent
   ],
+  providers: [
+    AuthService
+  ]
 })
 export class NgxAuthModule {
 
