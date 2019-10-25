@@ -3,6 +3,8 @@ import { LocalDataSource } from 'ng2-smart-table';
 
 import { SmartTableData } from '../../../@core/data/smart-table';
 import {HttpClient} from '@angular/common/http';
+import {DisciplinesService} from '../disciplines/disciplines.service';
+import {DisciplinesModel} from '../disciplines/disciplines.model';
 import {TrainersService} from '../trainers/trainers.service';
 import {TrainersModel} from '../trainers/trainers.model';
 import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
@@ -19,6 +21,8 @@ import {NbToastrService,NbComponentStatus,NbGlobalLogicalPosition, NbGlobalPosit
 })
 export class TrainersComponent {
 
+  doesntMatch: boolean;
+  disciplines: any[];
   closeResult: string;
 
   //Settings of Smart Table
@@ -55,13 +59,17 @@ export class TrainersComponent {
         title: 'E-mail',
         type: 'string',
       },
-      type: {
-        title: 'Tipo',
-        type: 'number',
-      },
       ci: {
         title: 'Cedula',
         type: 'number'
+      },
+      discipline: {
+        title: 'Disciplina',
+        type: 'string',
+      },
+      discipline_id: {
+        title: 'ID disciplina',
+        type: 'number',
       }
     },
   };
@@ -91,11 +99,19 @@ export class TrainersComponent {
   constructor(
     private service: SmartTableData,
     private http: HttpClient,
+    private disciplinesService: DisciplinesService,
     private trainersService: TrainersService,
     private modalService: NgbModal,
     private toastrService: NbToastrService) {
 
       this.loadTrainers();
+  }
+
+  ngOnInit() {
+    this.disciplinesService.getDisciplineList().subscribe(data => {
+        this.disciplines = data;
+      }
+    );
   }
 
   /*Load the Trainers to table */
@@ -172,31 +188,40 @@ export class TrainersComponent {
   /*------------------------*/
 
 
+
   /* ----Functions to Handle Forms Submit---- */
 
   /*Function to process create Trainer Form */
   addTrainerForm(trainersForm:NgForm){
     if (trainersForm.valid){
       Object.assign(this.trainer2, this.trainer)
-      this.trainer2.type = 3
+      if(trainersForm.value.password != trainersForm.value.confirmPassword){
+        this.doesntMatch = true;
+      }else{
+        this.doesntMatch = false;
+      }
       delete this.trainer2.confirmPassword;
-      this.trainersService.createTrainer(this.trainer2).subscribe(data=>{
-        console.log("Este es el entrenador que estoy agregando ",this.trainer2)
-        console.log(this.trainer2)
-        if(data){
-          this.modalService.dismissAll();
-          if(!data.error){
-            this.loadTrainers();
-            this.showToast('success','Se ha creado un entrenador exitosamente','Se ha creado el entrenador ' + this.trainer2.name + ' de manera exitosa.')
-            console.log(data);
-          }else{
-            console.log(data.error)
-            this.showToast('danger','Hubo un error al crear entrenador',data.error.error)
+      delete this.trainer2.discipline;
+      this.trainer2.discipline_id = Number(this.trainer2.discipline_id);
+      if(!this.doesntMatch){
+        this.trainersService.createTrainer(this.trainer2).subscribe(data=>{
+          console.log("Este es el entrenador que estoy agregando ",this.trainer2)
+          console.log(this.trainer2)
+          if(data){
+            this.modalService.dismissAll();
+            if(!data.error){
+              this.loadTrainers();
+              this.showToast('success','Se ha creado un entrenador exitosamente','Se ha creado el entrenador ' + this.trainer2.name + ' de manera exitosa.')
+              console.log(data);
+            }else{
+              console.log(data.error)
+              this.showToast('danger','Hubo un error al crear entrenador',data.error.error)
+            }
+    
+            this.trainer = new TrainersModel();
           }
-  
-          this.trainer = new TrainersModel();
-        }
-      })
+        })
+      }
     }
   }
 
@@ -204,30 +229,39 @@ export class TrainersComponent {
     if (trainersForm.valid){
       console.log(trainersForm)
       console.log("Este es el entrenador que estoy editando",this.trainer)
+      if(trainersForm.value.password != trainersForm.value.confirmPassword){
+        this.doesntMatch = true;
+      }else{
+        this.doesntMatch = false;
+      }
       Object.assign(this.trainer2, this.trainer)
-      this.trainer2.type = 3
       delete this.trainer2.confirmPassword;
-      delete this.trainer2.id;
-      this.trainersService.updateTrainer(this.trainer2).subscribe(data=>{
-        if(data){
-          this.modalService.dismissAll();
-          if(!data.error){
-            this.loadTrainers();
-            this.showToast('success','Se ha actualizado el entrenador exitosamente', 'Se ha actualizado el entrenador ' + this.trainer2.name + ' de manera exitosa.')
-            console.log(data);
-          }else{
-            console.log(data.error)
-            this.showToast('danger', 'Hubo un error al actualizar el entrenador', data.error.error)
+      delete this.trainer2.discipline;
+      this.trainer2.discipline_id = Number(this.trainer2.discipline_id);
+      console.log("entrenador que envio",this.trainer2);
+      if(!this.doesntMatch){
+        this.trainersService.updateTrainer(this.trainer2).subscribe(data=>{
+          if(data){
+            this.modalService.dismissAll();
+            if(!data.error){
+              this.loadTrainers();
+              this.showToast('success','Se ha actualizado el entrenador exitosamente', 'Se ha actualizado el entrenador ' + this.trainer2.name + ' de manera exitosa.')
+              console.log(data);
+            }else{
+              console.log(data.error)
+              this.showToast('danger', 'Hubo un error al actualizar el entrenador', data.error.error)
+            }
+            this.trainer = new TrainersModel();
           }
-          this.trainer = new TrainersModel();
-        }
-      })
+        })
+      }
     }
   }
 
   deleteTrainerConfirm(){
     this.trainersService.deleteTrainer(this.trainer).subscribe(data=>{
       if(data){
+        console.log(data);
         this.modalService.dismissAll();
         if (!data.error){
           this.loadTrainers();
@@ -239,10 +273,6 @@ export class TrainersComponent {
 
       }
     })
-  }
-
-  validatePassword(password1,password2){
-    return password1 == password2
   }
 
   /*------------------------*/

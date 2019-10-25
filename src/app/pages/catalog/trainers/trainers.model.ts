@@ -12,4 +12,5 @@ export class TrainersModel {
     ci:number;
     email: string;
     discipline_id: number;
+    discipline: string;
 }

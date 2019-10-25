@@ -7,18 +7,18 @@ import {TrainersModel} from './trainers.model';
 export class TrainersService extends BaseService{
 
     getTrainerList():Observable<any>{
-        return this.getBase('users/')
+        return this.getBase('trainers/')
     }
 
     createTrainer(Trainer:TrainersModel):Observable<any>{
-        return this.postBase(Trainer,'users/')
+        return this.postBase(Trainer,'trainers/')
     }
 
     updateTrainer(Trainer:TrainersModel):Observable<any>{
-        return this.putBase(Trainer,'users/')
+        return this.putBase(Trainer,'trainers/')
     }
 
     deleteTrainer(Trainer:TrainersModel):Observable<any>{
-        return this.deleteBase(Trainer,'users/' + Trainer.id + '/')
+        return this.deleteBase(Trainer,'trainers/' + Trainer.id + '/')
     }
 }
