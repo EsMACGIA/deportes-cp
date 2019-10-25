@@ -21,7 +21,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'edit-2-outline',
     children : [
       {
-        title : 'Users',
+        title : 'Comisiones',
         link : '/pages/catalog/users',
       },
       {

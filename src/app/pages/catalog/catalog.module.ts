@@ -7,9 +7,9 @@ import {
   NbSelectModule,
   NbActionsModule,
   NbButtonModule,
+  NbThemeModule,
 
-  NbRadioModule,
-  NbUserModule,} from '@nebular/theme';
+} from '@nebular/theme';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 
 import { ThemeModule } from '../../@theme/theme.module';
@@ -36,10 +36,12 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     NbSelectModule,
     NbActionsModule,
     NbButtonModule,
-    NbRadioModule,
-    NbUserModule,
+    NbThemeModule,
+  
 
+    
   ],
+
   declarations: [
     ...routedComponents,
   ],
