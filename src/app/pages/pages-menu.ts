@@ -29,6 +29,10 @@ export const MENU_ITEMS: NbMenuItem[] = [
       {
         title : 'Disciplinas',
         link : '/pages/catalog/disciplines',
+      },
+      {
+        title : 'Entrenadores',
+        link : '/pages/catalog/trainers',
       }
     ]
   },

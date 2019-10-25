@@ -1,0 +1,158 @@
+<nb-card>
+    <nb-card-header>
+      Entrenadores
+    </nb-card-header>
+  
+    <nb-card-body>
+      <ng2-smart-table [settings]="settings" [source]="source" (delete)="deleteTrainer(deleteTrainerModal,$event)"
+      (create)="addTrainer(createTrainerModal)" (edit)="editTrainer(createTrainerModal,$event)">
+      </ng2-smart-table>
+
+      <ng-template #createTrainerModal let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title" *ngIf="!edit">Crear entrenador</h4>
+          <h4 class="modal-title" id="modal-basic-title" *ngIf="edit">Editar entrenador</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form #trainersForm="ngForm" (ngSubmit)="!edit ? addTrainerForm(trainersForm) : editTrainerForm(trainersForm)">
+            <div class="form-group">
+              <label for="email" class="label col-sm-3 col-form-label">Email (*)</label>
+              <div class="input-group">
+
+                  <input id="email" class="form-control" nbInput fullWidth placeholder="ejemplo@gmail.com" name="email"
+                  [(ngModel)]="trainer.email" #email="ngModel" pattern="^[a-zA-Z0-9.!#$%&''*+/=?^_\`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" required
+                  *ngIf="!edit; else noModifyEmail">
+
+                  <ng-template #noModifyEmail>
+                    <input id="email" class="form-control" nbInput fullWidth placeholder="ejemplo@gmail.com" name="email"
+                    [(ngModel)]="trainer.email" #email="ngModel" pattern="^[a-zA-Z0-9.!#$%&''*+/=?^_\`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" required
+                    *ngIf="edit" disabled>
+                  </ng-template>
+              </div>
+            </div>
+              <div *ngIf="email?.errors && trainersForm.submitted" class="alert alert-danger">
+                <div *ngIf="email?.errors?.required">
+                   El email es obligatorio
+                 </div>
+                 <div *ngIf="email?.errors?.pattern">
+                   El email no tiene formato de correo
+                 </div>
+              </div>
+            <div class="form-group">
+              <label for="name" class="label col-sm-3 col-form-label">Nombre <span class="danger">(*)</span></label>
+              <div class="input-group">
+                <input id="name" class="form-control" nbInput fullWidth placeholder="Juan" name="name"
+                [(ngModel)]="trainer.name" #name="ngModel" required >
+              </div>
+            </div>
+            <div *ngIf="name.errors && trainersForm.submitted" class="alert alert-danger">
+             <div *ngIf="name.errors.required">
+                El nombre es obligatorio
+              </div>
+              <div *ngIf="name.errors.pattern">
+                El nombre no puede tener caracteres especiales
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="lastname" class="label col-sm-3 col-form-label">Apellido (*)</label>
+              <div class="input-group">
+                <input id="lastname" class="form-control" nbInput fullWidth placeholder="Oropeza" name="lastname"
+                [(ngModel)]="trainer.lastname" #lastname="ngModel" required>
+              </div>
+            </div>
+            <div *ngIf="lastname.errors && trainersForm.submitted" class="alert alert-danger">
+                <div *ngIf="lastname.errors.required">
+                   El apellido es obligatorio
+                 </div>
+                 <div *ngIf="lastname.errors.pattern">
+                   El apellido no puede tener caracteres especiales
+                 </div>
+              </div>
+              
+            <div class="form-group">
+              <label for="password" class="label col-sm-6 col-form-label">Contraseña (*)</label>
+              <div class="input-group">
+                
+                <input *ngIf="!edit" type="password" id="password" class="form-control"  nbInput fullWidth placeholder="Contraseña"
+                name="password" [(ngModel)]="trainer.password" #password="ngModel" required>
+                <input *ngIf="edit" type="password" id="password" class="form-control"  nbInput fullWidth placeholder="Si no desea cambiar la contraseña, debe dejar este campo vacío"
+                 name="password" [(ngModel)]="trainer.password" #password="ngModel">
+
+              </div>
+            </div>
+            <div *ngIf="password?.errors && trainersForm.submitted" class="alert alert-danger">
+              <div *ngIf="password?.errors.required && !edit">
+                  La contraseña es obligatoria
+              </div>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword" class="label col-sm-6 col-form-label">Repetir Contraseña (*)</label>
+                <div class="input-group">
+                  <input type="password" id="confirmPassword" class="form-control" nbInput fullWidth placeholder="Repite Contraseña"
+                  name="confirmPassword" [(ngModel)]="trainer.confirmPassword" #confirmPassword="ngModel" *ngIf="!edit" pattern="{{ password?.value }}" required>
+                  <input type="password" id="confirmPassword" class="form-control" nbInput fullWidth placeholder="Si no desea cambiar la contraseña, debe dejar este campo vacío"
+                  name="confirmPassword" [(ngModel)]="trainer.confirmPassword" #confirmPassword="ngModel" *ngIf="edit" pattern="{{ password?.value }}">
+                </div>
+              </div>
+
+              <div *ngIf="confirmPassword?.errors && trainersForm.submitted" class="alert alert-danger">
+                <div *ngIf="confirmPassword?.errors.required && !edit">
+                    La contraseña es obligatoria
+                </div>
+              </div>
+                <div *ngIf="doesntMatch" class="alert alert-danger">
+                    Las contraseñas deben de ser iguales
+                </div>
+            <div class="form-group">
+            <label for="ci" class="label col-sm-3 col-form-label">Cédula (*)</label>
+              <div class="input-group">
+                <input type="number" id="ci" class="form-control" nbInput fullWidth placeholder="XXXXXXXX" name="CI"
+                [(ngModel)]="trainer.ci" #ci="ngModel" required>
+              </div>
+            </div>
+            <div *ngIf="ci.errors && trainersForm.submitted" class="alert alert-danger">
+                <div *ngIf="ci.errors.required">
+                   La cédula es obligatoria
+                 </div>
+                 <div *ngIf="CI.errors.pattern">
+                    La cédula no puede tener caracteres especiales
+                 </div>
+            </div>
+            <div class="form-group">
+                <label for="ci" class="label col-sm-4 col-form-label">Disciplina (*)</label>
+                <select [(ngModel)]="trainer.discipline_id" name="discipline_id" #discipline_id="ngModel" required>
+                  <option value="">-</option>
+                  <option *ngFor="let dis of disciplines" [value]="dis.id">{{dis.name}}</option>
+                </select>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-outline-dark">Guardar</button>
+            </div>
+          </form>
+        </div>
+
+      </ng-template>
+
+      <ng-template #deleteTrainerModal let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title" >Eliminar entrenador</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>¿Esta seguro de eliminar al entrenador {{trainer.name}}?</p>
+          <button type="submit" class="btn btn-outline-dark" (click)="deleteTrainerConfirm()">Confirmar</button>
+          <button type="submit" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancelar</button>
+
+        </div>
+      </ng-template>
+
+    </nb-card-body>
+</nb-card>
+
+<!-- Trainer Modal ends -->
