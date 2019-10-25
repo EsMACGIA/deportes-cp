@@ -39,7 +39,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   currentTheme = 'default';
 
-  userMenu = [ { title: 'Log out' } ];
+  userMenu = [ { title: 'Cerrar sesión' } ];
 
   constructor(private sidebarService: NbSidebarService,
               private menuService: NbMenuService,
@@ -73,7 +73,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .subscribe(themeName => this.currentTheme = themeName);
 
     this.menuService.onItemClick().subscribe((event) => {
-      if (event.item.title === 'Log out') {
+      if (event.item.title === 'Cerrar sesión') {
         localStorage.removeItem('token');
         this.router.navigate(['/'])
       }
