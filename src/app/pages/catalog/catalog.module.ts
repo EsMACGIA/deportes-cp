@@ -7,16 +7,11 @@ import {
   NbSelectModule,
   NbActionsModule,
   NbButtonModule,
-<<<<<<< HEAD
-=======
   NbThemeModule,
-
-} from '@nebular/theme';
-import { Ng2SmartTableModule } from 'ng2-smart-table';
->>>>>>> 5979b880a0af21286cde4420fa51f6abd470c1df
-
   NbRadioModule,
-  NbUserModule,} from '@nebular/theme';
+  NbUserModule
+} from '@nebular/theme';
+
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { ThemeModule } from '../../@theme/theme.module';
 import { CatalogRoutingModule, routedComponents } from './catalog-routing.module';
@@ -49,7 +44,7 @@ import {UsersService} from './users/users.service';
     ...routedComponents,
   ],
   providers: [
-    DisciplinesService
+    DisciplinesService,
     UsersService
   ],
 })
