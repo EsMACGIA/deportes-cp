@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { CatalogComponent } from './catalog.component';
 import { UsersComponent } from './users/users.component';
+import { TrainersComponent } from './trainers/trainers.component';
 import { DisciplinesComponent } from './disciplines/disciplines.component';
 
 const routes: Routes = [{
@@ -16,6 +17,10 @@ const routes: Routes = [{
     {
       path: 'disciplines',
       component: DisciplinesComponent,
+    },
+    {
+      path: 'trainers',
+      component: TrainersComponent,
     }
   ],
 }];
@@ -30,4 +35,5 @@ export const routedComponents = [
   CatalogComponent,
   UsersComponent,
   DisciplinesComponent,
+  TrainersComponent,
 ];

@@ -16,11 +16,10 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { ThemeModule } from '../../@theme/theme.module';
 import { CatalogRoutingModule, routedComponents } from './catalog-routing.module';
 import { FormsModule } from '@angular/forms';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-
-import {DisciplinesService} from './disciplines/disciplines.service';
 import {UsersService} from './users/users.service';
-
+import {TrainersService} from './trainers/trainers.service';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {DisciplinesService} from './disciplines/disciplines.service';
 @NgModule({
   imports: [
     NbCardModule,
@@ -44,8 +43,9 @@ import {UsersService} from './users/users.service';
     ...routedComponents,
   ],
   providers: [
-    DisciplinesService,
-    UsersService
+    UsersService,
+    TrainersService,
+    DisciplinesService
   ],
 })
 export class CatalogModule { }
