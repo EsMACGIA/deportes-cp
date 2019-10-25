@@ -10,6 +10,7 @@ const routes: Routes = [{
   path: '',
   component: PagesComponent,
   children: [
+/*
     {
       path: 'dashboard',
       component: ECommerceComponent,
@@ -23,11 +24,13 @@ const routes: Routes = [{
       loadChildren: () => import('./layout/layout.module')
         .then(m => m.LayoutModule),
     },
+*/
     {
       path: 'catalog',
       loadChildren: () => import('./catalog/catalog.module')
       .then(m=> m.CatalogModule)
     },
+/*
     {
       path: 'forms',
       loadChildren: () => import('./forms/forms.module')
@@ -73,9 +76,10 @@ const routes: Routes = [{
       loadChildren: () => import('./miscellaneous/miscellaneous.module')
         .then(m => m.MiscellaneousModule),
     },
+*/
     {
       path: '',
-      redirectTo: 'dashboard',
+      redirectTo: 'catalog',
       pathMatch: 'full',
     },
     {
