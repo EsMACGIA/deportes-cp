@@ -28,6 +28,7 @@ export class UsersComponent {
 
   //Settings of Smart Table
   settings = {
+    actions: {columnTitle: 'Acciones',},
     mode: 'external',
     add: {
       addButtonContent: '<i class="nb-plus"></i>',

@@ -23,6 +23,7 @@ export class DisciplinesComponent {
 
   //Settings for Smart Table
   settings = {
+    actions: {columnTitle: 'Acciones',},
     mode:'external',
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
