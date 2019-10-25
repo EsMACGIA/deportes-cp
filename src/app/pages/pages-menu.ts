@@ -17,6 +17,20 @@ export const MENU_ITEMS: NbMenuItem[] = [
     group: true,
   },
   {
+    title: 'Catalog',
+    icon: 'edit-2-outline',
+    children : [
+      {
+        title : 'Comisiones',
+        link : '/pages/catalog/users',
+      },
+      {
+        title : 'Disciplines',
+        link : '/pages/catalog/disciplines',
+      }
+    ]
+  },
+  {
     title: 'Layout',
     icon: 'layout-outline',
     children: [
