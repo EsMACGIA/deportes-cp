@@ -61,7 +61,7 @@
               <div class="input-group">
                 <input type="password" id="password" class="form-control" nbInput fullWidth placeholder="Contraseña" name="password"
                 [(ngModel)]="user.password" #password="ngModel" required *ngIf="!edit">
-                <input type="password" id="password" class="form-control" nbInput fullWidth placeholder="Contraseña" name="password"
+                <input type="password" id="password" class="form-control" nbInput fullWidth placeholder="Si no desea cambiar la contraseña dejar este campo vacío" name="password"
                 [(ngModel)]="user.password" #password="ngModel" *ngIf="edit">
               </div>
             </div>
@@ -75,7 +75,7 @@
                 <div class="input-group">
                   <input type="password" id="confirmPassword" class="form-control" nbInput fullWidth placeholder="Repetir Contraseña" name="confirmPassword" pattern="{{password?.value}}"
                   [(ngModel)]="user.confirmPassword" #confirmPassword="ngModel" required *ngIf="!edit">
-                  <input type="password" id="confirmPassword" class="form-control" nbInput fullWidth placeholder="Repetir Contraseña" name="confirmPassword" pattern="{{password?.value}}"
+                  <input type="password" id="confirmPassword" class="form-control" nbInput fullWidth placeholder="Si no desea cambiar la contraseña dejar este campo vacío" name="confirmPassword" pattern="{{password?.value}}"
                   [(ngModel)]="user.confirmPassword" #confirmPassword="ngModel" *ngIf="edit">
                 </div>
             </div>
