@@ -1,11 +1,119 @@
 <nb-card>
     <nb-card-header>
-      Smart Table
+      Comisiones
     </nb-card-header>
   
     <nb-card-body>
-      <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)">
+      <ng2-smart-table [settings]="settings" [source]="source" (delete)="deleteUser(deleteUserModal,$event)"
+      (create)="addUser(createUserModal)" (edit)="editUser(createUserModal,$event)">
       </ng2-smart-table>
+
+      <ng-template #createUserModal let-modal id="modal">
+        <div class="modal-header" [ngStyle]="styles">
+          <h4 class="modal-title" id="modal-basic-title" *ngIf="!edit">Crear Comisión</h4>
+          <h4 class="modal-title" id="modal-basic-title" *ngIf="edit">Editar Comisión</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form #userForm="ngForm" (ngSubmit)="!edit ? addUserForm(userForm) : editUserForm(userForm)">
+            <div class="form-group">
+              <label for="email" class="label col-sm-3 col-form-label">Email (*)</label>
+              <div class="input-group">
+
+                  <input id="email" class="form-control" nbInput fullWidth placeholder="ejemplo@gmail.com" name="email"
+                  [(ngModel)]="user.email" #email="ngModel" pattern="^[a-zA-Z0-9.!#$%&''*+/=?^_\`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" required
+                  *ngIf="!edit; else noModifyEmail">
+
+                  <ng-template #noModifyEmail>
+                    <input id="email" class="form-control" nbInput fullWidth placeholder="ejemplo@gmail.com" name="email"
+                    [(ngModel)]="user.email" #email="ngModel" pattern="^[a-zA-Z0-9.!#$%&''*+/=?^_\`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" required
+                    *ngIf="edit" disabled>
+                  </ng-template>
+              </div>
+            </div>
+              <div *ngIf="email?.errors && userForm.submitted" class="alert alert-danger">
+                <div *ngIf="email?.errors?.required">
+                   El email es obligatorio
+                 </div>
+                 <div *ngIf="email?.errors?.pattern">
+                   El email no tiene formato de correo
+                 </div>
+              </div>
+            <div class="form-group">
+              <label for="name" class="label col-sm-3 col-form-label">Nombre <span class="danger">(*)</span></label>
+              <div class="input-group">
+                <input id="name" class="form-control" nbInput fullWidth placeholder="Comision de Futbol" name="name"
+                [(ngModel)]="user.name" #name="ngModel" required >
+              </div>
+            </div>
+            <div *ngIf="name.errors && userForm.submitted" class="alert alert-danger">
+             <div *ngIf="name.errors.required">
+                El nombre es obligatorio
+              </div>
+              <div *ngIf="name.errors.pattern">
+                El nombre no puede tener caracteres especiales
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="password" class="label col-sm-6 col-form-label">Contraseña (*)</label>
+              <div class="input-group">
+                <input type="password" id="password" class="form-control" nbInput fullWidth placeholder="Contraseña" name="password"
+                [(ngModel)]="user.password" #password="ngModel" required *ngIf="!edit">
+                <input type="password" id="password" class="form-control" nbInput fullWidth placeholder="Contraseña" name="password"
+                [(ngModel)]="user.password" #password="ngModel" *ngIf="edit">
+              </div>
+            </div>
+            <div *ngIf="password?.errors && userForm.submitted" class="alert alert-danger">
+                <div *ngIf="password?.errors.required">
+                   La contraseña es obligatoria
+                 </div>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword" class="label col-sm-6 col-form-label">Repetir contraseña (*)</label>
+                <div class="input-group">
+                  <input type="password" id="confirmPassword" class="form-control" nbInput fullWidth placeholder="Repetir Contraseña" name="confirmPassword" pattern="{{password?.value}}"
+                  [(ngModel)]="user.confirmPassword" #confirmPassword="ngModel" required *ngIf="!edit">
+                  <input type="password" id="confirmPassword" class="form-control" nbInput fullWidth placeholder="Repetir Contraseña" name="confirmPassword" pattern="{{password?.value}}"
+                  [(ngModel)]="user.confirmPassword" #confirmPassword="ngModel" *ngIf="edit">
+                </div>
+            </div>
+            <div *ngIf="confirmPassword?.errors && userForm.submitted" class="alert alert-danger">
+                <div *ngIf="confirmPassword?.errors.required">
+                   La confirmacion de contraseña es obligatoria
+                 </div>
+                 <div *ngIf="confirmPassword?.errors.pattern">
+                    Las contraseñas deben de ser iguales
+                  </div>
+            </div>
+            <div *ngIf="doesntMatch" class="alert alert-danger">
+              Las contraseñas deben de ser iguales
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-outline-dark">Guardar</button>
+            </div>
+          </form>
+        </div>
+
+      </ng-template>
+
+      <ng-template #deleteUserModal let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title" >Eliminar usuario</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>¿Esta seguro de eliminar al usuario {{user.name}}?</p>
+          <button type="submit" class="btn btn-outline-dark" (click)="deleteUserConfirm()">Confirmar</button>
+          <button type="submit" class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancelar</button>
+
+        </div>
+      </ng-template>
+
     </nb-card-body>
-  </nb-card>
-  
+</nb-card>
+
+<!-- User Modal ends -->

@@ -6,7 +6,6 @@ export class UserModel {
     id: number;
     password:string;
     name:string;
-    lastname:string;
-    type:number;
-    ci:string;
+    email: string;
+    confirmPassword: string;
 }
