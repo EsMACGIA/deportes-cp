@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import {BaseService} from '../app.base.service';
 import { Observable } from 'rxjs';
 
-import { LoginModel } from './models/login.model'
+import { LoginModel } from './models/login.model';
+import { RequestPasswordModel } from './models/request-password.model'
 
 @Injectable()
 export class AuthService extends BaseService{
@@ -11,22 +12,7 @@ export class AuthService extends BaseService{
       return this.postBase(login, 'auth/')
     }
 
-    // getDisciplineList():Observable<any>{
-    //     console.log("antes de get")
-    //     var lista = this.getBase('disciplines/')
-    //     console.log("despues de get")
-    //     return lista
-    // }
-
-    // createDiscipline(discipline:DisciplinesModel):Observable<any>{
-    //     return this.postBase(discipline,'disciplines/')
-    // }
-
-    // deleteDiscipline(discipline:DisciplinesModel):Observable<any>{
-    //     return this.deleteBase(discipline,'disciplines/' + discipline.id + '/')
-    // }
-
-    // updateDiscipline(discipline:DisciplinesModel):Observable<any>{
-    //     return this.putBase(discipline,'disciplines/')
-    // }
+    requestPassord(request: RequestPasswordModel) {
+      return this.putBase(request, 'auth/')
+    }
 }

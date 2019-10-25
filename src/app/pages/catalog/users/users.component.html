@@ -1,6 +1,6 @@
 <nb-card>
     <nb-card-header>
-      Usuarios
+      Comisiones
     </nb-card-header>
   
     <nb-card-body>
@@ -8,12 +8,10 @@
       (create)="addUser(createUserModal)" (edit)="editUser(createUserModal,$event)">
       </ng2-smart-table>
 
-
-
-      <ng-template #createUserModal let-modal>
-        <div class="modal-header">
-          <h4 class="modal-title" id="modal-basic-title" *ngIf="!edit">Crear usuario</h4>
-          <h4 class="modal-title" id="modal-basic-title" *ngIf="edit">Editar usuario</h4>
+      <ng-template #createUserModal let-modal id="modal">
+        <div class="modal-header" [ngStyle]="styles">
+          <h4 class="modal-title" id="modal-basic-title" *ngIf="!edit">Crear Comisión</h4>
+          <h4 class="modal-title" id="modal-basic-title" *ngIf="edit">Editar Comisión</h4>
           <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -46,7 +44,7 @@
             <div class="form-group">
               <label for="name" class="label col-sm-3 col-form-label">Nombre <span class="danger">(*)</span></label>
               <div class="input-group">
-                <input id="name" class="form-control" nbInput fullWidth placeholder="Juan" name="name"
+                <input id="name" class="form-control" nbInput fullWidth placeholder="Comision de Futbol" name="name"
                 [(ngModel)]="user.name" #name="ngModel" required >
               </div>
             </div>
@@ -59,65 +57,38 @@
               </div>
             </div>
             <div class="form-group">
-              <label for="lastname" class="label col-sm-3 col-form-label">Apellido (*)</label>
-              <div class="input-group">
-                <input id="lastname" class="form-control" nbInput fullWidth placeholder="Oropeza" name="lastname"
-                [(ngModel)]="user.lastname" #lastname="ngModel" required>
-              </div>
-            </div>
-            <div *ngIf="lastname.errors && userForm.submitted" class="alert alert-danger">
-                <div *ngIf="lastname.errors.required">
-                   El apellido es obligatorio
-                 </div>
-                 <div *ngIf="lastname.errors.pattern">
-                   El apellido no puede tener caracteres especiales
-                 </div>
-              </div>
-            <div class="form-group">
               <label for="password" class="label col-sm-6 col-form-label">Contraseña (*)</label>
               <div class="input-group">
                 <input type="password" id="password" class="form-control" nbInput fullWidth placeholder="Contraseña" name="password"
-                [(ngModel)]="user.password" #password="ngModel" required>
+                [(ngModel)]="user.password" #password="ngModel" required *ngIf="!edit">
+                <input type="password" id="password" class="form-control" nbInput fullWidth placeholder="Si no desea cambiar la contraseña dejar este campo vacío" name="password"
+                [(ngModel)]="user.password" #password="ngModel" *ngIf="edit">
               </div>
             </div>
-            <div *ngIf="password.errors && userForm.submitted" class="alert alert-danger">
-                <div *ngIf="password.errors.required">
+            <div *ngIf="password?.errors && userForm.submitted" class="alert alert-danger">
+                <div *ngIf="password?.errors.required">
                    La contraseña es obligatoria
                  </div>
-                 <div *ngIf="name.errors.pattern">
-                   La contraseña no puede tener caracteres especiales
-                 </div>
             </div>
             <div class="form-group">
-            <label for="ci" class="label col-sm-3 col-form-label">Cédula (*)</label>
-              <div class="input-group">
-                <input type="number" id="ci" class="form-control" nbInput fullWidth placeholder="XXXXXXXX" name="CI"
-                [(ngModel)]="user.ci" #ci="ngModel" required>
-              </div>
-            </div>
-            <div *ngIf="ci.errors && userForm.submitted" class="alert alert-danger">
-                <div *ngIf="ci.errors.required">
-                   La cédula es obligatoria
-                 </div>
-                 <div *ngIf="CI.errors.pattern">
-                   La cédula no puede tener caracteres especiales
-                 </div>
-            </div>
-            <div class="form-group">
-              <label for="type" class="label col-sm-3 col-form-label">Tipo (*)</label>
-              <select [(ngModel)]="user.type" name="type" #type="ngModel" required>
-                  <option value=1 selected="selected">Administrador</option>
-                  <option value=2>Comision</option>
-                  <option value=3>Entrenador</option>
-              </select>
-            </div>
-            <div *ngIf="type.errors && userForm.submitted" class="alert alert-danger">
-              <div *ngIf="type.errors.required">
-                El tipo es obligatorio
+                <label for="confirmPassword" class="label col-sm-6 col-form-label">Repetir contraseña (*)</label>
+                <div class="input-group">
+                  <input type="password" id="confirmPassword" class="form-control" nbInput fullWidth placeholder="Repetir Contraseña" name="confirmPassword" pattern="{{password?.value}}"
+                  [(ngModel)]="user.confirmPassword" #confirmPassword="ngModel" required *ngIf="!edit">
+                  <input type="password" id="confirmPassword" class="form-control" nbInput fullWidth placeholder="Si no desea cambiar la contraseña dejar este campo vacío" name="confirmPassword" pattern="{{password?.value}}"
+                  [(ngModel)]="user.confirmPassword" #confirmPassword="ngModel" *ngIf="edit">
                 </div>
-              <div *ngIf="type.errors.pattern">
-                El tipo no puede tener caracteres especiales
-              </div>
+            </div>
+            <div *ngIf="confirmPassword?.errors && userForm.submitted" class="alert alert-danger">
+                <div *ngIf="confirmPassword?.errors.required">
+                   La confirmacion de contraseña es obligatoria
+                 </div>
+                 <div *ngIf="confirmPassword?.errors.pattern">
+                    Las contraseñas deben de ser iguales
+                  </div>
+            </div>
+            <div *ngIf="doesntMatch" class="alert alert-danger">
+              Las contraseñas deben de ser iguales
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-outline-dark">Guardar</button>

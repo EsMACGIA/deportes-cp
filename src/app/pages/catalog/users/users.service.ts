@@ -7,18 +7,18 @@ import {UserModel} from './user.model';
 export class UsersService extends BaseService{
 
     getUserList():Observable<any>{
-        return this.getBase('users/')
+        return this.getBase('comissions/')
     }
 
     createUser(user:UserModel):Observable<any>{
-        return this.postBase(user,'users/')
+        return this.postBase(user,'comissions/')
     }
 
     updateUser(user:UserModel):Observable<any>{
-        return this.putBase(user,'users/')
+        return this.putBase(user,'comissions/')
     }
 
     deleteUser(user:UserModel):Observable<any>{
-        return this.deleteBase(user,'users/' + user.id + '/')
+        return this.deleteBase(user,'comissions/' + user.id + '/')
     }
 }

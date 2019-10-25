@@ -1,4 +1,4 @@
-import { Component, PLATFORM_ID, Inject, Injector} from '@angular/core';
+import { Component, ElementRef,ViewChild} from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 
 import { SmartTableData } from '../../../@core/data/smart-table';
@@ -9,6 +9,11 @@ import {NgbModal, ModalDismissReasons, NgbModalOptions} from '@ng-bootstrap/ng-b
 import {NgForm} from '@angular/forms';
 import { ToasterConfig } from 'angular2-toaster';
 import {NbToastrService,NbComponentStatus,NbGlobalLogicalPosition, NbGlobalPosition, NbGlobalPhysicalPosition} from '@nebular/theme';
+import { User } from '../../../@core/data/users';
+import { NbDialogService } from '@nebular/theme';
+import {NbThemeService } from '@nebular/theme';
+
+
 
 
 
@@ -44,25 +49,13 @@ export class UsersComponent {
         type: 'number',
       },
       name: {
-        title: 'Primer nombre',
-        type: 'string',
-      },
-      lastname: {
-        title: 'Apellido',
+        title: 'Nombre',
         type: 'string',
       },
       email: {
         title: 'E-mail',
         type: 'string',
       },
-      type: {
-        title: 'Tipo',
-        type: 'number',
-      },
-      ci: {
-        title: 'Cedula',
-        type: 'number'
-      }
     },
   };
 
@@ -72,6 +65,7 @@ export class UsersComponent {
   //Objects for Model User
   private UserList:UserModel[];
   private user:UserModel = new UserModel();
+  private user2:UserModel = new UserModel();
 
   //Variables to Toastr configuration
   config:ToasterConfig;
@@ -82,17 +76,57 @@ export class UsersComponent {
   hasIcon = true;
   index = 1;
   preventDuplicates = false;
-
+  current_theme:string;
+  background = "white";
+  fonts = "black";
+  public styles:any;
+  @ViewChild('createUserModal',{static:false}) myDiv: ElementRef;
+  
   //Var to difference if open edit modal or add modal
   edit: boolean = false; 
+  private  doesntMatch:boolean = false;
 
   constructor(
     private service: SmartTableData,
     private http: HttpClient,
     private usersService: UsersService,
     private modalService: NgbModal,
-    private toastrService: NbToastrService) {
+    private toastrService: NbToastrService,
+    private themeService: NbThemeService) {
 
+      this.themeService.onThemeChange()
+          .subscribe((theme: any) => {
+            var modal = document.getElementById('modal');
+
+            this.current_theme = theme.name
+            if(this.current_theme == 'default'){
+              this.background = 'white';
+              this.fonts = 'black'
+              // modal.style.background = 'white';
+              // modal.style.color = 'black'
+            }
+            else if (this.current_theme == 'dark'){
+              console.log('Hola')
+              this.background = '#091c7a';
+              console.log(this.background)
+              this.fonts = 'white'
+            } else if (this.current_theme == 'cosmic'){
+              this.background = '#29157a'
+              this.fonts = 'white'
+              // modal.style.background = '#29157a'
+              // modal.style.color = 'white'
+            } else if (this.current_theme == 'corporate'){
+              this.background = 'white'
+              this.fonts = 'black'
+              // modal.style.background = 'white'
+              // modal.style.color = 'black'
+            }
+
+            let styles= {
+              backgroundColor : this.background,
+              color: this.fonts
+            }
+          });
       this.loadUsers();
   }
 
@@ -108,8 +142,6 @@ export class UsersComponent {
     })
 
   }
-
-  
   /*----FUNCTIONS TO HANDLE MODALS----*/
 
   /*Function to open modal with form for create user */
@@ -176,59 +208,83 @@ export class UsersComponent {
   /*Function to process create User Form */
   addUserForm(userForm:NgForm){
     if (userForm.valid){
-      this.user.type = Number(userForm.value.type)
-      this.usersService.createUser(this.user).subscribe(data=>{
-      console.log("Este es el usuario que estoy agregando ",this.user)
-      console.log(this.user)
-      console.log(this.user.type)
-        if(data){
-          this.modalService.dismissAll();
-          if(!data.error){
-            this.loadUsers();
-            this.showToast('success','Se ha creado un usuario exitosamente','Se ha creado el usuario ' + this.user.name + ' de manera exitosa.')
-            console.log(data);
-          }else{
-            console.log(data.error)
-            this.showToast('danger','Hubo un error al crear usuario',data.error.error)
+      Object.assign(this.user2, this.user)
+      if (userForm.value.password != userForm.value.confirmPassword){
+        this.doesntMatch = true
+      }else{
+        this.doesntMatch = false
+      }
+      delete this.user2.confirmPassword;
+      if (!this.doesntMatch){
+        console.log("Estoy creando este usuario",this.user2)
+        this.usersService.createUser(this.user2).subscribe(data=>{
+          if(data){
+            this.modalService.dismissAll();
+            if(!data.error){
+              this.loadUsers();
+              this.showToast('success','Se ha creado una comisión exitosamente','Se ha creado la comisión ' + this.user2.name + ' de manera exitosa.')
+              console.log(data);
+            }else{
+              console.log(data.error)
+              this.showToast('danger','Hubo un error al crear comisión',data.error.error)
+            }
+    
+            this.user = new UserModel();
           }
-  
-          this.user = new UserModel();
-        }
-      })
+        })
+      }
     }
   }
 
   editUserForm(userForm:NgForm){
     if (userForm.valid){
       console.log(userForm)
+      console.log('Este es es el valor de password', userForm.value.password)
+      if (userForm.value.password != userForm.value.confirmPassword){
+        this.doesntMatch = true
+      }else{
+        this.doesntMatch = false
+      }
       console.log("Este es el usuario que estoy editando",this.user)
-      delete this.user.id;
-      this.usersService.updateUser(this.user).subscribe(data=>{
-        if(data){
-          this.modalService.dismissAll();
-          if(!data.error){
-            this.loadUsers();
-            this.showToast('success','Se ha actualizado el usuario exitosamente', 'Se ha actualizado el usuario ' + this.user.name + ' de manera exitosa.')
-            console.log(data);
-          }else{
-            console.log(data.error)
-            this.showToast('danger', 'Hubo un error al actualizar el usuario', data.error.error)
+      Object.assign(this.user2, this.user)
+      delete this.user2.id;
+      delete this.user2.confirmPassword;
+      if (!this.user2.password){
+        this.user2.password = ''
+      }
+      console.log("Este es el user original" ,this.user)
+      console.log('Este es la comision que estoy editando', this.user2)
+
+      if (!this.doesntMatch){
+        this.usersService.updateUser(this.user2).subscribe(data=>{
+          if(data){
+            this.modalService.dismissAll();
+            if(!data.error){
+              this.loadUsers();
+              console.log(this.user);
+              this.showToast('success','Se ha actualizado la comisión exitosamente', 'Se ha actualizado la comisión ' + this.user2.name + ' de manera exitosa.')
+              console.log(data);
+            }else{
+              console.log(data.error)
+              this.showToast('danger', 'Hubo un error al actualizar la comisión', data.error.error)
+            }
+            this.user = new UserModel();
           }
-          this.user = new UserModel();
-        }
-      })
+        })
+      }
     }
   }
 
   deleteUserConfirm(){
     this.usersService.deleteUser(this.user).subscribe(data=>{
+      console.log(this.user,"Este es el usuario que estoy eliminando")
       if(data){
         this.modalService.dismissAll();
         if (!data.error){
           this.loadUsers();
-          this.showToast('success', 'Se ha eliminado el usuario exitosamente', 'Se ha eliminado el usuario ' + this.user.name + ' de manera exitosa.')
+          this.showToast('success', 'Se ha eliminado la comisión exitosamente', 'Se ha eliminado la comisión ' + this.user.name + ' de manera exitosa.')
         }else{
-          this.showToast('danger','Hubo un error al eliminar el usuario', data.error.error)
+          this.showToast('danger','Hubo un error al eliminar la comisión', data.error.error)
         }
         this.user = new UserModel();
 
