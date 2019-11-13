@@ -19,8 +19,8 @@ const routes: Routes = [
     path: 'auth',
     loadChildren: './auth/auth.module#NgxAuthModule'
   },
-  { path: '', redirectTo: 'auth', pathMatch: 'full' },
-  { path: '**', redirectTo: 'auth' },
+  { path: '', redirectTo: 'pages', pathMatch: 'full' },
+  { path: '**', redirectTo: 'pages' },
 ];
 
 const config: ExtraOptions = {
