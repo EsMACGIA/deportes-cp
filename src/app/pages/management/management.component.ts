@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'ngx-tables',
-  template: `<router-outlet>hola soy Management</router-outlet>`,
+  template: `<router-outlet></router-outlet>`,
 })
 export class ManagementComponent {
 }

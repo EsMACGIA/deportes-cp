@@ -18,27 +18,27 @@ export const MENU_ITEMS: NbMenuItem[] = [
     group: true,
   },
 */
-  {
-    title: 'Catálogo',
-    icon: 'edit-2-outline',
-    children : [
-      {
-        title : 'Comisiones',
-        link : '/pages/catalog/users',
-      },
-      {
-        title : 'Disciplinas',
-        link : '/pages/catalog/disciplines',
-      },
-      {
-        title : 'Entrenadores',
-        link : '/pages/catalog/trainers',
-      }
-    ]
-  },
+  // {
+  //   title: 'Catálogo',
+  //   icon: 'edit-2-outline',
+  //   children : [
+  //     {
+  //       title : 'Comisiones',
+  //       link : '/pages/catalog/users',
+  //     },
+  //     {
+  //       title : 'Disciplinas',
+  //       link : '/pages/catalog/disciplines',
+  //     },
+  //     {
+  //       title : 'Entrenadores',
+  //       link : '/pages/catalog/trainers',
+  //     }
+  //   ]
+  // },
   {
     title: 'Administración',
-    icon: 'edit-2-outline',
+    icon: 'people-outline',
     link: '/pages/administration'
   },
   {
