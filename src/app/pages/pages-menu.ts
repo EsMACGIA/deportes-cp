@@ -36,6 +36,16 @@ export const MENU_ITEMS: NbMenuItem[] = [
       }
     ]
   },
+  {
+    title: 'Administración',
+    icon: 'edit-2-outline',
+    link: '/pages/administration'
+  },
+  {
+    title: 'Gestión',
+    icon: 'edit-2-outline',
+    link: '/pages/management'
+  },
 /*
   {
     title: 'Layout',

@@ -30,6 +30,16 @@ const routes: Routes = [{
       loadChildren: () => import('./catalog/catalog.module')
       .then(m=> m.CatalogModule)
     },
+    {
+      path: 'administration',
+      loadChildren: () => import('./administration/administration.module')
+      .then(m=>m.AdministrationModule)
+    },
+    {
+      path: 'management',
+      loadChildren: () => import('./management/management.module')
+      .then(m=>m.ManagementModule)
+    },
 /*
     {
       path: 'forms',
