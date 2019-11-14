@@ -44,7 +44,20 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Gestión',
     icon: 'edit-2-outline',
-    link: '/pages/management'
+    children: [
+      {
+        title: 'Atletas',
+        link: '/pages/management/athletes'
+      },
+      {
+        title: 'Clases',
+        link: '/pages/management/classes'
+      },
+      {
+        title: 'Request',
+        link: '/pages/management/requests'
+      }
+    ]
   },
 /*
   {
