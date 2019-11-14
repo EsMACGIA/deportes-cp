@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'classes-component',
   templateUrl: './classes.component.html',
@@ -49,7 +51,7 @@ export class ClassesComponent {
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor() {
+  constructor(private router: Router) {
     const data = [
       {
         id: 1,
@@ -81,16 +83,20 @@ export class ClassesComponent {
     this.source.load(data);
   }
 
-  editClass(event) {
-    console.log('Event: ', event)
-  }
-
-  onDeleteConfirm(event): void {
-    if (window.confirm('¿Está seguro que desea eliminar esta clase?')) {
-      event.confirm.resolve();
-    } else {
-      event.confirm.reject();
+    createClass(event) {
+      this.router.navigate(['/pages/management/classes-form']);
     }
+    
+    editClass(event) {
+      console.log('Event: ', event)
+    }
+    
+    onDeleteConfirm(event): void {
+      if (window.confirm('¿Está seguro que desea eliminar esta clase?')) {
+        event.confirm.resolve();
+      } else {
+        event.confirm.reject();
+      }
+      
   }
 }
-  

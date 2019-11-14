@@ -6,7 +6,8 @@
   <nb-card-body>
     <ng2-smart-table 
       [settings]="settings" 
-      [source]="source" 
+      [source]="source"
+      (create)="createAthlete($event)" 
       (edit)="editAthlete($event)"
       (delete)="onDeleteConfirm($event)"
     >

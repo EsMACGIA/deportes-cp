@@ -1,12 +1,42 @@
 import { Component } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'athletes-component',
   templateUrl: './athletes.component.html',
   styleUrls: ['./athletes.component.scss'],
 })
 export class AthletesComponent {
+
+  constructor(
+    private router: Router
+  ) {
+    const data = [
+      {
+        id: 1,
+        name: 'Manuel',
+        lastname: 'Faria',
+        sex: 'M',
+        active: true,
+        birthday: '2019-01-01',
+        ci: 'V-25233305', 
+        stock_number: 3258, 
+      },
+      {
+        id: 2,
+        name: 'Juan',
+        lastname: 'Oropeza',
+        sex: 'M',
+        active: true,
+        birthday: '2019-01-01',
+        ci: 'V-26178140', 
+        stock_number: 4523, 
+      }
+    ]
+    this.source.load(data);
+  }
 
   settings = {
     mode: 'external',
@@ -61,30 +91,8 @@ export class AthletesComponent {
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor() {
-    const data = [
-      {
-        id: 1,
-        name: 'Manuel',
-        lastname: 'Faria',
-        sex: 'M',
-        active: true,
-        birthday: '2019-01-01',
-        ci: 'V-25233305', 
-        stock_number: 3258, 
-      },
-      {
-        id: 2,
-        name: 'Juan',
-        lastname: 'Oropeza',
-        sex: 'M',
-        active: true,
-        birthday: '2019-01-01',
-        ci: 'V-26178140', 
-        stock_number: 4523, 
-      }
-    ]
-    this.source.load(data);
+  createAthlete(event) {
+    this.router.navigate(['/pages/management/athletes-form'])
   }
 
   editAthlete(event) {
