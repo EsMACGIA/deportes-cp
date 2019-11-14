@@ -10,4 +10,6 @@ export class CommissionsModel {
     //Inherited from User
     email: string;
     password: string;
+    confirmPassword:string;
+
 } 

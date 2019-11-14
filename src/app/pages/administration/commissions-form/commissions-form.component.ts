@@ -13,40 +13,43 @@ import {NbToastrService,NbComponentStatus,NbGlobalLogicalPosition, NbGlobalPosit
 export class CommissionsFormComponent {
 
   private commission:CommissionsModel = new CommissionsModel();
-  constructor(private commissionsService:CommissionsService, private commissionModel:CommissionsModel,
-    private router:Router, private toastrService: NbToastrService) {
-    }
-    addCommissionForm(commissionForm){
-      this.commissionsService.createCommission(this.commission);
-      this.showToast('success','Se ha creado una disciplina exitosamente','Se ha creado la disciplina ' + this.commission.name + ' de manera exitosa.')
-
-      this.router.navigate(['/pages/administration/commissions']);
-    }
-      //Toastr configuration
-  //config:ToasterConfig;
+  //Toastr configuration
   position:NbGlobalPosition = NbGlobalPhysicalPosition.TOP_RIGHT;
   status: NbComponentStatus = 'success'
-  duration = 6000;
+  duration = 4000;
   destroyByClick = false;
   hasIcon = true;
   index = 1;
   preventDuplicates = false;
 
-    private showToast(type: NbComponentStatus, title: string, body: string){
-      const config = {
-        status: type,
-        destroyByClick: this.destroyByClick,
-        duration: this.duration,
-        hasIcon: this.hasIcon,
-        position: this.position,
-        preventDuplicates: this.preventDuplicates,
-      };
-  
-      this.index += 1;
-      this.toastrService.show(
-        body,
-        title,
-        config);
+  constructor(private commissionsService:CommissionsService, private commissionModel:CommissionsModel,
+    private router:Router, private toastrService: NbToastrService) {}
+
+  addCommissionForm(commissionForm){
+    if (commissionForm.valid){
+      this.commissionsService.createCommission(this.commission);
+      this.showToast('success','Se ha creado una disciplina exitosamente','Se ha creado la disciplina ' + this.commission.name + ' de manera exitosa.')
+      this.router.navigate(['/pages/administration/commissions']);
+    }else{
+      console.log(commissionForm.error);
     }
+  }
+  
+  private showToast(type: NbComponentStatus, title: string, body: string){
+    const config = {
+      status: type,
+      destroyByClick: this.destroyByClick,
+      duration: this.duration,
+      hasIcon: this.hasIcon,
+      position: this.position,
+      preventDuplicates: this.preventDuplicates,
+    };
+
+    this.index += 1;
+    this.toastrService.show(
+      body,
+      title,
+      config);
+  }
 
 }

@@ -15,15 +15,18 @@ export class CommissionsService extends BaseService{
         {id: 1,
         name : 'Futbol',
         email : 'com-futbol@cp.com',
-        password : '12345678'},
+        password : '12345678',
+        confirmPassword: '12345678'},
         {id: 2,
           name : 'Natación',
           email : 'com-natacion@cp.com',
-          password : '12345678'},
+          password : '12345678',
+          confirmPassword: '12345678'},
         {id: 3,
             name : 'Karate',
             email : 'com-karate@cp.com',
-            password : '12345678'},
+            password : '12345678',
+        confirmPassword: '12345678'},
   
       ]
 

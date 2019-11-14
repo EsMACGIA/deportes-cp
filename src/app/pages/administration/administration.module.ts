@@ -19,6 +19,8 @@ import { FormsModule } from '@angular/forms';
 import {CommissionsService} from './commissions/commissions.service';
 //Models
 import {CommissionsModel} from './commissions/commissions.model';
+import { CommonModule } from '@angular/common';  
+
 
 @NgModule({
   imports: [
@@ -33,6 +35,7 @@ import {CommissionsModel} from './commissions/commissions.model';
       NbRadioModule,
       NbSelectModule,
       FormsModule,
+      CommonModule,
   ],
 
   declarations: [
