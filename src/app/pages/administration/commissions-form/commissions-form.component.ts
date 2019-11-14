@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-
-import { LocalDataSource } from 'ng2-smart-table';
-
+//Services
+import {CommissionsService} from '../commissions/commissions.service';
+//Models
+import {CommissionsModel} from '../commissions/commissions.model';
+import {Router} from '@angular/router'
 @Component({
     selector: 'ngx-smart-table',
     templateUrl: './commissions-form.component.html',
@@ -9,41 +11,13 @@ import { LocalDataSource } from 'ng2-smart-table';
   })
 export class CommissionsFormComponent {
 
-    //Settings for Smart Table
-  settings = {
-    actions: {columnTitle: 'Acciones',},
-    mode:'external',
-    add: {
-      addButtonContent: '<i class="nb-plus"></i>',
-      createButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-    },
-    edit: {
-      editButtonContent: '<i class="nb-edit"></i>',
-      saveButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-    },
-    delete: {
-      deleteButtonContent: '<i class="nb-trash"></i>',
-      confirmDelete: true,
-    },
-    columns: {
-      id: {
-        title: 'ID',
-        type: 'number',
-      },
-      name: {
-        title: 'Nombre',
-        type: 'string',
-      },
-      email:{
-          title: 'Correo electrónico',
-          type: 'string',
-      },
-    },
-  };
-
-  constructor() {
+  private commission:CommissionsModel = new CommissionsModel();
+  constructor(private commissionsService:CommissionsService, private commissionModel:CommissionsModel,
+    private router:Router) {
+    }
+    addCommissionForm(commissionForm){
+      this.commissionsService.createCommission(this.commission);
+      this.router.navigate(['/pages/administration/commissions']);
     }
 
 }

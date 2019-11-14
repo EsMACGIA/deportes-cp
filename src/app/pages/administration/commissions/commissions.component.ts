@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
+
+//Models
 import { CommissionsModel } from './commissions.model';
+//Services
+import {CommissionsService} from './commissions.service';
 
 import { LocalDataSource } from 'ng2-smart-table';
 
@@ -49,26 +53,12 @@ export class CommissionsComponent {
     //Variable to Load info to Smart Table
     source: LocalDataSource = new LocalDataSource();
 
-  constructor(private router: Router,) {
+  constructor(private router: Router,private commissionsService:CommissionsService) {
     this.loadCommissions();
     }
 
     loadCommissions(){
-      const data:CommissionsModel[] = [
-        {id: 1,
-        name : 'Futbol',
-        email : 'com-futbol@cp.com',
-        password : '12345678'},
-        {id: 2,
-          name : 'Natación',
-          email : 'com-natacion@cp.com',
-          password : '12345678'},
-        {id: 3,
-            name : 'Karate',
-            email : 'com-karate@cp.com',
-            password : '12345678'},
-  
-      ]
+      let data = this.commissionsService.getCommissionList();
       this.source.load(data);
     }
 

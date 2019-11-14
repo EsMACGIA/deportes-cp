@@ -1,22 +1,22 @@
 <nb-card>
     <nb-card-header>Formulario de comisiones</nb-card-header>
     <nb-card-body>
-      <form>
+      <form #commissionForm="ngForm" (ngSubmit)="addCommissionForm(commissionForm)">
         <div class="form-group">
           <label for="email" class="label">Correo electrónico</label>
-          <input type="email" nbInput fullWidth id="email" placeholder="ejemplo@cp.com">
+          <input type="email" nbInput fullWidth id="email" name="email" placeholder="ejemplo@cp.com" [(ngModel)]="commission.email" #email="ngModel" required>
         </div>
         <div class="form-group">
           <label for="password" class="label">Contraseña</label>
-          <input type="password" nbInput fullWidth id="password" placeholder="Contraseña">
+          <input type="password" nbInput fullWidth id="password" name="password" placeholder="Contraseña" [(ngModel)]="commission.password" #password="ngModel" required>
         </div>
         <div class="form-group">
             <label for="confirm_password" class="label">Confirmar contraseña</label>
-            <input type="password" nbInput fullWidth id="confirm_password" placeholder="Confirmar contraseña">
+            <input type="password" nbInput fullWidth id="confirm_password" name="confirm_password" placeholder="Confirmar contraseña" [(ngModel)]="commission.confirmPassword" #confirmPassword="ngModel" required>
         </div>
         <div class="form-group">
             <label for="name" class="label">Nombre</label>
-            <input type="text" nbInput fullWidth id="name" placeholder="Comisión de Karate">
+            <input type="text" nbInput fullWidth id="name" name="name" placeholder="Comisión de Karate" [(ngModel)]="commission.name" #name="ngModel" required>
         </div>
         <button type="submit" nbButton status="primary">Guardar</button>
       </form>

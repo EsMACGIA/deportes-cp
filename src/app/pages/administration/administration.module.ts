@@ -11,9 +11,14 @@ import {
   NbInputModule,
   NbRadioModule,
   NbSelectModule,
-
 } from '@nebular/theme';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { FormsModule } from '@angular/forms';
+
+//Services
+import {CommissionsService} from './commissions/commissions.service';
+//Models
+import {CommissionsModel} from './commissions/commissions.model';
 
 @NgModule({
   imports: [
@@ -27,13 +32,15 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
       NbInputModule,
       NbRadioModule,
       NbSelectModule,
+      FormsModule,
   ],
 
   declarations: [
     ...routedComponents,
   ],
   providers: [
-
+    CommissionsService,
+    CommissionsModel,
   ],
 })
 export class AdministrationModule { }
