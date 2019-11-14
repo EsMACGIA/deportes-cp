@@ -14,7 +14,7 @@ import {Router} from '@angular/router'
 
 export class TrainersFormComponent {
     private trainer : TrainersModel = this.router.getCurrentNavigation().extras.queryParams.trainer;
-    private match : boolean;
+    private match : boolean = true;
 
   constructor(
         private trainersService:TrainersService, 
@@ -23,22 +23,27 @@ export class TrainersFormComponent {
     }
 
     addTrainerForm(trainerForm:NgForm){
-        if (trainerForm.valid){
+        if (trainerForm.valid){ 
             if(trainerForm.value.password == trainerForm.value.confirm_password){
                 this.match = true;
             }else{
                 this.match = false;
             }
             if (this.match){
+                delete this.trainer.confirmPassword;
                 this.trainersService.createTrainer(this.trainer).subscribe(data=>{
                     console.log(this.trainer)
                     if (data && !data.error){
                         console.log("Yay")
+                        this.router.navigate(['/pages/administration/trainers']);
+                    }
+                    else {
+                        console.log(data.error)
+                        this.router.navigate(['/pages/administration/trainers']);
                     }
                 });
             }
         }
-        this.router.navigate(['/pages/administration/trainers']);
     }
     editTrainerForm(trainerForm:NgForm){
         this.trainersService.updateTrainer(this.trainer);

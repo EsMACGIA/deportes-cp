@@ -7,7 +7,7 @@ export class TrainersModel {
     id: number;
     name:string;
     lastname:string;
-    ci:number;
+    ci:string;
 
     password:string;
     confirmPassword:string;

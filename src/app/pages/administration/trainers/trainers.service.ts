@@ -6,33 +6,6 @@ import {TrainersModel} from './trainers.model';
 @Injectable()
 export class TrainersService extends BaseService{
 
-    private data:TrainersModel[] = [
-        {id: 1,
-        name : 'Juan',
-        lastname : 'Oropeza',
-        email : 'JO@cp.com',
-        password : '12345678',
-        ci : 12345678,
-        confirmPassword : '12345678'},
-
-        {id: 2,
-        name : 'Manuel',
-        lastname : 'Faria',
-        email : 'MF@cp.com',
-        password : '12345678',
-        ci : 12345678,
-        confirmPassword : '12345678'},
-
-        {id: 3,
-        name : 'Carlos',
-        lastname : 'Rivero',
-        email : 'CR@cp.com',
-        password : '12345678',
-        ci : 12345678,
-        confirmPassword : '12345678'},
-  
-      ]
-
     getTrainerList():Observable<any>{
         return this.getBase('trainers/')
         //return this.data
