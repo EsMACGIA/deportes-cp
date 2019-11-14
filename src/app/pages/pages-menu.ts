@@ -39,14 +39,18 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Administración',
     icon: 'people-outline',
-    link: '/pages/administration'
+    children : [
+      {
+        title : 'Comisiones',
+        link : '/pages/administration/commissions',
+      }
+    ]
   },
   {
     title: 'Gestión',
     icon: 'edit-2-outline',
     link: '/pages/management'
   },
-/*
   {
     title: 'Layout',
     icon: 'layout-outline',
@@ -275,5 +279,5 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },
     ],
   },
-*/
+
 ];

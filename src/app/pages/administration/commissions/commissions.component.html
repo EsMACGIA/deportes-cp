@@ -1,0 +1,11 @@
+<nb-card>
+    <nb-card-header>
+      Comisiones
+    </nb-card-header>
+</nb-card>
+
+<nb-card-body>
+    <ng2-smart-table [settings]="settings" [source]="source" (delete)="deleteDiscipline(deleteDisciplineModal,$event)"
+    (create)="goToComissionForm()" (edit)="editDiscipline(createDisciplineModal,$event)">
+    </ng2-smart-table>
+</nb-card-body>
