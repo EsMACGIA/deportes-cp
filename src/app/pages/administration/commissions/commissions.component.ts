@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 
 //Models
 import { CommissionsModel } from './commissions.model';
@@ -14,7 +14,7 @@ import {Router} from'@angular/router';
     templateUrl: './commissions.component.html',
     styleUrls: ['./commissions.component.scss'],
   })
-export class CommissionsComponent {
+export class CommissionsComponent implements OnInit {
 
     //Settings for Smart Table
   settings = {
@@ -52,18 +52,28 @@ export class CommissionsComponent {
 
     //Variable to Load info to Smart Table
     source: LocalDataSource = new LocalDataSource();
+    private commissionsList:CommissionsModel[];
 
   constructor(private router: Router,private commissionsService:CommissionsService) {
-    this.loadCommissions();
     }
 
     loadCommissions(){
-      let data = this.commissionsService.getCommissionList();
-      this.source.load(data);
+      let data = this.commissionsService.getCommissionsList().subscribe(data=>{
+        if (data){
+          console.log('Estoy recibiendo los usuarios',data)
+          this.commissionsList = data
+          this.source.load(this.commissionsList)
+          console.log(this.commissionsList)
+        }
+      });
     }
 
     goToComissionForm(){
       console.log('mmmm')
       this.router.navigate(['/pages/administration/commissions/form']);
+    }
+
+    ngOnInit() {
+      this.loadCommissions();
     }
 }

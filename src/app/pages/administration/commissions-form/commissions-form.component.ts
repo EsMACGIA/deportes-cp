@@ -27,9 +27,20 @@ export class CommissionsFormComponent {
 
   addCommissionForm(commissionForm){
     if (commissionForm.valid){
-      this.commissionsService.createCommission(this.commission);
-      this.showToast('success','Se ha creado una disciplina exitosamente','Se ha creado la disciplina ' + this.commission.name + ' de manera exitosa.')
-      this.router.navigate(['/pages/administration/commissions']);
+      delete this.commission.confirmPassword;
+      this.commissionsService.createCommissions(this.commission).subscribe(data=>{
+        if (data){
+          if (!data.error){
+            console.log(data)
+            this.showToast('success','Se ha creado una disciplina exitosamente','Se ha creado la disciplina ' + this.commission.name + ' de manera exitosa.')
+            this.router.navigate(['/pages/administration/commissions']);
+
+          }else{
+            this.showToast('danger','Hubo un error al crear comisión',data.error.error)
+            this.router.navigate(['/pages/administration/commissions']);
+          }
+        }
+      });
     }else{
       console.log(commissionForm.error);
     }

@@ -6,44 +6,18 @@ import {CommissionsModel} from './commissions.model';
 @Injectable()
 export class CommissionsService extends BaseService{
 
-    // getCommissionsList():Observable<any>{
-    //     var lista = this.getBase('commissions/')
-    //     return lista
-    // }
-
-    private data:CommissionsModel[] = [
-        {id: 1,
-        name : 'Futbol',
-        email : 'com-futbol@cp.com',
-        password : '12345678',
-        confirmPassword: '12345678'},
-        {id: 2,
-          name : 'Natación',
-          email : 'com-natacion@cp.com',
-          password : '12345678',
-          confirmPassword: '12345678'},
-        {id: 3,
-            name : 'Karate',
-            email : 'com-karate@cp.com',
-            password : '12345678',
-        confirmPassword: '12345678'},
-  
-      ]
-
-    getCommissionList():any{
-        return this.data
+    getCommissionsList():Observable<any>{
+        return this.getBase('comissions/')
     }
 
-    createCommission(commission:CommissionsModel):any{
-        this.data.push(commission);
-        return this.data
+    createCommissions(commissions:CommissionsModel):Observable<any>{
+        return this.postBase(commissions,'comissions/')
     }
-
     deleteCommission(commission:CommissionsModel):Observable<any>{
-        return this.deleteBase(commission,'commissions/' + commission.id + '/')
+        return this.deleteBase(commission,'comissions/' + commission.id + '/')
     }
 
     updateCommission(commission:CommissionsModel):Observable<any>{
-        return this.putBase(commission,'commissions/')
+        return this.putBase(commission,'comissions/')
     }
 }
