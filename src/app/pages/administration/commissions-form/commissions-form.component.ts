@@ -12,6 +12,7 @@ import {NbToastrService,NbComponentStatus,NbGlobalLogicalPosition, NbGlobalPosit
   })
 export class CommissionsFormComponent {
 
+  private match : boolean = true;
   private commission:CommissionsModel = new CommissionsModel();
   //Toastr configuration
   position:NbGlobalPosition = NbGlobalPhysicalPosition.TOP_RIGHT;
@@ -27,8 +28,16 @@ export class CommissionsFormComponent {
 
   addCommissionForm(commissionForm){
     if (commissionForm.valid){
-      delete this.commission.confirmPassword;
-      this.commissionsService.createCommissions(this.commission).subscribe(data=>{
+      console.log('AJa')
+      if(commissionForm.value.password == commissionForm.value.confirmPassword){
+        this.match = true;
+      }else{
+        this.match = false;
+      }
+      if (this.match){
+        console.log(this.match)
+        delete this.commission.confirmPassword;
+        this.commissionsService.createCommissions(this.commission).subscribe(data=>{
         if (data){
           if (!data.error){
             console.log(data)
@@ -39,8 +48,9 @@ export class CommissionsFormComponent {
             this.showToast('danger','Hubo un error al crear comisión',data.error.error)
             this.router.navigate(['/pages/administration/commissions']);
           }
-        }
-      });
+          }
+        });
+      }
     }else{
       console.log(commissionForm.error);
     }

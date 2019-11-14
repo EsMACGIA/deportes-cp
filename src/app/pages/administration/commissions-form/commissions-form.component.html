@@ -53,6 +53,9 @@
                         La confirmación de contraseña es obligatoria
                     </div>
                 </div>
+                <div *ngIf="!match" class="alert alert-danger">
+                        Las contraseñas deben de ser iguales
+                </div>
             </div>
         </div>
 
