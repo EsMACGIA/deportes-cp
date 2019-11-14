@@ -43,6 +43,10 @@ export const MENU_ITEMS: NbMenuItem[] = [
       {
         title : 'Comisiones',
         link : '/pages/administration/commissions',
+      },
+      {
+        title : 'Entrenadores',
+        link : '/pages/administration/trainers',
       }
     ]
   },

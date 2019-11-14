@@ -14,11 +14,13 @@ import {
 } from '@nebular/theme';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { FormsModule } from '@angular/forms';
-
+import {CommonModule} from '@angular/common';
 //Services
 import {CommissionsService} from './commissions/commissions.service';
+import {TrainersService} from './trainers/trainers.service';
 //Models
 import {CommissionsModel} from './commissions/commissions.model';
+import {TrainersModel} from './trainers/trainers.model';
 
 @NgModule({
   imports: [
@@ -33,6 +35,7 @@ import {CommissionsModel} from './commissions/commissions.model';
       NbRadioModule,
       NbSelectModule,
       FormsModule,
+      CommonModule
   ],
 
   declarations: [
@@ -41,6 +44,8 @@ import {CommissionsModel} from './commissions/commissions.model';
   providers: [
     CommissionsService,
     CommissionsModel,
+    TrainersService,
+    TrainersModel,
   ],
 })
 export class AdministrationModule { }
