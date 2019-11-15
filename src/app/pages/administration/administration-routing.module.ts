@@ -5,7 +5,6 @@ import { AdministrationComponent } from './administration.component';
 import {CommissionsComponent} from './commissions/commissions.component';
 import {CommissionsFormComponent} from './commissions-form/commissions-form.component';
 
-
 const routes: Routes = [{
   path: '',
   component: AdministrationComponent,

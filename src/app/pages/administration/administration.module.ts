@@ -11,6 +11,8 @@ import {
   NbInputModule,
   NbRadioModule,
   NbSelectModule,
+  NbDialogModule,
+
 } from '@nebular/theme';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { FormsModule } from '@angular/forms';
@@ -20,7 +22,7 @@ import {CommissionsService} from './commissions/commissions.service';
 //Models
 import {CommissionsModel} from './commissions/commissions.model';
 import { CommonModule } from '@angular/common';  
-
+import { NbDialogService} from '@nebular/theme'
 
 @NgModule({
   imports: [
@@ -36,11 +38,15 @@ import { CommonModule } from '@angular/common';
       NbSelectModule,
       FormsModule,
       CommonModule,
-  ],
+      NbDialogModule,
 
+      
+  ],
   declarations: [
     ...routedComponents,
+
   ],
+  
   providers: [
     CommissionsService,
     CommissionsModel,
