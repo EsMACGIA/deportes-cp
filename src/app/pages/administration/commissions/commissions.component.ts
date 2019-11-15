@@ -7,7 +7,7 @@ import {CommissionsService} from './commissions.service';
 //Components
 import { LocalDataSource } from 'ng2-smart-table';
 import { NbDialogService } from '@nebular/theme';
-import {Router} from'@angular/router';
+import {Router, NavigationExtras } from'@angular/router';
 import {NbToastrService,NbComponentStatus,NbGlobalLogicalPosition, NbGlobalPosition, NbGlobalPhysicalPosition} from '@nebular/theme';
 
 
@@ -59,11 +59,13 @@ export class CommissionsComponent {
   hasIcon = true;
   index = 1;
   preventDuplicates = false;
-    //Variable to Load info to Smart Table
-    source: LocalDataSource = new LocalDataSource();
-    private commissionsList:CommissionsModel[];
-    private commission:CommissionsModel = new CommissionsModel();
-    private dialogRef : any;
+  //Variable to Load info to Smart Table
+  source: LocalDataSource = new LocalDataSource();
+  private commissionsList:CommissionsModel[];
+  private commission:CommissionsModel = new CommissionsModel();
+  private dialogRef : any;
+  //Var to difference if open edit or add
+  private edit: boolean = false; 
 
   constructor(private router: Router,private commissionsService:CommissionsService,private dialogService: NbDialogService,
     private toastrService: NbToastrService) {
@@ -81,9 +83,25 @@ export class CommissionsComponent {
       });
     }
 
-    goToComissionForm(){
-      console.log('mmmm')
-      this.router.navigate(['/pages/administration/commissions/form']);
+    createCommissionsForm(){
+      this.edit = false;
+      this.commission = new CommissionsModel();
+      let navigationExtras: NavigationExtras = {
+        queryParams: { commission : this.commission, edit : this.edit }
+      };
+      this.router.navigate(['pages/administration/commissions/form'], navigationExtras);
+    }
+  
+
+    editCommissionsForm(event){
+      this.edit = true;
+      Object.assign(this.commission,event.data) //Instance all fields of trainers with the event data
+      let navigationExtras: NavigationExtras = {
+        queryParams: { commission : this.commission, edit : this.edit  }
+      };
+      this.commission.password = ""
+      this.commission.confirmPassword = ""
+      this.router.navigate(['pages/administration/commissions/form'], navigationExtras);
     }
 
    /*Function to open modal to confirmation for delete user*/

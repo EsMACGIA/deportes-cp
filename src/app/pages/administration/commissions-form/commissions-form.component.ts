@@ -5,6 +5,7 @@ import {CommissionsService} from '../commissions/commissions.service';
 import {CommissionsModel} from '../commissions/commissions.model';
 import {Router} from '@angular/router'
 import {NbToastrService,NbComponentStatus,NbGlobalLogicalPosition, NbGlobalPosition, NbGlobalPhysicalPosition} from '@nebular/theme';
+import { NgForm } from '@angular/forms';
 @Component({
     selector: 'ngx-smart-table',
     templateUrl: './commissions-form.component.html',
@@ -13,7 +14,10 @@ import {NbToastrService,NbComponentStatus,NbGlobalLogicalPosition, NbGlobalPosit
 export class CommissionsFormComponent {
 
   private match : boolean = true;
-  private commission:CommissionsModel = new CommissionsModel();
+  private commission: CommissionsModel = this.router.getCurrentNavigation().extras.queryParams.commission;
+  private commission2: CommissionsModel = new CommissionsModel();
+  private edit : boolean = this.router.getCurrentNavigation().extras.queryParams.edit;
+
   //Toastr configuration
   position:NbGlobalPosition = NbGlobalPhysicalPosition.TOP_RIGHT;
   status: NbComponentStatus = 'success'
@@ -26,18 +30,17 @@ export class CommissionsFormComponent {
   constructor(private commissionsService:CommissionsService, private commissionModel:CommissionsModel,
     private router:Router, private toastrService: NbToastrService) {}
 
-  addCommissionForm(commissionForm){
+  addCommissionForm(commissionForm:NgForm){
     if (commissionForm.valid){
-      console.log('AJa')
       if(commissionForm.value.password == commissionForm.value.confirmPassword){
         this.match = true;
       }else{
         this.match = false;
       }
+      Object.assign(this.commission2, this.commission)
       if (this.match){
-        console.log(this.match)
-        delete this.commission.confirmPassword;
-        this.commissionsService.createCommissions(this.commission).subscribe(data=>{
+        delete this.commission2.confirmPassword;
+        this.commissionsService.createCommissions(this.commission2).subscribe(data=>{
         if (data){
           if (!data.error){
             console.log(data)
@@ -51,10 +54,35 @@ export class CommissionsFormComponent {
           }
         });
       }
-    }else{
-      console.log(commissionForm.error);
     }
   }
+
+  editCommissionForm(commissionForm:NgForm){
+    if (commissionForm.valid){ 
+        if(commissionForm.value.password == commissionForm.value.confirm_password){
+            this.match = true;
+        }else{
+            this.match = false;
+        }
+        Object.assign(this.commission2, this.commission)
+        if (this.match){
+            delete this.commission2.confirmPassword;
+            //console.log(this.trainer2)
+            this.commissionsService.updateCommission(this.commission2).subscribe(data=>{
+                if (data && !data.error){
+                    console.log("Yay")
+                    this.showToast('success','Se ha modificado una comisión exitosamente','Se ha modificado la comisión ' + this.commission.name + ' de manera exitosa.')
+                    this.router.navigate(['/pages/administration/commissions']);
+                }
+                else {
+                    console.log(data.error)
+                    this.showToast('danger','Hubo un error al modificar la comisión',data.error.error)
+                    this.router.navigate(['/pages/administration/commissions']);
+                }
+            });
+        }
+    }
+}
   
   private showToast(type: NbComponentStatus, title: string, body: string){
     const config = {

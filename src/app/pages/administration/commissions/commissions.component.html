@@ -4,7 +4,7 @@
     </nb-card-header>
     <nb-card-body>
         <ng2-smart-table [settings]="settings" [source]="source" (delete)="openModal(dialog,$event)"
-        (create)="goToComissionForm()" (edit)="editDiscipline(createDisciplineModal,$event)">
+        (create)="createCommissionsForm()" (edit)="editCommissionsForm($event)">
         </ng2-smart-table>
     </nb-card-body>
 </nb-card>
