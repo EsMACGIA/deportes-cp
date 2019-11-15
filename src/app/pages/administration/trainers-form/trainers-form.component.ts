@@ -18,6 +18,7 @@ export class TrainersFormComponent {
     private trainer : TrainersModel = this.router.getCurrentNavigation().extras.queryParams.trainer;
     private trainer2:TrainersModel = new TrainersModel();
     private match : boolean = true;
+    private edit : boolean = this.router.getCurrentNavigation().extras.queryParams.edit;
 
     //Variables to Toastr configuration
     config:ToasterConfig;
@@ -26,7 +27,7 @@ export class TrainersFormComponent {
     duration = 4000;
     destroyByClick = false;
     hasIcon = true;
-    index = 1;
+    index = 1; 
     preventDuplicates = false;
 
   constructor(
@@ -46,7 +47,7 @@ export class TrainersFormComponent {
             Object.assign(this.trainer2, this.trainer)
             if (this.match){
                 delete this.trainer2.confirmPassword;
-                this.trainersService.createTrainer(this.trainer).subscribe(data=>{
+                this.trainersService.createTrainer(this.trainer2).subscribe(data=>{
                     if (data && !data.error){
                         console.log("Yay")
                         this.showToast('success','Se ha creado un entrenador exitosamente','Se ha creado el entrenador ' + this.trainer2.name + ' de manera exitosa.')
@@ -62,8 +63,32 @@ export class TrainersFormComponent {
         }
     }
     editTrainerForm(trainerForm:NgForm){
-        this.trainersService.updateTrainer(this.trainer);
-        this.router.navigate(['/pages/administration/trainers']);
+        if (trainerForm.valid){ 
+            if(trainerForm.value.password == trainerForm.value.confirm_password){
+                this.match = true;
+            }else{
+                this.match = false;
+            }
+            Object.assign(this.trainer2, this.trainer)
+            if (this.match){
+                delete this.trainer2.confirmPassword;
+                delete this.trainer2.ci;
+                delete this.trainer2.email;
+                //console.log(this.trainer2)
+                this.trainersService.updateTrainer(this.trainer2).subscribe(data=>{
+                    if (data && !data.error){
+                        console.log("Yay")
+                        this.showToast('success','Se ha modificado un entrenador exitosamente','Se ha modificado el entrenador ' + this.trainer2.name + ' de manera exitosa.')
+                        this.router.navigate(['/pages/administration/trainers']);
+                    }
+                    else {
+                        console.log(data.error)
+                        this.showToast('danger','Hubo un error al modificar entrenador',data.error.error)
+                        this.router.navigate(['/pages/administration/trainers']);
+                    }
+                });
+            }
+        }
     }
 
     private showToast(type: NbComponentStatus, title: string, body: string) {

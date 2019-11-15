@@ -39,7 +39,14 @@
                     <label for="email" class="label">Correo electrónico (*)</label>
                     <div class="input-group">
                         <input type="email" nbInput fullWidth id="email" name="email" placeholder="ejemplo@cp.com" [(ngModel)]="trainer.email" #email="ngModel" 
-                        pattern="^[a-zA-Z0-9.!#$%&''*+/=?^_\`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" required>
+                        pattern="^[a-zA-Z0-9.!#$%&''*+/=?^_\`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" required
+                        *ngIf="!edit; else noModifyEmail">
+
+                        <ng-template #noModifyEmail>
+                            <input id="email" class="form-control" nbInput fullWidth placeholder="ejemplo@gmail.com" name="email"
+                            [(ngModel)]="trainer.email" #email="ngModel" pattern="^[a-zA-Z0-9.!#$%&''*+/=?^_\`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" required
+                            *ngIf="edit" disabled>
+                        </ng-template>
                     </div> 
                 </div>
                 <div *ngIf="email?.errors && trainerForm.submitted" class="alert alert-danger">
@@ -56,15 +63,21 @@
                 <div class="form-group">
                     <label for="ci" class="label">CI (*)</label>
                     <div class="input-group">
-                        <input type="text" nbInput fullWidth id="ci" name="ci" placeholder="V-12345678" [(ngModel)]="trainer.ci" #ci="ngModel" pattern="^[VEPGJ]\-[1-9]\d{0,8}$"required>
+                        <input type="text" nbInput fullWidth id="ci" name="ci" placeholder="V-12345678" [(ngModel)]="trainer.ci" #ci="ngModel" pattern="^[VEPGJ]\-[1-9]\d{0,8}$"required
+                        *ngIf="!edit; else noModifyCi">
+                        
+                        <ng-template #noModifyCi>
+                            <input type="text" nbInput fullWidth id="ci" name="ci" placeholder="V-12345678" [(ngModel)]="trainer.ci" #ci="ngModel" pattern="^[VEPGJ]\-[1-9]\d{0,8}$"required
+                            *ngIf="edit" disabled>
+                        </ng-template>
                     </div>
                 </div>
-                <div *ngIf="ci.errors && trainerForm.submitted" class="alert alert-danger">
-                    <div *ngIf="ci.errors.required">
-                       La cédula es obligatoria
+                <div *ngIf="ci?.errors && trainerForm.submitted" class="alert alert-danger">
+                    <div *ngIf="ci?.errors?.required">
+                       La CI es obligatoria
                     </div>
-                    <div *ngIf="ci.errors.pattern">
-                        La cédula no tiene el formato correcto
+                    <div *ngIf="ci?.errors?.pattern">
+                       La CI no tiene formato correcto
                     </div>
                 </div>
             </div>
@@ -75,7 +88,8 @@
                 <div class="form-group">
                     <label for="password" class="label">Contraseña (*)</label>
                     <div class="input-group">
-                        <input type="password" nbInput fullWidth id="password" name="password" placeholder="Contraseña" [(ngModel)]="trainer.password" #password="ngModel" required>
+                        <input *ngIf="!edit" type="password" nbInput fullWidth id="password" name="password" placeholder="Contraseña" [(ngModel)]="trainer.password" #password="ngModel" required>
+                        <input *ngIf="edit" type="password" nbInput fullWidth id="password" name="password" placeholder="Si no desea cambiar la contraseña, dejar vacío" [(ngModel)]="trainer.password" #password="ngModel">
                     </div>
                 </div>
                 <div *ngIf="password?.errors && trainerForm.submitted" class="alert alert-danger">
@@ -89,8 +103,10 @@
                 <div class="form-group">
                     <label for="confirm_password" class="label">Confirmar contraseña (*)</label>
                     <div class="input-group">
-                        <input type="password" nbInput fullWidth id="confirm_password" name="confirm_password" placeholder="Confirmar contraseña" 
+                        <input *ngIf="!edit" type="password" nbInput fullWidth id="confirm_password" name="confirm_password" placeholder="Confirmar contraseña" 
                         [(ngModel)]="trainer.confirmPassword" #confirmPassword="ngModel" required>
+                        <input *ngIf="edit" type="password" nbInput fullWidth id="confirm_password" name="confirm_password" placeholder="Si no desea cambiar la contraseña, dejar vacío" 
+                        [(ngModel)]="trainer.confirmPassword" #confirmPassword="ngModel">
                     </div>
                 </div>
 
@@ -105,7 +121,7 @@
             </div>
         </div>
 
-        <div>
+        <div *ngIf="!edit">
             Los campos con (*) son obligatorios
         </div>
 

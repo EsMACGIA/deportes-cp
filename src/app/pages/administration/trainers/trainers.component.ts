@@ -101,20 +101,20 @@ export class TrainersComponent {
     this.edit = false;
     this.trainer = new TrainersModel();
     let navigationExtras: NavigationExtras = {
-      queryParams: { trainer : this.trainer }
+      queryParams: { trainer : this.trainer, edit : this.edit }
     };
     this.router.navigate(['pages/administration/trainers/form'], navigationExtras);
   }
 
   editTrainersForm(event){
     this.edit = true;
-    console.log(event.data)
+    //console.log(event.data)
     Object.assign(this.trainer,event.data) //Instance all fields of trainers with the event data
     let navigationExtras: NavigationExtras = {
-      queryParams: { trainer : this.trainer }
+      queryParams: { trainer : this.trainer, edit : this.edit  }
     };
-    delete this.trainer.password
-    delete this.trainer.confirmPassword
+    this.trainer.password = ""
+    this.trainer.confirmPassword = ""
     this.router.navigate(['pages/administration/trainers/form'], navigationExtras);
   }
 }
