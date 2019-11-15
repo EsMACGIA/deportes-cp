@@ -1,69 +1,66 @@
 <nb-card>
   <nb-card-header>{{ cardTitle }}</nb-card-header>
   <nb-card-body>
+    <form #requestForm="ngForm" (ngSubmit)="addRequestForm(requestForm)"></form>
     <div class="row">
       <div class="col-sm-6">
         <div class="form-group">
-          <label for="name" class="label">Nombres</label>
-          <input type="text" nbInput fullWidth id="name" placeholder="Nombres">
+          <label for="name" class="label">Atleta</label>
+          <div>
+              <nb-select selected="1" id="athlete" name="athlete" [(ngModel)]="request.athlete" #athlete="ngModel" required>
+                <nb-option *ngFor="let athlete of athleteList" [value]="athlete.id">{{athlete.name}}</nb-option>
+              </nb-select>
+            </div>        
+        </div>
+        <div *ngIf="athlete.errors && requestForm.submitted" class="alert alert-danger">
+            <div *ngIf="athlete.errors.required">
+                El atleta es obligatorio
+            </div>
         </div>
       </div>
       <div class="col-sm-6">
         <div class="form-group">
-          <label for="lastname" class="label">Apellidos</label>
-          <input type="text" nbInput fullWidth id="lastname" placeholder="Apellidos">
+          <label for="class" class="label">Clase</label>
+          <div>
+              <nb-select selected="1" id="class" name="class" [(ngModel)]="request.class" #class="ngModel" required>
+                <nb-option>-</nb-option>
+                <nb-option *ngFor="let class of classList" [value]="class.id">{{class.description}}</nb-option>
+              </nb-select>
+            </div>          
+        </div>
+        <div *ngIf="class.errors && requestForm.submitted" class="alert alert-danger">
+            <div *ngIf="class.errors.required">
+                La clase es obligatoria
+            </div>
         </div>
       </div>
     </div>
     <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+              <label for="retire" class="label">Acción</label>
+              <div>
+                  <nb-select selected="1" id="retire" name="retire" [(ngModel)]="request.retire" #retire="ngModel" required>
+                    <nb-option value="1">Ingreso</nb-option>
+                    <nb-option value="2">Retiro</nb-option>
+                  </nb-select>
+                </div> 
+                <div *ngIf="retire.errors && requestForm.submitted" class="alert alert-danger">
+                    <div *ngIf="retire.errors.required">
+                         Seleccionar una opción de acción es obligatorio
+                    </div>
+                </div>        
+            </div>
+          </div>
       <div class="col-sm-6">
         <div class="form-group">
-          <label for="ci" class="label">Cédula de Identidad</label>
-          <input type="ci" nbInput fullWidth id="ci" placeholder="Cédula de Identidad">
-        </div>
-      </div>
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label for="stock_number" class="label">N° Acción</label>
-          <input type="text" nbInput fullWidth id="stock_number" placeholder="N° Acción">
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label for="sex" class="label">Sexo</label>
+          <label for="sex" class="label">Estado</label>
           <div>
             <nb-select selected="1" id="sex">
               <nb-option value="1">M</nb-option>
               <nb-option value="2">F</nb-option>
             </nb-select>
           </div>
-        </div>
-      </div>
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label for="birthday" class="label">Fecha de Nacimiento</label>
-          <div>
-            <input nbInput
-                placeholder="Fecha de Nacimiento"
-                [nbDatepicker]="formpicker">
-            <nb-datepicker #formpicker></nb-datepicker>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label for="ci" class="label">Comisión</label>
-          <input type="ci" nbInput fullWidth id="ci" placeholder="Comisión">
-        </div>
-      </div>
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label for="stock_number" class="label">Descripción</label>
-          <input type="text" nbInput fullWidth id="stock_number" placeholder="Descripción">
         </div>
       </div>
     </div>

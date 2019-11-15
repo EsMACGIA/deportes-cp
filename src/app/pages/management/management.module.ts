@@ -14,7 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { ThemeModule } from '../../@theme/theme.module';
 
 import { ManagementRoutingModule, routedComponents } from './management-routing.module';
-
+import {ClassesService} from './classes/classes.service';
 //Models
 import {AthletesModel} from './athletes/athletes.model';
 @NgModule({
@@ -37,6 +37,7 @@ import {AthletesModel} from './athletes/athletes.model';
   ],
   providers: [
     AthletesModel,
+    ClassesService,
   ],
 })
 export class ManagementModule { }
