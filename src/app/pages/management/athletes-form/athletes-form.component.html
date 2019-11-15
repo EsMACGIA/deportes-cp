@@ -1,58 +1,89 @@
 <nb-card>
   <nb-card-header>{{ cardTitle }}</nb-card-header>
   <nb-card-body>
-    <div class="row">
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label for="name" class="label">Nombres</label>
-          <input type="text" nbInput fullWidth id="name" placeholder="Nombres">
+    <form #athleteForm="ngForm" (ngSubmit)="addAthleteForm(athleteForm)">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label for="name" class="label">Nombres <span class="danger">(*)</span></label>
+            <input type="text" nbInput fullWidth id="name" name="name" placeholder="Nombres" [(ngModel)]="athlete.name" #name="ngModel" required>
+          </div>
+          <div *ngIf="name?.errors && athleteForm.submitted" class="alert alert-danger">
+            <div *ngIf="name?.errors?.required">
+                    El nombre es obligatorio
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label for="lastname" class="label">Apellidos</label>
-          <input type="text" nbInput fullWidth id="lastname" placeholder="Apellidos">
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label for="ci" class="label">Cédula de Identidad</label>
-          <input type="ci" nbInput fullWidth id="ci" placeholder="Cédula de Identidad">
-        </div>
-      </div>
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label for="stock_number" class="label">N° Acción</label>
-          <input type="text" nbInput fullWidth id="stock_number" placeholder="N° Acción">
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label for="sex" class="label">Sexo</label>
-          <div>
-            <nb-select selected="1" id="sex">
-              <nb-option value="1">M</nb-option>
-              <nb-option value="2">F</nb-option>
-            </nb-select>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label for="lastname" class="label">Apellidos <span class="danger">(*)</span></label>
+            <input type="text" nbInput fullWidth id="lastname" name="lastname" placeholder="Apellidos" [(ngModel)]="athlete.lastname" #lastname="ngModel" required>
+          </div>
+          <div *ngIf="lastname?.errors && athleteForm.submitted" class="alert alert-danger">
+            <div *ngIf="lastname?.errors?.required">
+                    El apellido es obligatorio
+            </div>
           </div>
         </div>
       </div>
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label for="birthday" class="label">Fecha de Nacimiento</label>
-          <div>
-            <input nbInput
-                placeholder="Fecha de Nacimiento"
-                [nbDatepicker]="formpicker">
-            <nb-datepicker #formpicker></nb-datepicker>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label for="ci" class="label">Cédula de Identidad <span class="danger">(*)</span></label>
+            <input type="ci" nbInput fullWidth id="ci"name="ci" placeholder="Cédula de Identidad" [(ngModel)]="athlete.ci" #ci="ngModel" required>
+          </div>
+          <div *ngIf="ci?.errors && athleteForm.submitted" class="alert alert-danger">
+            <div *ngIf="ci?.errors?.required">
+                    La cédula de identidad es obligatorio
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label for="stock_number" class="label">N° Acción <span class="danger">(*)</span></label>
+            <input type="text" nbInput fullWidth id="stock_number" name="stock_number" placeholder="N° Acción" [(ngModel)]="athlete.stock_number" #stock_number="ngModel" required>
+          </div>
+          <div *ngIf="stock_number?.errors && athleteForm.submitted" class="alert alert-danger">
+            <div *ngIf="stock_number?.errors?.required">
+                    El numero de acción es obligatorio
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <button type="button" nbButton (click)="createAthlete()">Agregar</button>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label for="sex" class="label">Sexo <span class="danger">(*)</span></label>
+            <div>
+              <nb-select selected="1" id="sex">
+                <nb-option value="1">M</nb-option>
+                <nb-option value="2">F</nb-option>
+              </nb-select>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label for="birthday" class="label">Fecha de Nacimiento <span class="danger">(*)</span></label>
+            <div>
+              <input nbInput
+                  placeholder="Fecha de Nacimiento"
+                  [nbDatepicker]="formpicker" id="birthday" name="birthday" [(ngModel)]="athlete.birthday" #birthday="ngModel" required>
+              <nb-datepicker #formpicker></nb-datepicker>
+            </div>
+          </div>
+          <div *ngIf="birthday?.errors && athleteForm.submitted" class="alert alert-danger">
+            <div *ngIf="birthday?.errors?.required">
+                    La fecha de naciemiento es obligatoria
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label class="label">Los campos con (*) son obligatorios</label>
+      </div>
+      <button type="submit" nbButton status="primary">Agregar</button>
+    </form>
   </nb-card-body>
 </nb-card>
