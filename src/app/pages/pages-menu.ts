@@ -4,11 +4,21 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Administración',
     icon: 'people-outline',
-    link: '/pages/administration'
+    children : [
+      {
+        title : 'Comisiones',
+        link : '/pages/administration/commissions',
+      },
+      {
+        title : 'Entrenadores',
+        link : '/pages/administration/trainers',
+      }
+    ]
   },
   {
     title: 'Gestión',
     icon: 'edit-2-outline',
+    link: '/pages/management',
     children: [
       {
         title: 'Atletas',

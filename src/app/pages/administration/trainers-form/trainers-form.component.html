@@ -1,0 +1,124 @@
+<nb-card>
+    <nb-card-header>Formulario de Entrenadores</nb-card-header>
+    <nb-card-body>
+        <form #trainerForm="ngForm" (ngSubmit)="!edit ? addTrainerForm(trainerForm) : editTrainerForm(trainerForm)">
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="name" class="label">Nombre (*)</label>
+                    <div class="input-group">
+                        <input type="text" nbInput fullWidth id="name" name="name" placeholder="Ricardo" [(ngModel)]="trainer.name" #name="ngModel" required>
+                    </div>
+                </div>
+                <div *ngIf="name.errors && trainerForm.submitted" class="alert alert-danger">
+                    <div *ngIf="name.errors.required">
+                        El nombre es obligatorio
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="lastname" class="label">Apellido (*)</label>
+                    <div class="input-group">
+                        <input type="text" nbInput fullWidth id="lastname" name="lastname" placeholder="Milos" [(ngModel)]="trainer.lastname" #lastname="ngModel" required>
+                    </div>
+                </div>
+                <div *ngIf="lastname.errors && trainerForm.submitted" class="alert alert-danger">
+                    <div *ngIf="lastname.errors.required">
+                       El apellido es obligatorio
+                    </div>
+                  </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="email" class="label">Correo electrónico <span *ngIf="!edit">(*)</span></label>
+                    <div class="input-group">
+                        <input type="email" nbInput fullWidth id="email" name="email" placeholder="ejemplo@cp.com" [(ngModel)]="trainer.email" #email="ngModel" 
+                        pattern="^[a-zA-Z0-9.!#$%&''*+/=?^_\`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" required
+                        [disabled]="edit">
+
+                    </div> 
+                </div>
+                <div>
+                    <div *ngIf="email.errors && trainerForm.submitted" class="alert alert-danger">
+                        <div *ngIf="email.errors.required">
+                            El email es obligatorio
+                        </div>
+                        <div *ngIf="email.errors.pattern">
+                            El email no tiene formato de correo
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="ci" class="label">CI <span *ngIf="!edit">(*)</span></label>
+                    <div class="input-group">
+                        <input type="text" nbInput fullWidth id="ci" name="ci" placeholder="V-12345678" [(ngModel)]="trainer.ci" #ci="ngModel" pattern="^[VEPGJ]\-[1-9]\d{0,8}$"required
+                        [disabled]="edit">
+                        
+                    </div>
+                </div>
+                <div *ngIf="ci.errors && trainerForm.submitted" class="alert alert-danger">
+                    <div *ngIf="ci.errors.required">
+                       La CI es obligatoria
+                    </div>
+                    <div *ngIf="ci.errors.pattern">
+                       La CI no tiene formato correcto
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="password" class="label">Contraseña <span *ngIf="!edit">(*)</span></label>
+                    <div class="input-group">
+                        <input type="password" nbInput fullWidth id="password" name="password" placeholder="Contraseña" [(ngModel)]="trainer.password" #password="ngModel" [required]="!edit">
+                    </div>
+                </div>
+                <div *ngIf="password?.errors && trainerForm.submitted" class="alert alert-danger">
+                    <div *ngIf="password?.errors.required && !edit">
+                        La contraseña es obligatoria
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="confirm_password" class="label">Confirmar contraseña <span *ngIf="!edit">(*)</span></label>
+                    <div class="input-group">
+                        <input type="password" nbInput fullWidth id="confirm_password" name="confirm_password" placeholder="Confirmar contraseña" 
+                        [(ngModel)]="trainer.confirmPassword" #confirmPassword="ngModel" [required]="!edit">
+                    </div>
+                </div>
+
+                <div *ngIf="confirmPassword.errors && trainerForm.submitted" class="alert alert-danger">
+                    <div *ngIf="confirmPassword.errors.required && !edit">
+                        La contraseña es obligatoria
+                    </div>
+                </div>
+                <div *ngIf="!match" class="alert alert-danger">
+                    Las contraseñas deben ser iguales
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <label class="label">Los campos con (*) son obligatorios</label>
+        </div>
+        <div>
+            <label *ngIf="edit" class="label">Si no desea cambiar la contraseña, debe dejar esos campos vacíos</label>
+        </div>
+
+        <button type="submit" nbButton status="primary">Guardar</button>
+        </form>
+    </nb-card-body>
+</nb-card>

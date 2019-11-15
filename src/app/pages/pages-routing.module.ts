@@ -40,7 +40,7 @@ const routes: Routes = [{
       loadChildren: () => import('./management/management.module')
       .then(m=>m.ManagementModule)
     },
-/*
+
     {
       path: 'forms',
       loadChildren: () => import('./forms/forms.module')
@@ -86,7 +86,7 @@ const routes: Routes = [{
       loadChildren: () => import('./miscellaneous/miscellaneous.module')
         .then(m => m.MiscellaneousModule),
     },
-*/
+
     {
       path: '',
       redirectTo: 'catalog',
