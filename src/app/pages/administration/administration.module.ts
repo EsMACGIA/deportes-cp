@@ -16,13 +16,16 @@ import {
 } from '@nebular/theme';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { FormsModule } from '@angular/forms';
+import {CommonModule} from '@angular/common';
 
 //Services
 import {CommissionsService} from './commissions/commissions.service';
+import {TrainersService} from './trainers/trainers.service';
+import { NbDialogService} from '@nebular/theme'
+
 //Models
 import {CommissionsModel} from './commissions/commissions.model';
-import { CommonModule } from '@angular/common';  
-import { NbDialogService} from '@nebular/theme'
+import {TrainersModel} from './trainers/trainers.model';
 
 @NgModule({
   imports: [
@@ -36,6 +39,7 @@ import { NbDialogService} from '@nebular/theme'
       NbInputModule,
       NbRadioModule,
       NbSelectModule,
+      NbDialogModule,
       FormsModule,
       CommonModule,
       NbDialogModule,
@@ -50,6 +54,8 @@ import { NbDialogService} from '@nebular/theme'
   providers: [
     CommissionsService,
     CommissionsModel,
+    TrainersService,
+    TrainersModel,
   ],
 })
 export class AdministrationModule { }

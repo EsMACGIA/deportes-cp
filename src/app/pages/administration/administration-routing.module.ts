@@ -4,6 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { AdministrationComponent } from './administration.component';
 import {CommissionsComponent} from './commissions/commissions.component';
 import {CommissionsFormComponent} from './commissions-form/commissions-form.component';
+import { TrainersComponent } from './trainers/trainers.component';
+import {TrainersFormComponent} from './trainers-form/trainers-form.component'
 
 const routes: Routes = [{
   path: '',
@@ -16,6 +18,14 @@ const routes: Routes = [{
     {
       path : 'commissions/form',
       component : CommissionsFormComponent,
+    },
+    {
+      path: 'trainers',
+      component: TrainersComponent,
+    },
+    {
+      path: 'trainers/form',
+      component: TrainersFormComponent,
     }
   ],
 }];
@@ -30,4 +40,6 @@ export const routedComponents = [
     AdministrationComponent,
     CommissionsComponent,
     CommissionsFormComponent,
+    TrainersComponent,
+    TrainersFormComponent,
 ];
