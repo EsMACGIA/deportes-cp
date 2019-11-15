@@ -9,7 +9,7 @@ import { AthletesFormComponent } from './athletes-form/athletes-form.component'
 import { ClassesComponent } from './classes/classes.component'
 import { ClassesFormComponent } from './classes-form/classes-form.component'
 // import { RequestsComponent } from './requests/requests.component'
-import { RequestsFormComponent } from './requests-form/requests-form.component'
+// import { RequestsFormComponent } from './requests-form/requests-form.component'
 
 const routes: Routes = [{
   path: '',
