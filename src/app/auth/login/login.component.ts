@@ -8,6 +8,7 @@ import {NbToastrService,NbComponentStatus, NbGlobalPosition, NbGlobalPhysicalPos
 
 @Component({
   selector: 'ngx-login',
+  styleUrls: ['./login.component.scss'],
   templateUrl: './login.component.html',
 })
 export class NgxLoginComponent extends NbLoginComponent {

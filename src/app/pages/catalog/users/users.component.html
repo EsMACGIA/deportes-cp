@@ -66,7 +66,7 @@
               </div>
             </div>
             <div *ngIf="password?.errors && userForm.submitted" class="alert alert-danger">
-                <div *ngIf="password?.errors.required">
+                <div *ngIf="password?.errors?.required">
                    La contraseña es obligatoria
                  </div>
             </div>
@@ -80,10 +80,10 @@
                 </div>
             </div>
             <div *ngIf="confirmPassword?.errors && userForm.submitted" class="alert alert-danger">
-                <div *ngIf="confirmPassword?.errors.required">
+                <div *ngIf="confirmPassword?.errors?.required">
                    La confirmacion de contraseña es obligatoria
                  </div>
-                 <div *ngIf="confirmPassword?.errors.pattern">
+                 <div *ngIf="confirmPassword?.errors?.pattern">
                     Las contraseñas deben de ser iguales
                   </div>
             </div>

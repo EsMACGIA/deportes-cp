@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./classes.component.scss'],
 })
 export class ClassesComponent {
-
+  
   settings = {
     mode: 'external',
     actions: {

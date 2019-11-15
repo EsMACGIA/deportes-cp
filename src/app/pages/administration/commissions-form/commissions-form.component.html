@@ -1,0 +1,76 @@
+<nb-card>
+    <nb-card-header>Formulario de comisiones</nb-card-header>
+    <nb-card-body>
+      <form #commissionForm="ngForm" (ngSubmit)="!edit ? addCommissionForm(commissionForm) : editCommissionForm(commissionForm)">
+            <div class="row"> 
+            <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="email" class="label">Correo electrónico <span class="danger">(*)</span></label>
+                  <input type="email" nbInput fullWidth id="email" name="email" placeholder="ejemplo@cp.com" 
+                  pattern="^[a-zA-Z0-9.!#$%&''*+/=?^_\`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
+                  [(ngModel)]="commission.email" #email="ngModel" required [disabled]="edit">
+
+                </div>
+                <div *ngIf="email.errors && commissionForm.submitted" class="alert alert-danger">
+                    <div *ngIf="email.errors.required">
+                        El email es obligatorio
+                    </div>
+                    <div *ngIf="email.errors.pattern">
+                        El email no tiene formato de correo
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                        <label for="name" class="label">Nombre <span class="danger">(*)</span></label>
+                        <input type="text" nbInput fullWidth id="name" name="name" placeholder="Comisión de Karate" [(ngModel)]="commission.name" #name="ngModel" required>
+                    </div>
+                    <div *ngIf="name.errors && commissionForm.submitted" class="alert alert-danger">
+                        <div *ngIf="name.errors.required">
+                                El nombre es obligatorio
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="password" class="label">Contraseña <span *ngIf="!edit">(*)</span></label>
+                    <input type="password" nbInput fullWidth id="password" name="password" placeholder="Contraseña" [(ngModel)]="commission.password" #password="ngModel" [required]="!edit">
+                </div>
+                <div *ngIf="password.errors && commissionForm.submitted" class="alert alert-danger">
+                    <div *ngIf="password.errors.required && !edit">
+                        La contraseña es obligatoria
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="confirmPassword" class="label">Confirmar contraseña <span *ngIf="!edit">(*)</span></label>
+                    <input type="password" nbInput fullWidth id="confirmPassword" name="confirmPassword" placeholder="Confirmar contraseña" [(ngModel)]="commission.confirmPassword" #confirmPassword="ngModel"  [required]="!edit">
+ 
+                </div>
+                <div *ngIf="confirmPassword.errors && commissionForm.submitted" class="alert alert-danger">
+                    <div *ngIf="confirmPassword.errors.required && !edit">
+                        La confirmación de contraseña es obligatoria
+                    </div>
+                </div>
+                <div *ngIf="!match" class="alert alert-danger">
+                        Las contraseñas deben de ser iguales
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="!edit">
+            <label class="label">
+                Los campos con (*) son obligatorios
+            </label>
+        </div>
+        <div>
+            <label *ngIf="edit" class="label">Si no desea cambiar la contraseña, debe dejar esos campos vacíos</label>
+        </div>
+        <button type="submit" nbButton status="primary">Guardar</button>
+      </form>
+    </nb-card-body>
+  </nb-card>
