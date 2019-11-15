@@ -7,7 +7,6 @@ import {CommissionsFormComponent} from './commissions-form/commissions-form.comp
 import { TrainersComponent } from './trainers/trainers.component';
 import {TrainersFormComponent} from './trainers-form/trainers-form.component'
 
-
 const routes: Routes = [{
   path: '',
   component: AdministrationComponent,

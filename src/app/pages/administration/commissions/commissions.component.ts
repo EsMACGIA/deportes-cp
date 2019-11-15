@@ -1,13 +1,15 @@
-import { Component } from '@angular/core';
+import { Component,TemplateRef } from '@angular/core';
 
 //Models
 import { CommissionsModel } from './commissions.model';
 //Services
 import {CommissionsService} from './commissions.service';
-
+//Components
 import { LocalDataSource } from 'ng2-smart-table';
+import { NbDialogService } from '@nebular/theme';
+import {Router, NavigationExtras } from'@angular/router';
+import {NbToastrService,NbComponentStatus,NbGlobalLogicalPosition, NbGlobalPosition, NbGlobalPhysicalPosition} from '@nebular/theme';
 
-import {Router} from'@angular/router';
 
 @Component({
     selector: 'ngx-smart-table',
@@ -49,21 +51,99 @@ export class CommissionsComponent {
       },
     },
   };
+  //Toastr configuration
+  position:NbGlobalPosition = NbGlobalPhysicalPosition.TOP_RIGHT;
+  status: NbComponentStatus = 'success'
+  duration = 4000;
+  destroyByClick = false;
+  hasIcon = true;
+  index = 1;
+  preventDuplicates = false;
+  //Variable to Load info to Smart Table
+  source: LocalDataSource = new LocalDataSource();
+  private commissionsList:CommissionsModel[];
+  private commission:CommissionsModel = new CommissionsModel();
+  private dialogRef : any;
+  //Var to difference if open edit or add
+  private edit: boolean = false; 
 
-    //Variable to Load info to Smart Table
-    source: LocalDataSource = new LocalDataSource();
-
-  constructor(private router: Router,private commissionsService:CommissionsService) {
-    this.loadCommissions();
+  constructor(private router: Router,private commissionsService:CommissionsService,private dialogService: NbDialogService,
+    private toastrService: NbToastrService) {
+      this.loadCommissions();
     }
 
     loadCommissions(){
-      let data = this.commissionsService.getCommissionList();
-      this.source.load(data);
+      let data = this.commissionsService.getCommissionsList().subscribe(data=>{
+        if (data){
+          console.log('Estoy recibiendo los usuarios',data)
+          this.commissionsList = data
+          this.source.load(this.commissionsList)
+          console.log(this.commissionsList)
+        }
+      });
     }
 
-    goToComissionForm(){
-      console.log('mmmm')
-      this.router.navigate(['/pages/administration/commissions/form']);
+    createCommissionsForm(){
+      this.edit = false;
+      this.commission = new CommissionsModel();
+      let navigationExtras: NavigationExtras = {
+        queryParams: { commission : this.commission, edit : this.edit }
+      };
+      this.router.navigate(['pages/administration/commissions/form'], navigationExtras);
     }
+  
+
+    editCommissionsForm(event){
+      this.edit = true;
+      Object.assign(this.commission,event.data) //Instance all fields of trainers with the event data
+      let navigationExtras: NavigationExtras = {
+        queryParams: { commission : this.commission, edit : this.edit  }
+      };
+      this.commission.password = ""
+      this.commission.confirmPassword = ""
+      this.router.navigate(['pages/administration/commissions/form'], navigationExtras);
+    }
+
+   /*Function to open modal to confirmation for delete user*/
+    openModal(dialog: TemplateRef<any>,event) {
+      Object.assign(this.commission,event.data) //Instance all fields of user with the event data
+      this.dialogRef = this.dialogService.open(
+        dialog,
+        { context: this.commission.name });
+    }
+
+    confirmDelete(dialog:TemplateRef<any>){
+      this.commissionsService.deleteCommission(this.commission).subscribe(data=>{
+        if (data){
+          if (!data.error){
+            
+            console.log(data)
+            this.showToast('success','Se ha eliminado una disciplina exitosamente','Se ha eliminado la disciplina ' + this.commission.name + ' de manera exitosa.')
+            this.dialogRef.close();
+            this.loadCommissions();
+          }else{
+            this.showToast('danger','Hubo un error al eliminar la comisión',data.error.error)
+            this.dialogRef.close();
+          }
+        }
+      })
+    }
+
+    private showToast(type: NbComponentStatus, title: string, body: string){
+      const config = {
+        status: type,
+        destroyByClick: this.destroyByClick,
+        duration: this.duration,
+        hasIcon: this.hasIcon,
+        position: this.position,
+        preventDuplicates: this.preventDuplicates,
+      };
+  
+      this.index += 1;
+      this.toastrService.show(
+        body,
+        title,
+        config);
+    }
+
 }
