@@ -38,18 +38,22 @@ export class ClassesComponent {
         title: 'ID',
         type: 'number',
       },
-      trainer_name: {
-        title: 'Nombres de Entrenador',
-        type: 'string',
-      },
-      trainer_lastname: {
-        title: 'Apellidos de Entrenador',
+      description: {
+        title: 'descripción',
         type: 'string',
       },
       comission_name: {
         title: 'Comisión',
         type: 'string',
       },
+      trainer_name: {
+        title: 'Nombre Entrenador',
+        type: 'string',
+      },
+      trainer_lastname: {
+        title: 'Apellido Entrenador',
+        type: 'string',
+      }
     },
   };
 
@@ -112,7 +116,7 @@ export class ClassesComponent {
     let navigationExtras: NavigationExtras = {
       queryParams: { clase : this.clase, edit : this.edit }
     };
-    this.router.navigate(['/pages/management/classes/form'], navigationExtras);
+    this.router.navigate(['/pages/management/classes-form'], navigationExtras);
   }
   
   editClassForm(event) {
@@ -122,7 +126,7 @@ export class ClassesComponent {
     let navigationExtras: NavigationExtras = {
       queryParams: { clase : this.clase, edit : this.edit  }
     };
-    this.router.navigate(['pages/management/class/form'], navigationExtras);
+    this.router.navigate(['pages/management/classes-form'], navigationExtras);
   }
   
   onDeleteConfirm(event): void {

@@ -11,9 +11,10 @@ import {Router} from '@angular/router'
   styleUrls: ['./classes-form.component.scss'],
 })
 export class ClassesFormComponent {
-  private trainers = [];
-  private clase : ClassesModel = this.router.getCurrentNavigation().extras.queryParams.clase;
-  private edit : boolean = this.router.getCurrentNavigation().extras.queryParams.edit;
+  trainers = [];
+  clase : ClassesModel = this.router.getCurrentNavigation().extras.queryParams.clase;
+  clase2: ClassesModel = new ClassesModel();
+  edit : boolean = this.router.getCurrentNavigation().extras.queryParams.edit;
   type: string = 'edit';
   cardTitle: string = ''; 
 
@@ -36,7 +37,10 @@ export class ClassesFormComponent {
 
   addClassForm(classForm:NgForm){
     if (classForm.valid){ 
-      this.clase.comission_id = 23;
+      this.clase.comission_id = 29;
+      this.clase.schedules = [];
+      this.clase.trainer_id = Number(this.clase.trainer_id)
+      console.log(this.clase);
       this.classesService.createClass(this.clase).subscribe(data=>{
           if (data && !data.error){
               console.log("Yay")
@@ -52,19 +56,25 @@ export class ClassesFormComponent {
     }
   }
 
-  editTrainerForm(trainerForm:NgForm){
-    if (trainerForm.valid){ 
-      //console.log(this.clase)
-      this.classesService.updateClass(this.clase).subscribe(data=>{
+  editClassForm(classForm:NgForm){
+    if (classForm.valid){ 
+      this.clase2 = new ClassesModel();
+      this.clase2.id = this.clase.id;
+      this.clase2.description = this.clase.description;
+      delete this.clase2.comission_id;
+      delete this.clase2.schedules;
+      delete this.clase2.trainer_id;
+      console.log(this.clase2)
+      this.classesService.updateClass(this.clase2).subscribe(data=>{
           if (data && !data.error){
               console.log("Yay")
               //this.showToast('success','Se ha modificado un entrenador exitosamente','Se ha modificado el entrenador ' + this.trainer2.name + ' de manera exitosa.')
               this.router.navigate(['/pages/management/classes']);
           }
           else {
-              console.log(data.error)
-              //this.showToast('danger','Hubo un error al modificar entrenador',data.error.error)
-              this.router.navigate(['/pages/manahement/classes']);
+            console.log(data.error)
+            //this.showToast('danger','Hubo un error al modificar entrenador',data.error.error)
+            this.router.navigate(['/pages/management/classes']);
           }
       });
     }
