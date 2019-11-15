@@ -40,21 +40,18 @@
                     <div class="input-group">
                         <input type="email" nbInput fullWidth id="email" name="email" placeholder="ejemplo@cp.com" [(ngModel)]="trainer.email" #email="ngModel" 
                         pattern="^[a-zA-Z0-9.!#$%&''*+/=?^_\`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" required
-                        *ngIf="!edit; else noModifyEmail">
+                        [disabled]="edit">
 
-                        <ng-template #noModifyEmail>
-                            <input id="email" class="form-control" nbInput fullWidth placeholder="ejemplo@gmail.com" name="email"
-                            [(ngModel)]="trainer.email" #email="ngModel" pattern="^[a-zA-Z0-9.!#$%&''*+/=?^_\`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" required
-                            *ngIf="edit" disabled>
-                        </ng-template>
                     </div> 
                 </div>
-                <div *ngIf="email?.errors && trainerForm.submitted" class="alert alert-danger">
-                    <div *ngIf="email?.errors?.required">
-                       El email es obligatorio
-                    </div>
-                    <div *ngIf="email?.errors?.pattern">
-                       El email no tiene formato de correo
+                <div>
+                    <div *ngIf="email.errors && trainerForm.submitted" class="alert alert-danger">
+                        <div *ngIf="email.errors.required">
+                            El email es obligatorio
+                        </div>
+                        <div *ngIf="email.errors.pattern">
+                            El email no tiene formato de correo
+                        </div>
                     </div>
                 </div>
             </div>
@@ -64,19 +61,15 @@
                     <label for="ci" class="label">CI <span *ngIf="!edit">(*)</span></label>
                     <div class="input-group">
                         <input type="text" nbInput fullWidth id="ci" name="ci" placeholder="V-12345678" [(ngModel)]="trainer.ci" #ci="ngModel" pattern="^[VEPGJ]\-[1-9]\d{0,8}$"required
-                        *ngIf="!edit; else noModifyCi">
+                        [disabled]="edit">
                         
-                        <ng-template #noModifyCi>
-                            <input type="text" nbInput fullWidth id="ci" name="ci" placeholder="V-12345678" [(ngModel)]="trainer.ci" #ci="ngModel" pattern="^[VEPGJ]\-[1-9]\d{0,8}$"required
-                            *ngIf="edit" disabled>
-                        </ng-template>
                     </div>
                 </div>
-                <div *ngIf="ci?.errors && trainerForm.submitted" class="alert alert-danger">
-                    <div *ngIf="ci?.errors?.required">
+                <div *ngIf="ci.errors && trainerForm.submitted" class="alert alert-danger">
+                    <div *ngIf="ci.errors.required">
                        La CI es obligatoria
                     </div>
-                    <div *ngIf="ci?.errors?.pattern">
+                    <div *ngIf="ci.errors.pattern">
                        La CI no tiene formato correcto
                     </div>
                 </div>
@@ -88,8 +81,7 @@
                 <div class="form-group">
                     <label for="password" class="label">Contraseña <span *ngIf="!edit">(*)</span></label>
                     <div class="input-group">
-                        <input *ngIf="!edit" type="password" nbInput fullWidth id="password" name="password" placeholder="Contraseña" [(ngModel)]="trainer.password" #password="ngModel" required>
-                        <input *ngIf="edit" type="password" nbInput fullWidth id="password" name="password" placeholder="Si no desea cambiar la contraseña, dejar vacío" [(ngModel)]="trainer.password" #password="ngModel">
+                        <input type="password" nbInput fullWidth id="password" name="password" placeholder="Contraseña" [(ngModel)]="trainer.password" #password="ngModel" [required]="!edit">
                     </div>
                 </div>
                 <div *ngIf="password?.errors && trainerForm.submitted" class="alert alert-danger">
@@ -103,15 +95,13 @@
                 <div class="form-group">
                     <label for="confirm_password" class="label">Confirmar contraseña <span *ngIf="!edit">(*)</span></label>
                     <div class="input-group">
-                        <input *ngIf="!edit" type="password" nbInput fullWidth id="confirm_password" name="confirm_password" placeholder="Confirmar contraseña" 
-                        [(ngModel)]="trainer.confirmPassword" #confirmPassword="ngModel" required>
-                        <input *ngIf="edit" type="password" nbInput fullWidth id="confirm_password" name="confirm_password" placeholder="Si no desea cambiar la contraseña, dejar vacío" 
-                        [(ngModel)]="trainer.confirmPassword" #confirmPassword="ngModel">
+                        <input type="password" nbInput fullWidth id="confirm_password" name="confirm_password" placeholder="Confirmar contraseña" 
+                        [(ngModel)]="trainer.confirmPassword" #confirmPassword="ngModel" [required]="!edit">
                     </div>
                 </div>
 
-                <div *ngIf="confirmPassword?.errors && trainerForm.submitted" class="alert alert-danger">
-                    <div *ngIf="confirmPassword?.errors.required && !edit">
+                <div *ngIf="confirmPassword.errors && trainerForm.submitted" class="alert alert-danger">
+                    <div *ngIf="confirmPassword.errors.required && !edit">
                         La contraseña es obligatoria
                     </div>
                 </div>
@@ -123,6 +113,9 @@
 
         <div>
             <label class="label">Los campos con (*) son obligatorios</label>
+        </div>
+        <div>
+            <label *ngIf="edit" class="label">Si no desea cambiar la contraseña, debe dejar esos campos vacíos</label>
         </div>
 
         <button type="submit" nbButton status="primary">Guardar</button>
