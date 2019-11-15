@@ -19,18 +19,18 @@ const routes: Routes = [{
       path: 'athletes',
       component: AthletesComponent
     },
-    // {
-    //   path: 'athletes-form',
-    //   component: AthletesFormComponent
-    // },
+    {
+      path: 'athletes-form',
+      component: AthletesFormComponent
+    },
     {
       path: 'classes',
       component: ClassesComponent
     },
-    // {
-    //   path: 'classes-form',
-    //   component: ClassesFormComponent
-    // },
+    {
+      path: 'classes-form',
+      component: ClassesFormComponent
+    },
     {
       path: 'requests',
       component: RequestsComponent

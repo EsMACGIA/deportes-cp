@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'classes-component',
   templateUrl: './classes.component.html',
@@ -8,6 +10,10 @@ import { LocalDataSource } from 'ng2-smart-table';
 })
 export class ClassesComponent {
 
+  createClass() {
+    this.router.navigate(['/pages/management/classes-form']);
+  }
+  
   settings = {
     mode: 'external',
     actions: {
@@ -49,7 +55,7 @@ export class ClassesComponent {
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor() {
+  constructor(private router: Router) {
     const data = [
       {
         id: 1,
