@@ -14,11 +14,33 @@ export class ECommerceProgressSectionComponent implements OnDestroy {
   progressInfoData: ProgressInfo[];
 
   constructor(private statsProgressBarService: StatsProgressBarData) {
-    this.statsProgressBarService.getProgressInfoData()
-      .pipe(takeWhile(() => this.alive))
-      .subscribe((data) => {
-        this.progressInfoData = data;
-      });
+    // this.statsProgressBarService.getProgressInfoData()
+    //   .pipe(takeWhile(() => this.alive))
+    //   .subscribe((data) => {
+    //     this.progressInfoData = data;
+    //     console.log('Progress Info Data: ', this.progressInfoData)
+    //   });
+
+    this.progressInfoData = [
+      {
+        activeProgress: 15,
+        description: 'En Crecimiento',
+        title: 'Atletas Inscritos',
+        value: 12
+      },
+      {
+        activeProgress: 15,
+        description: 'En Crecimiento',
+        title: 'Comisiones Registradas',
+        value: 4
+      },
+      {
+        activeProgress: 30,
+        description: 'En Crecimiento',
+        title: 'Entrenadores Registrados',
+        value: 6
+      }
+    ]
   }
 
   ngOnDestroy() {

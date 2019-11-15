@@ -8,7 +8,7 @@ import { AthletesComponent } from './athletes/athletes.component'
 import { AthletesFormComponent } from './athletes-form/athletes-form.component'
 import { ClassesComponent } from './classes/classes.component'
 import { ClassesFormComponent } from './classes-form/classes-form.component'
-import { RequestsComponent } from './requests/requests.component'
+// import { RequestsComponent } from './requests/requests.component'
 import { RequestsFormComponent } from './requests-form/requests-form.component'
 
 const routes: Routes = [{
@@ -31,14 +31,14 @@ const routes: Routes = [{
       path: 'classes-form',
       component: ClassesFormComponent
     },
-    {
-      path: 'requests',
-      component: RequestsComponent
-    },
-    {
-      path: 'requests-form',
-      component: RequestsFormComponent
-    },
+    // {
+    //   path: 'requests',
+    //   component: RequestsComponent
+    // },
+    // {
+    //   path: 'requests-form',
+    //   component: RequestsFormComponent
+    // },
   ],
 }];
 
@@ -54,6 +54,6 @@ export const routedComponents = [
   AthletesFormComponent,
   ClassesComponent,
   ClassesFormComponent,
-  RequestsComponent,
-  RequestsFormComponent
+  // RequestsComponent,
+  // RequestsFormComponent
 ];
