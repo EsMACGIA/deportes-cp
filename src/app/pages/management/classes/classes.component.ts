@@ -112,11 +112,17 @@ export class ClassesComponent {
     let navigationExtras: NavigationExtras = {
       queryParams: { clase : this.clase, edit : this.edit }
     };
-    this.router.navigate(['/pages/management/classes-form'], navigationExtras);
+    this.router.navigate(['/pages/management/classes/form'], navigationExtras);
   }
   
-  editClass(event) {
-    console.log('Event: ', event)
+  editClassForm(event) {
+    this.edit = true;
+    //console.log(event.data)
+    Object.assign(this.clase,event.data) //Instance all fields of trainers with the event data
+    let navigationExtras: NavigationExtras = {
+      queryParams: { clase : this.clase, edit : this.edit  }
+    };
+    this.router.navigate(['pages/management/class/form'], navigationExtras);
   }
   
   onDeleteConfirm(event): void {

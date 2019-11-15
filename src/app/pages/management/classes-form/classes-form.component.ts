@@ -51,5 +51,23 @@ export class ClassesFormComponent {
       });
     }
   }
+
+  editTrainerForm(trainerForm:NgForm){
+    if (trainerForm.valid){ 
+      //console.log(this.clase)
+      this.classesService.updateClass(this.clase).subscribe(data=>{
+          if (data && !data.error){
+              console.log("Yay")
+              //this.showToast('success','Se ha modificado un entrenador exitosamente','Se ha modificado el entrenador ' + this.trainer2.name + ' de manera exitosa.')
+              this.router.navigate(['/pages/management/classes']);
+          }
+          else {
+              console.log(data.error)
+              //this.showToast('danger','Hubo un error al modificar entrenador',data.error.error)
+              this.router.navigate(['/pages/manahement/classes']);
+          }
+      });
+    }
+}
 }
   

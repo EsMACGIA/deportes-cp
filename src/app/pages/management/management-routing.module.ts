@@ -20,7 +20,7 @@ const routes: Routes = [{
       component: AthletesComponent
     },
     {
-      path: 'athletes-form',
+      path: 'athletes/form',
       component: AthletesFormComponent
     },
     {
@@ -28,7 +28,7 @@ const routes: Routes = [{
       component: ClassesComponent
     },
     {
-      path: 'classes-form',
+      path: 'classes/form',
       component: ClassesFormComponent
     },
     {
@@ -36,7 +36,7 @@ const routes: Routes = [{
       component: RequestsComponent
     },
     {
-      path: 'requests-form',
+      path: 'requests/form',
       component: RequestsFormComponent
     },
   ],
