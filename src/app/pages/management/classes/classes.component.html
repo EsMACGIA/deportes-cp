@@ -7,10 +7,27 @@
     <ng2-smart-table 
       [settings]="settings" 
       [source]="source" 
-      (create)="createClass($event)" 
-      (edit)="editClass($event)"
-      (delete)="onDeleteConfirm($event)"
+      (create)="createClassForm()" 
+      (edit)="editClassForm($event)"
+      (delete)="openModal(dialog,$event)"
     >
     </ng2-smart-table>
   </nb-card-body>
 </nb-card>
+
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header>Confirmación de eliminar clase</nb-card-header>
+    <nb-card-body>¿Está seguro que desea eliminar la clase {{ data }}?</nb-card-body>
+    <nb-card-footer>
+        <div class="row">
+          <div class="col-sm-6">
+              <button nbButton (click)="confirmDelete()">Confirmar</button>
+            </div>
+            <div class="col-sm-6">
+              <button nbButton (click)="ref.close()">Cancelar</button>
+            </div>
+        </div>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
