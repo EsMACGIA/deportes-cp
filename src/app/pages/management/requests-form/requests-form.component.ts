@@ -20,10 +20,10 @@ export class RequestsFormComponent {
 
   type: string = 'edit';
   cardTitle: string = '';
-  private match : boolean = true;
-  private edit : boolean = this.router.getCurrentNavigation().extras.queryParams.edit;
-  private request: RequestModel = this.router.getCurrentNavigation().extras.queryParams.request;
-  private request2: RequestModel = new RequestModel();
+  match : boolean = true;
+  edit : boolean = this.router.getCurrentNavigation().extras.queryParams.edit;
+  request: RequestModel = this.router.getCurrentNavigation().extras.queryParams.request;
+  request2: RequestModel = new RequestModel();
 
 
 
