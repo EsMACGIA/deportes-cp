@@ -1,15 +1,15 @@
 <nb-card>
   <nb-card-header>{{ cardTitle }}</nb-card-header>
   <nb-card-body>
-    <form #requestForm="ngForm" (ngSubmit)="addRequestForm(requestForm)"></form>
+    <form #requestForm="ngForm" (ngSubmit)="!edit ? addRequestForm(requestForm) : editRequestForm(requestForm)">
     <div class="row">
       <div class="col-sm-6">
         <div class="form-group">
-          <label for="name" class="label">Atleta</label>
+          <label for="athlete_id'" class="label">Atleta (*)</label>
           <div>
-              <nb-select selected="1" id="athlete" name="athlete" [(ngModel)]="request.athlete" #athlete="ngModel" required>
-                <nb-option *ngFor="let athlete of athleteList" [value]="athlete.id">{{athlete.name}}</nb-option>
-              </nb-select>
+              <select selected="1" id="athlete_id" name="athlete_id" [(ngModel)]="request.athlete_id" #athlete="ngModel" required>
+                <option *ngFor="let athlete of athletesList" [value]="athlete.id">{{athlete.name}}</option>
+              </select>
             </div>        
         </div>
         <div *ngIf="athlete.errors && requestForm.submitted" class="alert alert-danger">
@@ -20,12 +20,11 @@
       </div>
       <div class="col-sm-6">
         <div class="form-group">
-          <label for="class" class="label">Clase</label>
+          <label for="class_id" class="label">Clase (*)</label>
           <div>
-              <nb-select selected="1" id="class" name="class" [(ngModel)]="request.class" #class="ngModel" required>
-                <nb-option>-</nb-option>
-                <nb-option *ngFor="let class of classList" [value]="class.id">{{class.description}}</nb-option>
-              </nb-select>
+              <select id="class_id" name="class_id" [(ngModel)]="request.class_id" #class="ngModel" required>
+                <option *ngFor="let class of classList" [value]="class.id">{{class.description}}</option>
+              </select>
             </div>          
         </div>
         <div *ngIf="class.errors && requestForm.submitted" class="alert alert-danger">
@@ -38,12 +37,12 @@
     <div class="row">
         <div class="col-sm-6">
             <div class="form-group">
-              <label for="retire" class="label">Acción</label>
+              <label for="retire" class="label">Acción (*)</label>
               <div>
-                  <nb-select selected="1" id="retire" name="retire" [(ngModel)]="request.retire" #retire="ngModel" required>
-                    <nb-option value="1">Ingreso</nb-option>
-                    <nb-option value="2">Retiro</nb-option>
-                  </nb-select>
+                  <select selected="1" id="retire" name="retire" [(ngModel)]="request.retire" #retire="ngModel" required>
+                    <option value="0">Ingreso</option>
+                    <option value="1">Retiro</option>
+                  </select>
                 </div> 
                 <div *ngIf="retire.errors && requestForm.submitted" class="alert alert-danger">
                     <div *ngIf="retire.errors.required">
@@ -52,18 +51,11 @@
                 </div>        
             </div>
           </div>
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label for="sex" class="label">Estado</label>
-          <div>
-            <nb-select selected="1" id="sex">
-              <nb-option value="1">M</nb-option>
-              <nb-option value="2">F</nb-option>
-            </nb-select>
-          </div>
-        </div>
-      </div>
     </div>
-    <button type="button" nbButton (click)="createRequest()">Agregar</button>
+    <div>
+        <label class="label">Los campos con (*) son obligatorios</label>
+      </div>
+    <button type="submit" nbButton>Agregar</button>
+  </form>
   </nb-card-body>
 </nb-card>

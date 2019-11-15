@@ -22,6 +22,7 @@ import {ClassesService} from './classes/classes.service';
 
 //Services
 import {AthletesService} from './athletes/athletes.service';
+import {RequestsService} from './requests/requests.service';
 
 //Models
 import {AthletesModel} from './athletes/athletes.model';
@@ -54,6 +55,8 @@ import {AthletesModel} from './athletes/athletes.model';
     AthletesModel,
     ClassesService,
     AthletesService,
+    RequestsService,
+
   ],
 })
 export class ManagementModule { }
