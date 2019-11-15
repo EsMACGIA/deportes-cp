@@ -12,7 +12,7 @@ import {NbToastrService,NbComponentStatus,NbGlobalLogicalPosition, NbGlobalPosit
 })
 export class AthletesFormComponent {
 
-  private athlete:AthletesModel = new AthletesModel();
+  athlete:AthletesModel = new AthletesModel();
 
   type: string = 'edit';
   cardTitle: string = '';

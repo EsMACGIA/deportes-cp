@@ -15,10 +15,10 @@ import {Router} from '@angular/router'
   })
 
 export class TrainersFormComponent {
-    private trainer : TrainersModel = this.router.getCurrentNavigation().extras.queryParams.trainer;
-    private trainer2:TrainersModel = new TrainersModel();
-    private match : boolean = true;
-    private edit : boolean = this.router.getCurrentNavigation().extras.queryParams.edit;
+    trainer : TrainersModel = this.router.getCurrentNavigation().extras.queryParams.trainer;
+    trainer2:TrainersModel = new TrainersModel();
+    match : boolean = true;
+    edit : boolean = this.router.getCurrentNavigation().extras.queryParams.edit;
 
     //Variables to Toastr configuration
     config:ToasterConfig;
