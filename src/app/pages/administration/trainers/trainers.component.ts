@@ -2,8 +2,6 @@ import { Component, TemplateRef} from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import {NbToastrService,NbComponentStatus, NbGlobalPosition, NbGlobalPhysicalPosition} from '@nebular/theme';
 
-import { SmartTableData } from '../../../@core/data/smart-table';
-import {HttpClient} from '@angular/common/http';
 import {TrainersService} from '../trainers/trainers.service';
 import { NbDialogService } from '@nebular/theme';
 import { Router, NavigationExtras } from '@angular/router';
