@@ -15,8 +15,13 @@ import { ThemeModule } from '../../@theme/theme.module';
 
 import { ManagementRoutingModule, routedComponents } from './management-routing.module';
 
+import {ClassesService} from './classes/classes.service';
+import {TrainersService} from '../administration/trainers/trainers.service';
+
 //Models
 import {AthletesModel} from './athletes/athletes.model';
+import {ClassesModel} from './classes/classes.model';
+
 @NgModule({
   imports: [
     ManagementRoutingModule,  
@@ -37,6 +42,9 @@ import {AthletesModel} from './athletes/athletes.model';
   ],
   providers: [
     AthletesModel,
+    ClassesService,
+    ClassesModel,
+    TrainersService,
   ],
 })
 export class ManagementModule { }

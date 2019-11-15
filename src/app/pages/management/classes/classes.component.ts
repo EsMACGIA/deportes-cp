@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
+import {ClassesService} from '../classes/classes.service';
+import { ClassesModel } from '../classes/classes.model';
 
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 
 @Component({
   selector: 'classes-component',
@@ -10,6 +12,8 @@ import { Router } from '@angular/router';
 })
 export class ClassesComponent {
   
+  classList = [];
+
   settings = {
     mode: 'external',
     actions: {
@@ -51,7 +55,14 @@ export class ClassesComponent {
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor(private router: Router) {
+  //Var to difference if open edit or add
+  private edit: boolean = false; 
+  private clase : ClassesModel = new ClassesModel();
+  private dialogRef : any;
+
+  constructor(
+    private router: Router,
+    private classesService: ClassesService,) {
     const data = [
       {
         id: 1,
@@ -80,23 +91,40 @@ export class ClassesComponent {
       
 
     ]
-    this.source.load(data);
+    //this.source.load(data);
+    this.loadClasses();
+    
   }
 
-    createClass(event) {
-      this.router.navigate(['/pages/management/classes-form']);
-    }
-    
-    editClass(event) {
-      console.log('Event: ', event)
-    }
-    
-    onDeleteConfirm(event): void {
-      if (window.confirm('¿Está seguro que desea eliminar esta clase?')) {
-        event.confirm.resolve();
-      } else {
-        event.confirm.reject();
+  loadClasses(){
+    let data = this.classesService.getClassList().subscribe(data=>{
+      if (data){
+        console.log('Recibiendo Clases', data);
+        this.classList = data;
+        this.source.load(this.classList);
       }
+    });
+  }
+
+  createClassForm() {
+    this.edit = false;
+    this.clase = new ClassesModel();
+    let navigationExtras: NavigationExtras = {
+      queryParams: { clase : this.clase, edit : this.edit }
+    };
+    this.router.navigate(['/pages/management/classes-form'], navigationExtras);
+  }
+  
+  editClass(event) {
+    console.log('Event: ', event)
+  }
+  
+  onDeleteConfirm(event): void {
+    if (window.confirm('¿Está seguro que desea eliminar esta clase?')) {
+      event.confirm.resolve();
+    } else {
+      event.confirm.reject();
+    }
       
   }
 }
