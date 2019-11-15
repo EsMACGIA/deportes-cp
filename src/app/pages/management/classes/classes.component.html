@@ -1,2 +1,16 @@
-<h1>Classes Component!</h1>
-<button (click)="createClass()">Ir a classesForm</button>
+<nb-card>
+  <nb-card-header>
+    Listado de Clases
+  </nb-card-header>
+
+  <nb-card-body>
+    <ng2-smart-table 
+      [settings]="settings" 
+      [source]="source" 
+      (create)="createClass($event)"
+      (edit)="editClass($event)"
+      (delete)="onDeleteConfirm($event)"
+    >
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>
