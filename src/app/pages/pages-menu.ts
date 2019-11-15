@@ -45,7 +45,12 @@ export const MENU_COMMISSION: NbMenuItem[] = [
   {
     title: 'Administración',
     icon: 'people-outline',
-    link: '/pages/administration'
+    children : [
+      {
+        title : 'Entrenadores',
+        link : '/pages/administration/trainers',
+      }
+    ]
   },
   {
     title: 'Gestión',
@@ -60,8 +65,8 @@ export const MENU_COMMISSION: NbMenuItem[] = [
         link: '/pages/management/classes'
       },
       {
-        title: 'Solicitudes',
-        link: '/pages/management/requests'
+        title: 'Generar Solicitud',
+        link: '/pages/management/requests-form'
       }
     ]
   },
