@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import {NgForm} from '@angular/forms';
+import { ToasterConfig } from 'angular2-toaster';
+import {NbToastrService,NbComponentStatus, NbGlobalPosition, NbGlobalPhysicalPosition, NbToast} from '@nebular/theme';
 import {TrainersService} from '../../administration/trainers/trainers.service'
 import { ClassesService } from '../classes/classes.service';
 import { ClassesModel } from '../classes/classes.model';
@@ -18,15 +20,22 @@ export class ClassesFormComponent {
   type: string = 'edit';
   cardTitle: string = ''; 
 
+
+  //Variables to Toastr configuration
+  config:ToasterConfig;
+  position:NbGlobalPosition = NbGlobalPhysicalPosition.TOP_RIGHT;
+  status: NbComponentStatus = 'success'
+  duration = 4000;
+  destroyByClick = false;
+  hasIcon = true;
+  index = 1; 
+  preventDuplicates = false;
+
   constructor (
     private router:Router,
     private classesService : ClassesService,
-    private trainersService: TrainersService) {
-    if (this.type == 'add') {
-      this.cardTitle = 'Agrega Clase';
-    } else if (this.type == 'edit'){
-      this.cardTitle = 'Editar Clase';
-    }
+    private trainersService: TrainersService,
+    private toastrService: NbToastrService) {
   }
 
   ngOnInit() {
@@ -44,12 +53,12 @@ export class ClassesFormComponent {
       this.classesService.createClass(this.clase).subscribe(data=>{
           if (data && !data.error){
               console.log("Yay")
-              //this.showToast('success','Se ha creado un entrenador exitosamente','Se ha creado el entrenador ' + this.trainer2.name + ' de manera exitosa.')
+              this.showToast('success','Se ha creado una clase exitosamente','Se ha creado la clase ' + this.clase.description + ' de manera exitosa.')
               this.router.navigate(['/pages/management/classes']);
           }
           else {
               console.log(data.error)
-              //this.showToast('danger','Hubo un error al crear entrenador',data.error.error)
+              this.showToast('danger','Hubo un error al crear clase',data.error.error)
               this.router.navigate(['/pages/management/classes']);
           }
       });
@@ -68,16 +77,34 @@ export class ClassesFormComponent {
       this.classesService.updateClass(this.clase2).subscribe(data=>{
           if (data && !data.error){
               console.log("Yay")
-              //this.showToast('success','Se ha modificado un entrenador exitosamente','Se ha modificado el entrenador ' + this.trainer2.name + ' de manera exitosa.')
+              this.showToast('success','Se ha modificado una clase exitosamente','Se ha modificado la clase ' + this.clase2.description + ' de manera exitosa.')
               this.router.navigate(['/pages/management/classes']);
           }
           else {
             console.log(data.error)
-            //this.showToast('danger','Hubo un error al modificar entrenador',data.error.error)
+            this.showToast('danger','Hubo un error al modificar la clase',data.error.error)
             this.router.navigate(['/pages/management/classes']);
           }
       });
     }
-}
+  }
+
+  private showToast(type: NbComponentStatus, title: string, body: string) {
+    const config = {
+      status: type,
+      destroyByClick: this.destroyByClick,
+      duration: this.duration,
+      hasIcon: this.hasIcon,
+      position: this.position,
+      preventDuplicates: this.preventDuplicates,
+    };
+
+    this.index += 1;
+    this.toastrService.show(
+      body,
+      title,
+      config);
+  }
+
 }
   

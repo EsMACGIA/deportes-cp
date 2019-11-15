@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef} from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
+import {NbToastrService,NbComponentStatus, NbGlobalPosition, NbGlobalPhysicalPosition} from '@nebular/theme';
+
 import {ClassesService} from '../classes/classes.service';
 import { ClassesModel } from '../classes/classes.model';
+import { NbDialogService } from '@nebular/theme';
 
 import { Router, NavigationExtras } from '@angular/router';
 
@@ -57,6 +60,16 @@ export class ClassesComponent {
     },
   };
 
+
+  //Toastr configuration
+  position:NbGlobalPosition = NbGlobalPhysicalPosition.TOP_RIGHT;
+  status: NbComponentStatus = 'success'
+  duration = 4000;
+  destroyByClick = false;
+  hasIcon = true;
+  index = 1;
+  preventDuplicates = false;
+
   source: LocalDataSource = new LocalDataSource();
 
   //Var to difference if open edit or add
@@ -66,7 +79,9 @@ export class ClassesComponent {
 
   constructor(
     private router: Router,
-    private classesService: ClassesService,) {
+    private classesService: ClassesService,
+    private dialogService: NbDialogService,
+    private toastrService: NbToastrService) {
     const data = [
       {
         id: 1,
@@ -129,12 +144,44 @@ export class ClassesComponent {
     this.router.navigate(['pages/management/classes-form'], navigationExtras);
   }
   
-  onDeleteConfirm(event): void {
-    if (window.confirm('¿Está seguro que desea eliminar esta clase?')) {
-      event.confirm.resolve();
-    } else {
-      event.confirm.reject();
-    }
-      
+  openModal(dialog: TemplateRef<any>,event) {
+    Object.assign(this.clase,event.data) //Instance all fields of user with the event data
+    this.dialogRef = this.dialogService.open(
+      dialog,
+      { context: this.clase.description });
+  }
+
+  confirmDelete(dialog:TemplateRef<any>){
+    this.classesService.deleteClass(this.clase).subscribe(data=>{
+      if (data){
+        if (!data.error){
+
+          console.log(data)
+          this.showToast('success','Se ha eliminado una clase exitosamente','Se ha eliminado la clase ' + this.clase.description + ' de manera exitosa.')
+          this.dialogRef.close();
+          this.loadClasses();
+        }else{
+          this.showToast('danger','Hubo un error al eliminar la clase',data.error.error)
+          this.dialogRef.close();
+        }
+      }
+    })
+  }
+
+  private showToast(type: NbComponentStatus, title: string, body: string){
+    const config = {
+      status: type,
+      destroyByClick: this.destroyByClick,
+      duration: this.duration,
+      hasIcon: this.hasIcon,
+      position: this.position,
+      preventDuplicates: this.preventDuplicates,
+    };
+
+    this.index += 1;
+    this.toastrService.show(
+      body,
+      title,
+      config);
   }
 }

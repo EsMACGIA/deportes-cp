@@ -1,5 +1,5 @@
 <nb-card>
-  <nb-card-header>{{ cardTitle }}</nb-card-header>
+  <nb-card-header>Formulario de clases</nb-card-header>
   <nb-card-body>
     <form #classForm="ngForm" (ngSubmit)="!edit ? addClassForm(classForm) : editClassForm(classForm)">
       
@@ -8,7 +8,7 @@
         <input type="text" nbInput fullWidth id="description" name="description" placeholder="Descripción" [(ngModel)]="clase.description" #description="ngModel" required>
       </div>
       <div *ngIf="description.errors && classForm.submitted" class="alert alert-danger">
-        <div *ngIf="description.errors.required && !edit">
+        <div *ngIf="description.errors.required">
             La descripción es obligatoria
         </div>
       </div>
@@ -20,7 +20,7 @@
         </select>
       </div>
       <div *ngIf="trainer_id.errors && classForm.submitted" class="alert alert-danger">
-        <div *ngIf="trainer_id.errors.required && !edit">
+        <div *ngIf="trainer_id.errors.required">
             El Entrenador es obligatorio
         </div>
       </div>
