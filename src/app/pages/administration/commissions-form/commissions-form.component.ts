@@ -50,6 +50,7 @@ export class CommissionsFormComponent {
           }else{
             this.showToast('danger','Hubo un error al crear comisión',data.error.error)
             this.router.navigate(['/pages/administration/commissions']);
+            console.log(data.error.error)
           }
           }
         });
@@ -59,7 +60,7 @@ export class CommissionsFormComponent {
 
   editCommissionForm(commissionForm:NgForm){
     if (commissionForm.valid){ 
-        if(commissionForm.value.password == commissionForm.value.confirm_password){
+        if(commissionForm.value.password == commissionForm.value.confirmPassword){
             this.match = true;
         }else{
             this.match = false;
@@ -67,7 +68,9 @@ export class CommissionsFormComponent {
         Object.assign(this.commission2, this.commission)
         if (this.match){
             delete this.commission2.confirmPassword;
-            //console.log(this.trainer2)
+            delete this.commission2.email;
+            console.log('MMM')
+            console.log("Comision2",this.commission2)
             this.commissionsService.updateCommission(this.commission2).subscribe(data=>{
                 if (data && !data.error){
                     console.log("Yay")
@@ -77,6 +80,7 @@ export class CommissionsFormComponent {
                 else {
                     console.log(data.error)
                     this.showToast('danger','Hubo un error al modificar la comisión',data.error.error)
+                    console.log(data.error.error)
                     this.router.navigate(['/pages/administration/commissions']);
                 }
             });

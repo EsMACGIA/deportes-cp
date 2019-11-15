@@ -1,7 +1,7 @@
 <nb-card>
     <nb-card-header>Formulario de comisiones</nb-card-header>
     <nb-card-body>
-      <form #commissionForm="ngForm" (ngSubmit)="addCommissionForm(commissionForm)">
+      <form #commissionForm="ngForm" (ngSubmit)="!edit ? addCommissionForm(commissionForm) : editCommissionForm(commissionForm)">
             <div class="row"> 
             <div class="col-sm-6">
                 <div class="form-group">
@@ -37,9 +37,9 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label for="password" class="label">Contraseña <span *ngIf="!edit">(*)</span></label>
-                    <input type="password" nbInput fullWidth id="password" name="password" placeholder="Contraseña" *ngIf="!edit" [(ngModel)]="commission.password" #password="ngModel" [required]="!edit">
+                    <input type="password" nbInput fullWidth id="password" name="password" placeholder="Contraseña" [(ngModel)]="commission.password" #password="ngModel" [required]="!edit">
                 </div>
-                <div *ngIf="password?.errors && commissionForm.submitted" class="alert alert-danger">
+                <div *ngIf="password.errors && commissionForm.submitted" class="alert alert-danger">
                     <div *ngIf="password.errors.required && !edit">
                         La contraseña es obligatoria
                     </div>
@@ -48,10 +48,10 @@
             <div class="col-sm-6">
                 <div class="form-group">
                     <label for="confirmPassword" class="label">Confirmar contraseña <span *ngIf="!edit">(*)</span></label>
-                    <input type="password" nbInput fullWidth id="confirmPassword" name="confirmPassword" placeholder="Confirmar contraseña" *ngIf="!edit" [(ngModel)]="commission.confirmPassword" #confirmPassword="ngModel"  [required]="!edit">
+                    <input type="password" nbInput fullWidth id="confirmPassword" name="confirmPassword" placeholder="Confirmar contraseña" [(ngModel)]="commission.confirmPassword" #confirmPassword="ngModel"  [required]="!edit">
  
                 </div>
-                <div *ngIf="confirmPassword?.errors && commissionForm.submitted" class="alert alert-danger">
+                <div *ngIf="confirmPassword.errors && commissionForm.submitted" class="alert alert-danger">
                     <div *ngIf="confirmPassword.errors.required && !edit">
                         La confirmación de contraseña es obligatoria
                     </div>
