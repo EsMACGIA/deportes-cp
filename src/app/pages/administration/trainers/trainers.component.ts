@@ -1,11 +1,13 @@
-import { Component, PLATFORM_ID, Inject, Injector} from '@angular/core';
+import { Component, TemplateRef} from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
+import {NbToastrService,NbComponentStatus, NbGlobalPosition, NbGlobalPhysicalPosition} from '@nebular/theme';
 
 import { SmartTableData } from '../../../@core/data/smart-table';
 import {HttpClient} from '@angular/common/http';
 import {TrainersService} from '../trainers/trainers.service';
+import { NbDialogService } from '@nebular/theme';
 import { Router, NavigationExtras } from '@angular/router';
-import { TrainersModel } from '../../catalog/trainers/trainers.model';
+import { TrainersModel } from '../trainers/trainers.model';
 
 @Component({
   selector: 'ngx-smart-table',
@@ -58,18 +60,28 @@ export class TrainersComponent {
     },
   };
 
+  //Toastr configuration
+  position:NbGlobalPosition = NbGlobalPhysicalPosition.TOP_RIGHT;
+  status: NbComponentStatus = 'success'
+  duration = 4000;
+  destroyByClick = false;
+  hasIcon = true;
+  index = 1;
+  preventDuplicates = false;
+  
   //Variable to load info to smart table
   source: LocalDataSource = new LocalDataSource();
 
   //Var to difference if open edit or add
   private edit: boolean = false; 
   private trainer : TrainersModel = new TrainersModel();
+  private dialogRef : any;
 
   constructor(
-    private service: SmartTableData,
-    private http: HttpClient,
     private trainersService: TrainersService,
-    private router: Router) {
+    private router: Router,
+    private dialogService: NbDialogService,
+    private toastrService: NbToastrService) {
 
       this.loadTrainers();
   }
@@ -117,6 +129,48 @@ export class TrainersComponent {
     this.trainer.confirmPassword = ""
     this.router.navigate(['pages/administration/trainers/form'], navigationExtras);
   }
+
+  openModal(dialog: TemplateRef<any>,event) {
+    Object.assign(this.trainer,event.data) //Instance all fields of user with the event data
+    this.dialogRef = this.dialogService.open(
+      dialog,
+      { context: this.trainer.name });
+  }
+
+  confirmDelete(dialog:TemplateRef<any>){
+    this.trainersService.deleteTrainer(this.trainer).subscribe(data=>{
+      if (data){
+        if (!data.error){
+
+          console.log(data)
+          this.showToast('success','Se ha eliminado un entrenador exitosamente','Se ha eliminado el entrenador ' + this.trainer.name + ' de manera exitosa.')
+          this.dialogRef.close();
+          this.loadTrainers();
+        }else{
+          this.showToast('danger','Hubo un error al eliminar el entrenador',data.error.error)
+          this.dialogRef.close();
+        }
+      }
+    })
+  }
+  
+  private showToast(type: NbComponentStatus, title: string, body: string){
+    const config = {
+      status: type,
+      destroyByClick: this.destroyByClick,
+      duration: this.duration,
+      hasIcon: this.hasIcon,
+      position: this.position,
+      preventDuplicates: this.preventDuplicates,
+    };
+
+    this.index += 1;
+    this.toastrService.show(
+      body,
+      title,
+      config);
+  }
+
 }
 
 
