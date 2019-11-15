@@ -42,11 +42,15 @@ import {TrainersModel} from './trainers/trainers.model';
       NbDialogModule,
       FormsModule,
       CommonModule,
-  ],
+      NbDialogModule,
 
+      
+  ],
   declarations: [
     ...routedComponents,
+
   ],
+  
   providers: [
     CommissionsService,
     CommissionsModel,
