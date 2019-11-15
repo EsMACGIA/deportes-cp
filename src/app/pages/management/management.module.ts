@@ -20,6 +20,7 @@ import { ThemeModule } from '../../@theme/theme.module';
 import { ManagementRoutingModule, routedComponents } from './management-routing.module';
 
 import {ClassesService} from './classes/classes.service';
+
 import {TrainersService} from '../administration/trainers/trainers.service';
 
 //Models
@@ -27,6 +28,9 @@ import {AthletesModel} from './athletes/athletes.model';
 import {ClassesModel} from './classes/classes.model';
 //Services
 import {AthletesService} from './athletes/athletes.service';
+import {RequestsService} from './requests/requests.service';
+
+//Models
 
 
 @NgModule({
@@ -58,6 +62,10 @@ import {AthletesService} from './athletes/athletes.service';
     ClassesModel,
     TrainersService,
     AthletesService,
+<<<<<<< HEAD
+=======
+    RequestsService,
+>>>>>>> 426da52fa51ca363f3cd52bed4748f061b3a7df4
   ],
 })
 export class ManagementModule { }
