@@ -9,11 +9,14 @@ import {
   NbDatepickerModule
 } from '@nebular/theme';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { FormsModule } from '@angular/forms';
 
 import { ThemeModule } from '../../@theme/theme.module';
 
 import { ManagementRoutingModule, routedComponents } from './management-routing.module';
 
+//Models
+import {AthletesModel} from './athletes/athletes.model';
 @NgModule({
   imports: [
     ManagementRoutingModule,  
@@ -25,6 +28,7 @@ import { ManagementRoutingModule, routedComponents } from './management-routing.
     NbSelectModule,
     NbDatepickerModule,
     ThemeModule,
+    FormsModule,
     Ng2SmartTableModule,
   ],
 
@@ -32,7 +36,7 @@ import { ManagementRoutingModule, routedComponents } from './management-routing.
     ...routedComponents,
   ],
   providers: [
-
+    AthletesModel,
   ],
 })
 export class ManagementModule { }

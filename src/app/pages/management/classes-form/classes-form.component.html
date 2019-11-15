@@ -4,14 +4,28 @@
     <div class="row">
       <div class="col-sm-6">
         <div class="form-group">
-          <label for="name" class="label">Nombres</label>
-          <input type="text" nbInput fullWidth id="name" placeholder="Nombres">
+          <label for="name" class="label">Comisión</label>
+          <input type="text" nbInput fullWidth id="name" placeholder="Comisión">
         </div>
       </div>
       <div class="col-sm-6">
         <div class="form-group">
-          <label for="lastname" class="label">Apellidos</label>
-          <input type="text" nbInput fullWidth id="lastname" placeholder="Apllidos">
+          <label for="lastname" class="label">Descripción</label>
+          <input type="text" nbInput fullWidth id="lastname" placeholder="Descripción">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="name" class="label">Nombres de Entrenador</label>
+          <input type="text" nbInput fullWidth id="name" placeholder="Nombres de Entrenador">
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="lastname" class="label">Apellidos de Entrenador</label>
+          <input type="text" nbInput fullWidth id="lastname" placeholder="Apellidos de Entrenador">
         </div>
       </div>
     </div>
@@ -24,35 +38,11 @@
       </div>
       <div class="col-sm-6">
         <div class="form-group">
-          <label for="stock_number" class="label">N° Acción</label>
-          <input type="text" nbInput fullWidth id="stock_number" placeholder="N° Acción">
+          <label for="stock_number" class="label">Correo Electrónico</label>
+          <input type="text" nbInput fullWidth id="stock_number" placeholder="Correo Electrónico">
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label for="sex" class="label">Sexo</label>
-          <div>
-            <nb-select selected="1" id="sex">
-              <nb-option value="1">M</nb-option>
-              <nb-option value="2">F</nb-option>
-            </nb-select>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label for="birthday" class="label">Fecha de Nacimiento</label>
-          <div>
-            <input nbInput
-                placeholder="Fecha de Nacimiento"
-                [nbDatepicker]="formpicker">
-            <nb-datepicker #formpicker></nb-datepicker>
-          </div>
-        </div>
-      </div>
-    </div>
-    <button type="button" nbButton (click)="createAthlete()">Agregar</button>
+    <button type="button" nbButton (click)="createClass()">Agregar</button>
   </nb-card-body>
 </nb-card>

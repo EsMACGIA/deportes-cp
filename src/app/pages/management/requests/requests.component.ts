@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'requests-component',
@@ -56,7 +57,7 @@ export class RequestsComponent {
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor() {
+  constructor(private router: Router) {
     const data = [
       {
         id: 1,
@@ -72,5 +73,9 @@ export class RequestsComponent {
       },
     ]
     this.source.load(data);
+  }
+
+  createRequest(event) {
+    this.router.navigate(['/pages/management/requests-form'])
   }
 }

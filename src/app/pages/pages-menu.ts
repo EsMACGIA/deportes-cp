@@ -19,7 +19,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/pages/management/classes'
       },
       {
-        title: 'Request',
+        title: 'Solicitudes',
         link: '/pages/management/requests'
       }
     ]

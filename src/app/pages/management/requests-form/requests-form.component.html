@@ -1,1 +1,72 @@
-<h1>Request-Form Component!</h1>
+<nb-card>
+  <nb-card-header>{{ cardTitle }}</nb-card-header>
+  <nb-card-body>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="name" class="label">Nombres</label>
+          <input type="text" nbInput fullWidth id="name" placeholder="Nombres">
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="lastname" class="label">Apellidos</label>
+          <input type="text" nbInput fullWidth id="lastname" placeholder="Apellidos">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="ci" class="label">Cédula de Identidad</label>
+          <input type="ci" nbInput fullWidth id="ci" placeholder="Cédula de Identidad">
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="stock_number" class="label">N° Acción</label>
+          <input type="text" nbInput fullWidth id="stock_number" placeholder="N° Acción">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="sex" class="label">Sexo</label>
+          <div>
+            <nb-select selected="1" id="sex">
+              <nb-option value="1">M</nb-option>
+              <nb-option value="2">F</nb-option>
+            </nb-select>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="birthday" class="label">Fecha de Nacimiento</label>
+          <div>
+            <input nbInput
+                placeholder="Fecha de Nacimiento"
+                [nbDatepicker]="formpicker">
+            <nb-datepicker #formpicker></nb-datepicker>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="ci" class="label">Comisión</label>
+          <input type="ci" nbInput fullWidth id="ci" placeholder="Comisión">
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="stock_number" class="label">Descripción</label>
+          <input type="text" nbInput fullWidth id="stock_number" placeholder="Descripción">
+        </div>
+      </div>
+    </div>
+    <button type="button" nbButton (click)="createRequest()">Agregar</button>
+  </nb-card-body>
+</nb-card>

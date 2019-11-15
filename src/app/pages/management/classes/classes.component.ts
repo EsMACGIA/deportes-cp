@@ -9,10 +9,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./classes.component.scss'],
 })
 export class ClassesComponent {
-
-  createClass() {
-    this.router.navigate(['/pages/management/classes-form']);
-  }
   
   settings = {
     mode: 'external',
@@ -87,16 +83,20 @@ export class ClassesComponent {
     this.source.load(data);
   }
 
-  editClass(event) {
-    console.log('Event: ', event)
-  }
-
-  onDeleteConfirm(event): void {
-    if (window.confirm('¿Está seguro que desea eliminar esta clase?')) {
-      event.confirm.resolve();
-    } else {
-      event.confirm.reject();
+    createClass(event) {
+      this.router.navigate(['/pages/management/classes-form']);
     }
+    
+    editClass(event) {
+      console.log('Event: ', event)
+    }
+    
+    onDeleteConfirm(event): void {
+      if (window.confirm('¿Está seguro que desea eliminar esta clase?')) {
+        event.confirm.resolve();
+      } else {
+        event.confirm.reject();
+      }
+      
   }
 }
-  
