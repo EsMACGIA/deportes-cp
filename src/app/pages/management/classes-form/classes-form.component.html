@@ -7,12 +7,26 @@
         <label for="description" class="label">Descripción</label>
         <input type="text" nbInput fullWidth id="description" name="description" placeholder="Descripción" [(ngModel)]="clase.description" #description="ngModel" required>
       </div>
-      
-      <div *ngIf="!edit" class="form-group">
+      <div *ngIf="description.errors && classForm.submitted" class="alert alert-danger">
+        <div *ngIf="description.errors.required && !edit">
+            La descripción es obligatoria
+        </div>
+      </div>
+
+      <div class="form-group">
         <label for="trainer_id" class="label col-sm-4 col-form-label">Entrenador (*)</label>
-        <select [(ngModel)]="clase.trainer_id" name="trainer_id" #trainer_id="ngModel" required>
+        <select [(ngModel)]="clase.trainer_id" name="trainer_id" #trainer_id="ngModel" required [disabled]="edit">
           <option *ngFor="let t of trainers" [value]="t.id">{{t.name}} {{t.lastname}}</option>
         </select>
+      </div>
+      <div *ngIf="trainer_id.errors && classForm.submitted" class="alert alert-danger">
+        <div *ngIf="trainer_id.errors.required && !edit">
+            El Entrenador es obligatorio
+        </div>
+      </div>
+
+      <div>
+          <label class="label">Los campos con (*) son obligatorios</label>
       </div>
 
       <button type="submit" nbButton status="primary">Guardar</button>
