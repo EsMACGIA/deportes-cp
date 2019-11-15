@@ -1,12 +1,12 @@
 <nb-card>
-  <nb-card-header>{{ cardTitle }}</nb-card-header>
+  <nb-card-header>Formulario de Atletas</nb-card-header>
   <nb-card-body>
-    <form #athleteForm="ngForm" (ngSubmit)="addAthleteForm(athleteForm)">
+    <form #athleteForm="ngForm" (ngSubmit)="!edit ? addAthleteForm(athleteForm) : editAthletesForm(athleteForm)">
       <div class="row">
         <div class="col-sm-6">
           <div class="form-group">
             <label for="name" class="label">Nombres <span class="danger">(*)</span></label>
-            <input type="text" nbInput fullWidth id="name" name="name" placeholder="Nombres" [(ngModel)]="athlete.name" #name="ngModel" required>
+            <input type="text" nbInput fullWidth id="name" name="name" placeholder="Juan" [(ngModel)]="athlete.name" #name="ngModel" required>
           </div>
           <div *ngIf="name?.errors && athleteForm.submitted" class="alert alert-danger">
             <div *ngIf="name?.errors?.required">
@@ -17,7 +17,7 @@
         <div class="col-sm-6">
           <div class="form-group">
             <label for="lastname" class="label">Apellidos <span class="danger">(*)</span></label>
-            <input type="text" nbInput fullWidth id="lastname" name="lastname" placeholder="Apellidos" [(ngModel)]="athlete.lastname" #lastname="ngModel" required>
+            <input type="text" nbInput fullWidth id="lastname" name="lastname" placeholder="Oropeza" [(ngModel)]="athlete.lastname" #lastname="ngModel" required>
           </div>
           <div *ngIf="lastname?.errors && athleteForm.submitted" class="alert alert-danger">
             <div *ngIf="lastname?.errors?.required">
@@ -29,19 +29,21 @@
       <div class="row">
         <div class="col-sm-6">
           <div class="form-group">
-            <label for="ci" class="label">Cédula de Identidad <span class="danger">(*)</span></label>
-            <input type="ci" nbInput fullWidth id="ci"name="ci" placeholder="Cédula de Identidad" [(ngModel)]="athlete.ci" #ci="ngModel" required>
+              <label for="ci" class="label">CI </label>
+              <div class="input-group">
+                  <input type="text" nbInput fullWidth id="ci" name="ci" placeholder="V-12345678" [(ngModel)]="athlete.ci" #ci="ngModel" pattern="^[VEPGJ]\-[1-9]\d{0,8}$">  
+              </div>
           </div>
-          <div *ngIf="ci?.errors && athleteForm.submitted" class="alert alert-danger">
-            <div *ngIf="ci?.errors?.required">
-                    La cédula de identidad es obligatorio
-            </div>
+          <div *ngIf="ci.errors && athleteForm.submitted" class="alert alert-danger">
+              <div *ngIf="ci.errors.pattern">
+                 La CI no tiene formato correcto
+              </div>
           </div>
         </div>
         <div class="col-sm-6">
           <div class="form-group">
             <label for="stock_number" class="label">N° Acción <span class="danger">(*)</span></label>
-            <input type="text" nbInput fullWidth id="stock_number" name="stock_number" placeholder="N° Acción" [(ngModel)]="athlete.stock_number" #stock_number="ngModel" required>
+            <input type="number" nbInput fullWidth id="stock_number" name="stock_number" placeholder="1234" [(ngModel)]="athlete.stock_number" #stock_number="ngModel" required>
           </div>
           <div *ngIf="stock_number?.errors && athleteForm.submitted" class="alert alert-danger">
             <div *ngIf="stock_number?.errors?.required">
@@ -55,10 +57,15 @@
           <div class="form-group">
             <label for="sex" class="label">Sexo <span class="danger">(*)</span></label>
             <div>
-              <nb-select selected="1" id="sex">
-                <nb-option value="1">M</nb-option>
-                <nb-option value="2">F</nb-option>
+              <nb-select selected="-" id="sex" name="sex" [(ngModel)]="athlete.sex" #sex="ngModel" required>
+                <nb-option value="M">M</nb-option>
+                <nb-option value="F">F</nb-option>
               </nb-select>
+            </div>
+          </div>
+          <div *ngIf="sex?.errors && athleteForm.submitted" class="alert alert-danger">
+            <div *ngIf="sex?.errors?.required">
+                    El sexo es obligatorio
             </div>
           </div>
         </div>
