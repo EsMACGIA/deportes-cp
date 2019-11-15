@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { MENU_ITEMS } from './pages-menu';
+import { MENU_ADMIN, MENU_COMMISSION, MENU_TRAINER } from './pages-menu';
 import { Router } from '@angular/router';
 
 @Component({
@@ -15,13 +15,21 @@ import { Router } from '@angular/router';
 })
 export class PagesComponent {
 
+  menu = MENU_TRAINER;
+
   constructor(
     private router: Router
   ) {
     if (!localStorage.getItem('token')) {
       this.router.navigate(['/']);
     }
+
+    if (localStorage.getItem('type') == '1') {
+      this.menu = MENU_ADMIN;
+    } else if (localStorage.getItem('type') == '2') {
+      this.menu = MENU_COMMISSION;
+    }
+
   }
 
-  menu = MENU_ITEMS;
 }
