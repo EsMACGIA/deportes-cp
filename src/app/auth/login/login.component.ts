@@ -20,6 +20,8 @@ export class NgxLoginComponent extends NbLoginComponent {
   position:NbGlobalPosition = NbGlobalPhysicalPosition.TOP_RIGHT;
   index = 1;
 
+  loginGroup = false;
+
   constructor(
     private authService: AuthService,
     service: NbAuthService,
@@ -33,6 +35,7 @@ export class NgxLoginComponent extends NbLoginComponent {
   }
 
   auth(user) {
+    this.loginGroup = true;
     this.authService.login(user).subscribe(data=>{
       if (data){
         if (data.token) {
@@ -41,6 +44,7 @@ export class NgxLoginComponent extends NbLoginComponent {
           this.router.navigate(['pages/']);
         } else if (data.error) {
           this.showToast('danger','Hubo un error al iniciar sesión', data.error.error);
+          this.loginGroup = false;
         }
       }
     })
