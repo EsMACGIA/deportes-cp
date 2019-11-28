@@ -1,5 +1,5 @@
 <nb-card>
-    <nb-card-header>Formulario de comisiones</nb-card-header>
+    <nb-card-header>{{formTitle}}</nb-card-header>
     <nb-card-body>
       <form #commissionForm="ngForm" (ngSubmit)="!edit ? addCommissionForm(commissionForm) : editCommissionForm(commissionForm)">
             <div class="row"> 

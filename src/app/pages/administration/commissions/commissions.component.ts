@@ -66,6 +66,7 @@ export class CommissionsComponent {
   private dialogRef : any;
   //Var to difference if open edit or add
   private edit: boolean = false; 
+  private formTitle : String;
 
   constructor(private router: Router,private commissionsService:CommissionsService,private dialogService: NbDialogService,
     private toastrService: NbToastrService) {
@@ -85,9 +86,10 @@ export class CommissionsComponent {
 
     createCommissionsForm(){
       this.edit = false;
+      this.formTitle = "Agregar Comisión";
       this.commission = new CommissionsModel();
       let navigationExtras: NavigationExtras = {
-        queryParams: { commission : this.commission, edit : this.edit }
+        queryParams: { commission : this.commission, edit : this.edit}
       };
       this.router.navigate(['pages/administration/commissions/form'], navigationExtras);
     }
@@ -95,9 +97,10 @@ export class CommissionsComponent {
 
     editCommissionsForm(event){
       this.edit = true;
+      this.formTitle = "Editar Comisión";
       Object.assign(this.commission,event.data) //Instance all fields of trainers with the event data
       let navigationExtras: NavigationExtras = {
-        queryParams: { commission : this.commission, edit : this.edit  }
+        queryParams: { commission : this.commission, edit : this.edit}
       };
       this.commission.password = ""
       this.commission.confirmPassword = ""

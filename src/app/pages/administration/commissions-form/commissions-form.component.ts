@@ -17,6 +17,7 @@ export class CommissionsFormComponent {
   private commission: CommissionsModel = this.router.getCurrentNavigation().extras.queryParams.commission;
   private commission2: CommissionsModel = new CommissionsModel();
   private edit : boolean = this.router.getCurrentNavigation().extras.queryParams.edit;
+  private formTitle : String;
 
   //Toastr configuration
   position:NbGlobalPosition = NbGlobalPhysicalPosition.TOP_RIGHT;
@@ -30,7 +31,17 @@ export class CommissionsFormComponent {
   constructor(private commissionsService:CommissionsService, private commissionModel:CommissionsModel,
     private router:Router, private toastrService: NbToastrService) {}
 
+  ngOnInit(){
+    if (this.edit){
+      this.formTitle = "Editar Comisión"
+    }
+    else{
+      this.formTitle = "Agregar Comisión"
+    }
+  }
+
   addCommissionForm(commissionForm:NgForm){
+
     if (commissionForm.valid){
       if(commissionForm.value.password == commissionForm.value.confirmPassword){
         this.match = true;
