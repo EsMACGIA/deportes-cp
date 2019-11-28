@@ -20,6 +20,7 @@ export class AthletesFormComponent {
 
   athlete : AthletesModel = this.router.getCurrentNavigation().extras.queryParams.athlete;
   edit : boolean = this.router.getCurrentNavigation().extras.queryParams.edit;
+  formTitle : String;
   
   //Toastr configuration
   config:ToasterConfig;
@@ -33,6 +34,15 @@ export class AthletesFormComponent {
 
   constructor(private athletesService:AthletesService, private athleteModel:AthletesModel,
     private router:Router, private toastrService: NbToastrService) {}
+
+    ngOnInit(){
+      if (this.edit){
+        this.formTitle = "Editar Atleta"
+      }
+      else{
+        this.formTitle = "Agregar Atleta"
+      }
+    }
 
     addAthleteForm(athleteForm:NgForm){
       console.log(this.athlete)

@@ -1,5 +1,5 @@
 <nb-card>
-  <nb-card-header>Formulario de clases</nb-card-header>
+  <nb-card-header>{{formTitle}}</nb-card-header>
   <nb-card-body>
     <form #classForm="ngForm" (ngSubmit)="!edit ? addClassForm(classForm) : editClassForm(classForm)">
       

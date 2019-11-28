@@ -1,5 +1,5 @@
 <nb-card>
-  <nb-card-header>Formulario de Atletas</nb-card-header>
+  <nb-card-header>{{formTitle}}</nb-card-header>
   <nb-card-body>
     <form #athleteForm="ngForm" (ngSubmit)="!edit ? addAthleteForm(athleteForm) : editAthletesForm(athleteForm)">
       <div class="row">

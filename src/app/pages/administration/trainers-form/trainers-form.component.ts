@@ -19,6 +19,7 @@ export class TrainersFormComponent {
     trainer2:TrainersModel = new TrainersModel();
     match : boolean = true;
     edit : boolean = this.router.getCurrentNavigation().extras.queryParams.edit;
+    formTitle : String;
 
     //Variables to Toastr configuration
     config:ToasterConfig;
@@ -36,6 +37,15 @@ export class TrainersFormComponent {
         private router:Router,
         private toastrService: NbToastrService) {
     }
+
+    ngOnInit(){
+        if (this.edit){
+          this.formTitle = "Editar Entrenador"
+        }
+        else{
+          this.formTitle = "Agregar Entrenador"
+        }
+      }
 
     addTrainerForm(trainerForm:NgForm){
         if (trainerForm.valid){ 

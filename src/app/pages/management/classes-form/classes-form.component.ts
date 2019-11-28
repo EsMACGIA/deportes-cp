@@ -18,7 +18,7 @@ export class ClassesFormComponent {
   clase2: ClassesModel = new ClassesModel();
   edit : boolean = this.router.getCurrentNavigation().extras.queryParams.edit;
   type: string = 'edit';
-  cardTitle: string = ''; 
+  formTitle: string = '';
 
 
   //Variables to Toastr configuration
@@ -39,6 +39,12 @@ export class ClassesFormComponent {
   }
 
   ngOnInit() {
+    if (this.edit){
+      this.formTitle = "Editar Comisión"
+    }
+    else{
+      this.formTitle = "Agregar Comisión"
+    }
     this.trainersService.getTrainerList().subscribe(data =>{
       this.trainers = data;
     });
