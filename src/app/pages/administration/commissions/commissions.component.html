@@ -13,7 +13,10 @@
 <ng-template #dialog let-data let-ref="dialogRef">
     <nb-card>
       <nb-card-header>Confirmación de eliminar comisión</nb-card-header>
-      <nb-card-body>¿Está seguro que desea eliminar la comisión {{ data }}?</nb-card-body>
+      <nb-card-body>
+        ¿Está seguro que desea eliminar la comisión {{ data }}?
+        <br>Tambien se borrarán todos los datos asociados a ella (clases, entrenadores, etc)
+      </nb-card-body>
       <nb-card-footer>
           <div class="row">
             <div class="col-sm-6">
