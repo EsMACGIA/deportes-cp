@@ -31,7 +31,38 @@ export class TrainersFormComponent {
       },
     mode: 'external',
     add: {
-      addButtonContent: '<i class="nb-checkmark"></i>',
+      addButtonContent: '<i class="nb-edit"></i>',
+    },
+    delete: {
+      deleteButtonContent: '<i class="nb-trash"></i>',
+      confirmDelete: true,
+    },
+    columns: {
+      id: {
+        title: 'ID',
+        type: 'number',
+      },
+      name: {
+        title: 'Nombre',
+        type: 'string',
+      },
+      email: {
+        title: 'E-mail',
+        type: 'string',
+      },
+    },
+  };
+
+  settings2 = {
+    actions: {
+      columnTitle: 'Acciones',
+      add:false,
+      delete:false,
+      position:'right',
+      },
+    mode: 'external',
+    add: {
+      addButtonContent: '<i class="nb-edit"></i>',
     },
     delete: {
       deleteButtonContent: '<i class="nb-trash"></i>',
