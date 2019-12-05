@@ -40,6 +40,7 @@ export class ClassesComponent {
       id: {
         title: 'ID',
         type: 'number',
+        width: '100px'
       },
       description: {
         title: 'descripción',

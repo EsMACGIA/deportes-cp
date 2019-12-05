@@ -30,6 +30,7 @@ export class RequestsComponent {
       id: {
         title: 'ID',
         type: 'number',
+        width: '100px'
       },
       birthday: {
         title: 'Fecha de nacimiento',

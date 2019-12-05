@@ -40,6 +40,7 @@ export class CommissionsComponent {
       id: {
         title: 'ID',
         type: 'number',
+        width: '100px'
       },
       name: {
         title: 'Nombre',
