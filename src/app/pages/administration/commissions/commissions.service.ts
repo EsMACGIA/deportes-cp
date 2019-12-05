@@ -7,17 +7,18 @@ import {CommissionsModel} from './commissions.model';
 export class CommissionsService extends BaseService{
 
     getCommissionsList():Observable<any>{
-        return this.getBase('comissions/')
+        this.setHeaders();
+        return this.getBase('comissions/', this.setHeaders())
     }
 
     createCommissions(commissions:CommissionsModel):Observable<any>{
-        return this.postBase(commissions,'comissions/')
+        return this.postBase(commissions,'comissions/', this.setHeaders())
     }
     deleteCommission(commission:CommissionsModel):Observable<any>{
-        return this.deleteBase(commission,'comissions/' + commission.id + '/')
+        return this.deleteBase(commission,'comissions/' + commission.id, this.setHeaders())
     }
 
     updateCommission(commission:CommissionsModel):Observable<any>{
-        return this.putBase(commission,'comissions/')
+        return this.putBase(commission,'comissions/', this.setHeaders())
     }
 }
