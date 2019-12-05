@@ -118,8 +118,8 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="form-group">
-                        <ng2-smart-table [settings]="settings" [source]="source" (delete)="openModal(dialog,$event)"
-                        (create)="openModal(dialog,$event)" (edit)="editTrainersForm($event)">
+                        <ng2-smart-table [settings]="settings" [source]="source" (delete)="disassociateTrainer($event)"
+                        (create)="openModal(dialog,$event)">
                         </ng2-smart-table>
                     </div>
                 </div>
@@ -143,17 +143,14 @@
     <nb-card>
       <nb-card-header>Asociar comisiones</nb-card-header>
       <nb-card-body>
-        <ng2-smart-table [settings]="settings2" [source]="source" (delete)="openModal(dialog,$event)"
-        (create)="openModal(dialog,$event)" (edit)="editTrainersForm($event)">
+          <p>Para añadir una comisión presione el botón de +</p>
+        <ng2-smart-table [(settings)]="settings2" [source]="source2" (edit)="addCommission($event)">
         </ng2-smart-table>
       </nb-card-body>
       <nb-card-footer>
             <div class="row">
               <div class="col-sm-6">
-                  <button nbButton (click)="confirmDelete()">Guardar</button>
-                </div>
-                <div class="col-sm-6">
-                  <button nbButton (click)="ref.close()">Cancelar</button>
+                  <button nbButton (click)="closeModal()">Cerrar</button>
                 </div>
             </div>
         </nb-card-footer>

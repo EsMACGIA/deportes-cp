@@ -5,10 +5,12 @@ import { ToasterConfig } from 'angular2-toaster';
 import {NbToastrService,NbComponentStatus, NbGlobalPosition, NbGlobalPhysicalPosition, NbToastrContainerComponent} from '@nebular/theme';
 //Services
 import {TrainersService} from '../trainers/trainers.service';
+import {CommissionsService} from '../commissions/commissions.service';
 //Models
 import {TrainersModel} from '../trainers/trainers.model';
 import {Router} from '@angular/router'
 import { NbDialogService } from '@nebular/theme';
+import {CommissionsModel} from '../commissions/commissions.model';
 
 
 @Component({
@@ -22,19 +24,23 @@ export class TrainersFormComponent {
     private trainer2:TrainersModel = new TrainersModel();
     private match : boolean = true;
     private edit : boolean = this.router.getCurrentNavigation().extras.queryParams.edit;
+    private commissionsList:CommissionsModel[];
+
     //Settings of Smart Table
     settings = {
     actions: {
       columnTitle: 'Acciones',
       edit: false,
-      delete: false
       },
     mode: 'external',
+    editor: {
+      type: 'checkbox',
+    },
     add: {
       addButtonContent: '<i class="nb-edit"></i>',
     },
     delete: {
-      deleteButtonContent: '<i class="nb-trash"></i>',
+      deleteButtonContent: '<i class="nb-close"></i>',
       confirmDelete: true,
     },
     columns: {
@@ -57,16 +63,12 @@ export class TrainersFormComponent {
     actions: {
       columnTitle: 'Acciones',
       add:false,
-      delete:false,
+      delete: false,
       position:'right',
       },
     mode: 'external',
-    add: {
-      addButtonContent: '<i class="nb-edit"></i>',
-    },
-    delete: {
-      deleteButtonContent: '<i class="nb-trash"></i>',
-      confirmDelete: true,
+    edit:{
+      editButtonContent: '<i class="nb-plus"></i>',
     },
     columns: {
       id: {
@@ -97,6 +99,8 @@ export class TrainersFormComponent {
     private dialogRef : any;
     //Variable to load info to smart table
     source: LocalDataSource = new LocalDataSource();
+    //Variable to load info of all commissions
+    source2 : LocalDataSource = new LocalDataSource();
 
     private commissions = [
       {
@@ -122,14 +126,14 @@ export class TrainersFormComponent {
         private trainersModel:TrainersModel,
         private router:Router,
         private toastrService: NbToastrService,
-        private dialogService: NbDialogService) {
+        private dialogService: NbDialogService,
+        private commissionsService:CommissionsService) {
           this.currentUser = JSON.parse(localStorage.getItem('currentUser'))
           console.log(this.currentUser)
           this.type_user = this.currentUser.role
           console.log(this.currentUser.role)
-          if (this.type_user == 'admin'){
             this.source.load(this.commissions)
-          }
+          
     }
 
     addTrainerForm(trainerForm:NgForm){
@@ -186,8 +190,47 @@ export class TrainersFormComponent {
         }
     }
 
-    addCommission(){
-      
+    addCommission(event){
+      console.log('AAA=[.')
+      for (let i = 0;i<this.commissionsList.length;i++){
+        if (event.data.id == this.commissionsList[i].id){
+          this.commissionsList.splice(i,1)
+          this.source2.load(this.commissionsList)
+        }
+      }
+      this.commissions.push(event.data)
+      this.source.load(this.commissions)
+    }
+
+    disassociateTrainer(event){
+      for (let i = 0;i<this.commissions.length;i++){
+        if (event.data.id == this.commissions[i].id){
+          this.commissions.splice(i,1)
+        }
+      }
+      this.source.load(this.commissions)
+    }
+
+    loadAllCommissions(){
+      this.commissionsService.getCommissionsList().subscribe( data =>{
+        if (data){
+          if (!data.error){
+            this.commissionsList = data;
+            for (let i = 0;i<this.commissions.length;i++){
+              for (let j = 0;j<this.commissionsList.length;j++){
+                if(this.commissions[i].id == this.commissionsList[j].id){
+                  console.log('Test')
+                  this.commissionsList.splice(j,1)
+                }
+              }
+            }
+            this.source2.load(this.commissionsList);
+          }else{
+            this.showToast('danger','Hubo un error al cargar las comisiones',data.error.error)
+          }
+        }
+      }
+      )
     }
 
     private showToast(type: NbComponentStatus, title: string, body: string) {
@@ -208,9 +251,14 @@ export class TrainersFormComponent {
       }
 
       openModal(dialog: TemplateRef<any>,event) {
+        this.loadAllCommissions();
         Object.assign(this.trainer,event.data) //Instance all fields of user with the event data
         this.dialogRef = this.dialogService.open(
           dialog,
           { context: this.trainer.name });
+      }
+
+      closeModal(){
+        this.dialogRef.close();
       }
 }
