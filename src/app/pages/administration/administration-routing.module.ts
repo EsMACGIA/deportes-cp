@@ -6,6 +6,7 @@ import {CommissionsComponent} from './commissions/commissions.component';
 import {CommissionsFormComponent} from './commissions-form/commissions-form.component';
 import { TrainersComponent } from './trainers/trainers.component';
 import {TrainersFormComponent} from './trainers-form/trainers-form.component'
+import { AuthGuard } from '../../auth/auth.guard';
 
 const routes: Routes = [{
   path: '',
@@ -13,19 +14,27 @@ const routes: Routes = [{
   children: [
     {
       path: 'commissions',
-      component: CommissionsComponent
+      component: CommissionsComponent,
+      canActivate: [ AuthGuard ],
+      data: { roles: ['admin'] }
     },
     {
       path : 'commissions/form',
       component : CommissionsFormComponent,
+      canActivate: [ AuthGuard ],
+      data: { roles: ['admin'] }
     },
     {
       path: 'trainers',
       component: TrainersComponent,
+      canActivate: [ AuthGuard ],
+      data: { roles: ['admin', 'commission'] }
     },
     {
       path: 'trainers/form',
       component: TrainersFormComponent,
+      canActivate: [ AuthGuard ],
+      data: { roles: ['admin', 'commission'] }
     }
   ],
 }];

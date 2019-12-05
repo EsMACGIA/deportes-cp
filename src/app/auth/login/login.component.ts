@@ -31,17 +31,17 @@ export class NgxLoginComponent extends NbLoginComponent {
     private toastrService: NbToastrService
   ) {
     super(service, options, cd, router);
-    localStorage.removeItem('token');
   }
 
   auth(user) {
     this.loginGroup = true;
-    this.authService.login(user).subscribe(data=>{
+    this.authService.login(user).subscribe(data => {
       if (data){
-        if (data.token) {
-          localStorage.setItem('token', data.token);
-          localStorage.setItem('type', data.type);
-          this.router.navigate(['pages/']);
+        if (data.token && data.user) {
+          localStorage.setItem('currentToken', data.token);
+          localStorage.setItem('currentUser', JSON.stringify(data.user));
+          this.authService.currentUserSubject.next(data.user);
+          this.router.navigate(['/pages/dashboard']);
         } else if (data.error) {
           this.showToast('danger','Hubo un error al iniciar sesión', data.error.error);
           this.loginGroup = false;

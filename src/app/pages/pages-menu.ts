@@ -33,11 +33,6 @@ export const MENU_ADMIN: NbMenuItem[] = [
         link: '/pages/management/requests'
       }
     ]
-  },
-  {
-    title: 'Auth Test',
-    icon: 'people-outline',
-    link: '/auth'
   }
 ];
 
@@ -69,18 +64,8 @@ export const MENU_COMMISSION: NbMenuItem[] = [
         link: '/pages/management/requests-form'
       }
     ]
-  },
-  {
-    title: 'Auth Test',
-    icon: 'people-outline',
-    link: '/auth'
   }
 ]
 
 export const MENU_TRAINER: NbMenuItem[] = [
-  {
-    title: 'Auth Test',
-    icon: 'people-outline',
-    link: '/auth'
-  }
 ]

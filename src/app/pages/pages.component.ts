@@ -20,14 +20,18 @@ export class PagesComponent {
   constructor(
     private router: Router
   ) {
-    if (!localStorage.getItem('token')) {
+    if (!localStorage.getItem('currentToken')) {
       this.router.navigate(['/']);
     }
 
-    if (localStorage.getItem('type') == '1') {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+    if (currentUser.role == 'admin') {
       this.menu = MENU_ADMIN;
-    } else if (localStorage.getItem('type') == '2') {
+    } else if (currentUser.role == 'commission') {
       this.menu = MENU_COMMISSION;
+    } else if (currentUser.role == 'trainer') {
+      this.menu = MENU_TRAINER;
     }
 
   }
