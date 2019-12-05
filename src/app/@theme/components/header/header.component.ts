@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService } from '@nebular/theme';
 
-import { UserData } from '../../../@core/data/users';
 import { LayoutService } from '../../../@core/utils';
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -46,7 +45,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(private sidebarService: NbSidebarService,
               private menuService: NbMenuService,
               private themeService: NbThemeService,
-              private userService: UserData,
               private layoutService: LayoutService,
               private breakpointService: NbMediaBreakpointsService,
               private router: Router,
@@ -54,11 +52,24 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.currentTheme = this.themeService.currentTheme;
+    
+    let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    console.log('currentUser: ', currentUser);
 
-    this.userService.getUsers()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((users: any) => this.user = users.nick);
+    let name = '';
+
+    if(currentUser.role == 'admin') {
+      name = 'Administrador';
+    } else if (currentUser.role == 'commission') {
+      name = currentUser.name;
+    } else {
+      name = currentUser.name + ' ' + currentUser.lastname;
+    } 
+
+    console.log('Name: ', name);
+    this.user = { name };
+
+    this.currentTheme = this.themeService.currentTheme;
 
     const { xl } = this.breakpointService.getBreakpointsMap();
     this.themeService.onMediaQueryChange()
