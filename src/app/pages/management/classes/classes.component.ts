@@ -78,6 +78,8 @@ export class ClassesComponent {
   private clase : ClassesModel = new ClassesModel();
   private dialogRef : any;
 
+  private currentUser;
+
   constructor(
     private router: Router,
     private classesService: ClassesService,
@@ -117,13 +119,34 @@ export class ClassesComponent {
   }
 
   loadClasses(){
-    let data = this.classesService.getClassList().subscribe(data=>{
+    this.classesService.getClassList().subscribe(data=>{
       if (data){
         console.log('Recibiendo Clases', data);
         this.classList = data;
         this.source.load(this.classList);
       }
     });
+  }
+
+  loadClassesId(id){
+    this.classesService.getClasses(id).subscribe(data=>{
+      if (data){
+        this.classList = data;
+        this.source.load(this.classList)
+      }
+    }
+
+    )
+  }
+
+  getClasses(){
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'))
+    if (this.currentUser.role == 'Admin'){
+      this.loadClasses()
+    }
+    else if(this.currentUser.role == 'Comission'){
+      this.loadClassesId(this.currentUser.id)
+    }
   }
 
   createClassForm() {

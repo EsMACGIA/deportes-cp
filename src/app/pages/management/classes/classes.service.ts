@@ -12,6 +12,11 @@ export class ClassesService extends BaseService{
         //return this.data
     }
 
+    getClasses(id):Observable<any>{
+        return this.getBase('classes/')
+        //return this.data
+    }
+
     createClass(Class:ClassesModel):Observable<any>{
         return this.postBase(Class,'classes/')
     }
