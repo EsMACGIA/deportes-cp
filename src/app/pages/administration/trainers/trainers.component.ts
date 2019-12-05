@@ -16,6 +16,7 @@ export class TrainersComponent {
 
   trainerList = [];
 
+
   //Settings of Smart Table
   settings = {
     actions: {columnTitle: 'Acciones',},
@@ -70,6 +71,7 @@ export class TrainersComponent {
   
   //Variable to load info to smart table
   source: LocalDataSource = new LocalDataSource();
+  spinner = true;
 
   //Var to difference if open edit or add
   private edit: boolean = false; 
@@ -81,29 +83,39 @@ export class TrainersComponent {
     private router: Router,
     private dialogService: NbDialogService,
     private toastrService: NbToastrService) {
-
-      this.loadTrainers();
+      this.getTrainers();
   }
 
-  /*Load the Trainers to table */
-/*
-  loadTrainers(){
+  getTrainers() {
+    let currentUser = JSON.parse(localStorage.getItem('currentUser'))
+
+    if (currentUser.role == 'admin') {
+      this.loadAllTrainers();
+    } else if (currentUser.role == 'commission') {
+      this.loadTrainersInComission(currentUser.id);
+    }
+  }
+  
+  loadAllTrainers(){
     this.trainersService.getTrainerList().subscribe(data=>{
-      if (data){
-        console.log('Estoy recibiendo los entrenadores',data)
-        this.trainerList = data
-        this.source.load(this.trainerList)
-      }
-    })
-  }
-*/
-
-  loadTrainers(){
-    let data = this.trainersService.getTrainerList().subscribe(data=>{
       if (data){
         console.log('Recibiendo Entrenadores', data);
         this.trainerList = data;
         this.source.load(this.trainerList);
+        this.spinner = false;
+
+      }
+    });
+  }
+
+  loadTrainersInComission(id) {
+    console.log('Cargo los entrenadores en la comission');
+    this.trainersService.getTrainersInCommission(id).subscribe(data => {
+      console.log('Data: ', data);
+      if (data) {
+        this.trainerList = data;
+        this.source.load(this.trainerList);
+        this.spinner = false;
       }
     });
   }
@@ -140,11 +152,9 @@ export class TrainersComponent {
     this.trainersService.deleteTrainer(this.trainer).subscribe(data=>{
       if (data){
         if (!data.error){
-
-          console.log(data)
           this.showToast('success','Se ha eliminado un entrenador exitosamente','Se ha eliminado el entrenador ' + this.trainer.name + ' de manera exitosa.')
           this.dialogRef.close();
-          this.loadTrainers();
+          this.getTrainers();
         }else{
           this.showToast('danger','Hubo un error al eliminar el entrenador',data.error.error)
           this.dialogRef.close();

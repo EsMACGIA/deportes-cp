@@ -64,6 +64,8 @@ export class RequestsComponent {
   };
 
   source: LocalDataSource = new LocalDataSource();
+  spinner = true;
+
   private edit: boolean;
   private request: RequestModel;
   private requestsList : any;
@@ -91,6 +93,7 @@ export class RequestsComponent {
         this.requestsList = data
         this.source.load(this.requestsList)
         console.log(this.requestsList);
+        this.spinner = false
       }
     });
   }
