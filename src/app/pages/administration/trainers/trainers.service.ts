@@ -7,19 +7,22 @@ import {TrainersModel} from './trainers.model';
 export class TrainersService extends BaseService{
 
     getTrainerList():Observable<any>{
-        return this.getBase('trainers/',this.setHeaders())
-        //return this.data
+        return this.getBase('trainers/', this.setHeaders())
+    }
+
+    getTrainersInCommission(id):Observable<any> {
+        return this.getBase('comissions/listTrainers/' + id, this.setHeaders())
     }
 
     createTrainer(Trainer:TrainersModel):Observable<any>{
-        return this.postBase(Trainer,'trainers/'),this.setHeaders()
+        return this.postBase(Trainer,'trainers/', this.setHeaders())
     }
 
     updateTrainer(Trainer:TrainersModel):Observable<any>{
-        return this.putBase(Trainer,'trainers/',this.setHeaders())
+        return this.putBase(Trainer,'trainers/', this.setHeaders())
     }
 
     deleteTrainer(Trainer:TrainersModel):Observable<any>{
-        return this.deleteBase(Trainer,'trainers/' + Trainer.id + '/',this.setHeaders())
+        return this.deleteBase(Trainer,'trainers/' + Trainer.id + '/', this.setHeaders())
     }
 }

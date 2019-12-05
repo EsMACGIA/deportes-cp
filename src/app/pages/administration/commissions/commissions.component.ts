@@ -68,10 +68,16 @@ export class CommissionsComponent {
   //Var to difference if open edit or add
   private edit: boolean = false; 
 
-  constructor(private router: Router,private commissionsService:CommissionsService,private dialogService: NbDialogService,
-    private toastrService: NbToastrService) {
-      this.loadCommissions();
-    }
+  constructor(
+    private router: Router,
+    private commissionsService:CommissionsService,
+    private dialogService: NbDialogService,
+    private toastrService: NbToastrService
+  ) {
+    let currentUser = JSON.parse(localStorage.getItem('currentUser'))
+    console.log('currentUser: ', currentUser);
+    this.loadCommissions();
+  }
 
     loadCommissions(){
       this.commissionsService.getCommissionsList().subscribe(data=>{
@@ -85,67 +91,58 @@ export class CommissionsComponent {
       });
     }
 
-    createCommissionsForm(){
-      this.edit = false;
-      this.commission = new CommissionsModel();
-      let navigationExtras: NavigationExtras = {
-        queryParams: { commission : this.commission, edit : this.edit }
-      };
-      this.router.navigate(['pages/administration/commissions/form'], navigationExtras);
-    }
-  
 
-    editCommissionsForm(event){
-      this.edit = true;
-      Object.assign(this.commission,event.data) //Instance all fields of trainers with the event data
-      let navigationExtras: NavigationExtras = {
-        queryParams: { commission : this.commission, edit : this.edit  }
-      };
-      this.commission.password = ""
-      this.commission.confirmPassword = ""
-      this.router.navigate(['pages/administration/commissions/form'], navigationExtras);
-    }
+  editCommissionsForm(event){
+    this.edit = true;
+    Object.assign(this.commission,event.data) //Instance all fields of trainers with the event data
+    let navigationExtras: NavigationExtras = {
+      queryParams: { commission : this.commission, edit : this.edit  }
+    };
+    this.commission.password = ""
+    this.commission.confirmPassword = ""
+    this.router.navigate(['pages/administration/commissions/form'], navigationExtras);
+  }
 
-   /*Function to open modal to confirmation for delete user*/
-    openModal(dialog: TemplateRef<any>,event) {
-      Object.assign(this.commission,event.data) //Instance all fields of user with the event data
-      this.dialogRef = this.dialogService.open(
-        dialog,
-        { context: this.commission.name });
-    }
+  /*Function to open modal to confirmation for delete user*/
+  openModal(dialog: TemplateRef<any>,event) {
+    Object.assign(this.commission,event.data) //Instance all fields of user with the event data
+    this.dialogRef = this.dialogService.open(
+      dialog,
+      { context: this.commission.name });
+  }
 
-    confirmDelete(dialog:TemplateRef<any>){
-      this.commissionsService.deleteCommission(this.commission).subscribe(data=>{
-        if (data){
-          if (!data.error){
-            
-            console.log(data)
-            this.showToast('success','Se ha eliminado una disciplina exitosamente','Se ha eliminado la disciplina ' + this.commission.name + ' de manera exitosa.')
-            this.dialogRef.close();
-            this.loadCommissions();
-          }else{
-            this.showToast('danger','Hubo un error al eliminar la comisión',data.error.error)
-            this.dialogRef.close();
-          }
+  confirmDelete(dialog:TemplateRef<any>){
+    this.commissionsService.deleteCommission(this.commission).subscribe(data=>{
+      if (data){
+        if (!data.error){
+          
+          console.log(data)
+          this.showToast('success','Se ha eliminado una disciplina exitosamente','Se ha eliminado la disciplina ' + this.commission.name + ' de manera exitosa.')
+          this.dialogRef.close();
+          this.loadCommissions();
+        }else{
+          this.showToast('danger','Hubo un error al eliminar la comisión',data.error.error)
+          this.dialogRef.close();
         }
-      })
-    }
+      }
+    })
+  }
 
-    private showToast(type: NbComponentStatus, title: string, body: string){
-      const config = {
-        status: type,
-        destroyByClick: this.destroyByClick,
-        duration: this.duration,
-        hasIcon: this.hasIcon,
-        position: this.position,
-        preventDuplicates: this.preventDuplicates,
-      };
-  
-      this.index += 1;
-      this.toastrService.show(
-        body,
-        title,
-        config);
-    }
+  private showToast(type: NbComponentStatus, title: string, body: string){
+    const config = {
+      status: type,
+      destroyByClick: this.destroyByClick,
+      duration: this.duration,
+      hasIcon: this.hasIcon,
+      position: this.position,
+      preventDuplicates: this.preventDuplicates,
+    };
+
+    this.index += 1;
+    this.toastrService.show(
+      body,
+      title,
+      config);
+  }
 
 }
