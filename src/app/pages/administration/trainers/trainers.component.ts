@@ -16,6 +16,7 @@ export class TrainersComponent {
 
   trainerList = [];
 
+
   //Settings of Smart Table
   settings = {
     actions: {columnTitle: 'Acciones',},
@@ -69,6 +70,7 @@ export class TrainersComponent {
   
   //Variable to load info to smart table
   source: LocalDataSource = new LocalDataSource();
+  spinner = true;
 
   //Var to difference if open edit or add
   private edit: boolean = false; 
@@ -99,6 +101,8 @@ export class TrainersComponent {
         console.log('Recibiendo Entrenadores', data);
         this.trainerList = data;
         this.source.load(this.trainerList);
+        this.spinner = false;
+
       }
     });
   }
@@ -110,6 +114,7 @@ export class TrainersComponent {
       if (data) {
         this.trainerList = data;
         this.source.load(this.trainerList);
+        this.spinner = false;
       }
     });
   }
