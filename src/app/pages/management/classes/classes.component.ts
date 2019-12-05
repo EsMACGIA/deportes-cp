@@ -71,6 +71,7 @@ export class ClassesComponent {
   preventDuplicates = false;
 
   source: LocalDataSource = new LocalDataSource();
+  spinner = true;
 
   //Var to difference if open edit or add
   private edit: boolean = false; 
@@ -121,6 +122,7 @@ export class ClassesComponent {
         console.log('Recibiendo Clases', data);
         this.classList = data;
         this.source.load(this.classList);
+        this.spinner = false
       }
     });
   }

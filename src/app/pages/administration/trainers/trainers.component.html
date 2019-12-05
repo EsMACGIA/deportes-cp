@@ -1,15 +1,24 @@
-<nb-card>
+<div *ngIf="spinner">
+  <nb-card [nbSpinner]="true" nbSpinnerSize="giant" nbSpinnerStatus="primary">
     <nb-card-header>
       Entrenadores
     </nb-card-header>
+  </nb-card>
+</div>
 
-  <nb-card-body>
-    <ng2-smart-table [settings]="settings" [source]="source" (delete)="openModal(dialog,$event)"
-    (create)="createTrainersForm()" (edit)="editTrainersForm($event)">
-    </ng2-smart-table>
-  </nb-card-body>
+<div *ngIf="!spinner"></div>
+  <nb-card>
+      <nb-card-header>
+        Entrenadores
+      </nb-card-header>
 
-</nb-card>
+    <nb-card-body>
+      <ng2-smart-table [settings]="settings" [source]="source" (delete)="openModal(dialog,$event)"
+      (create)="createTrainersForm()" (edit)="editTrainersForm($event)">
+      </ng2-smart-table>
+    </nb-card-body>
+
+  </nb-card>
 
 <ng-template #dialog let-data let-ref="dialogRef">
   <nb-card>

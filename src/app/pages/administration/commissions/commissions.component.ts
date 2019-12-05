@@ -64,6 +64,7 @@ export class CommissionsComponent {
   private commissionsList:CommissionsModel[];
   private commission:CommissionsModel = new CommissionsModel();
   private dialogRef : any;
+  spinner = true;
   //Var to difference if open edit or add
   private edit: boolean = false; 
 
@@ -73,12 +74,13 @@ export class CommissionsComponent {
     }
 
     loadCommissions(){
-      let data = this.commissionsService.getCommissionsList().subscribe(data=>{
+      this.commissionsService.getCommissionsList().subscribe(data=>{
         if (data){
           console.log('Estoy recibiendo los usuarios',data)
           this.commissionsList = data
           this.source.load(this.commissionsList)
           console.log(this.commissionsList)
+          this.spinner = false
         }
       });
     }
