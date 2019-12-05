@@ -7,6 +7,8 @@ import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 
+import { AuthService } from '../../../auth/auth.service';
+
 @Component({
   selector: 'ngx-header',
   styleUrls: ['./header.component.scss'],
@@ -47,7 +49,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private userService: UserData,
               private layoutService: LayoutService,
               private breakpointService: NbMediaBreakpointsService,
-              private router: Router) {
+              private router: Router,
+              private authService: AuthService) {
   }
 
   ngOnInit() {
@@ -74,8 +77,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.menuService.onItemClick().subscribe((event) => {
       if (event.item.title === 'Cerrar sesión') {
-        localStorage.removeItem('token');
-        this.router.navigate(['/'])
+        this.authService.logout();
+        this.router.navigate(['/auth/login'])
       }
     });
   }

@@ -9,4 +9,5 @@ export class ClassesModel {
     description:string;
     trainer_id: number;
     comission_id: number;
+    schedules: any[];
 }

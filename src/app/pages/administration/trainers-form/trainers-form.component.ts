@@ -1,7 +1,8 @@
 import { Component, TemplateRef} from '@angular/core';
 import {NgForm} from '@angular/forms';
+import { LocalDataSource } from 'ng2-smart-table';
 import { ToasterConfig } from 'angular2-toaster';
-import {NbToastrService,NbComponentStatus, NbGlobalPosition, NbGlobalPhysicalPosition} from '@nebular/theme';
+import {NbToastrService,NbComponentStatus, NbGlobalPosition, NbGlobalPhysicalPosition, NbToastrContainerComponent} from '@nebular/theme';
 //Services
 import {TrainersService} from '../trainers/trainers.service';
 //Models
@@ -23,7 +24,11 @@ export class TrainersFormComponent {
     private edit : boolean = this.router.getCurrentNavigation().extras.queryParams.edit;
     //Settings of Smart Table
     settings = {
-    actions: {columnTitle: 'Acciones',},
+    actions: {
+      columnTitle: 'Acciones',
+      edit: false,
+      delete: false
+      },
     mode: 'external',
     add: {
       addButtonContent: '<i class="nb-checkmark"></i>',
@@ -56,8 +61,29 @@ export class TrainersFormComponent {
     hasIcon = true;
     index = 1; 
     preventDuplicates = false;
+    private currentUser:any;
     private type_user:string;
     private dialogRef : any;
+    //Variable to load info to smart table
+    source: LocalDataSource = new LocalDataSource();
+
+    private commissions = [
+      {
+        id: 3,
+        name: 'Natacion',
+        email: 'natacion@cp.com'
+      },
+      {
+        id: 4,
+        name: 'Karate',
+        email: 'karate@cp.com'
+      },
+      {
+        id: 5,
+        name: 'Danza',
+        email: 'danza@cp.com'
+      },
+    ]
 
 
   constructor(
@@ -66,7 +92,13 @@ export class TrainersFormComponent {
         private router:Router,
         private toastrService: NbToastrService,
         private dialogService: NbDialogService) {
-          this.type_user = localStorage.getItem('type')
+          this.currentUser = JSON.parse(localStorage.getItem('currentUser'))
+          console.log(this.currentUser)
+          this.type_user = this.currentUser.role
+          console.log(this.currentUser.role)
+          if (this.type_user == 'admin'){
+            this.source.load(this.commissions)
+          }
     }
 
     addTrainerForm(trainerForm:NgForm){

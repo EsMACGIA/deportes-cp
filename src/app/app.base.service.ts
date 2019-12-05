@@ -3,11 +3,6 @@ import { Injectable } from '@angular/core';
 import { catchError, tap } from 'rxjs/operators'
 import { HttpHeaders, HttpClient } from '@angular/common/http'
 
-const httpOptions = {
-    headers: new HttpHeaders({'Content-Type': 'application/json'})
-}
-
-
 /**
  * Service with methods to add, edit or
  * delete elements to backend.
@@ -19,6 +14,9 @@ const httpOptions = {
 export class BaseService {
 
     API_URL:string = "https://deportes-cp-api.herokuapp.com/api/"
+    httpOptions = {
+        headers: new HttpHeaders({'Content-Type': 'application/json'})
+    }
 
     /**
      *Creates an instance of BaseService.
@@ -37,9 +35,9 @@ export class BaseService {
      * if everything is ok or error if not 
      * @memberof BaseService
      */
-    getBase(endpoint: string):Observable<any>{
+    getBase(endpoint: string, httpOptions = this.httpOptions):Observable<any>{
         let apiURL =  `${this.API_URL}${endpoint}`
-        return this.http.get(apiURL).pipe(
+        return this.http.get(apiURL, httpOptions).pipe(
             catchError(this.handleError('getBase'))
         )
     }
@@ -53,7 +51,7 @@ export class BaseService {
      * or error if not
      * @memberof BaseService
      */
-    postBase(element: Object, endpoint: string):Observable<any>{
+    postBase(element: Object, endpoint: string, httpOptions = this.httpOptions):Observable<any>{
         let apiURL =  `${this.API_URL}${endpoint}`
         return this.http.post(apiURL, element, httpOptions).pipe(
             catchError(this.handleError<any>('postBase'))
@@ -69,7 +67,7 @@ export class BaseService {
      * or error if not
      * @memberof BaseService
      */
-    putBase(element: Object, endpoint: string):Observable<any>{
+    putBase(element: Object, endpoint: string, httpOptions = this.httpOptions):Observable<any>{
         let apiURL =  `${this.API_URL}${endpoint}`
         return this.http.put(apiURL, element, httpOptions).pipe(
             catchError(this.handleError<any>('putBase'))
@@ -84,7 +82,7 @@ export class BaseService {
      * or error if not
      * @memberof BaseService
      */
-    deleteBase(element: Object, endpoint:string):Observable<any>{
+    deleteBase(element: Object, endpoint:string, httpOptions = this.httpOptions):Observable<any>{
         let apiURL = `${this.API_URL}${endpoint}`
         return this.http.delete(apiURL, httpOptions).pipe(
             catchError(this.handleError<any>('deleteBase'))
@@ -105,5 +103,20 @@ export class BaseService {
         return (error_object: any):Observable<T> =>{
             return of(error_object)
         }
+    }
+
+    /**
+     * Method to set authorization headers
+     */
+    setHeaders():any {
+        let httpOptions = {
+            headers: new HttpHeaders(
+                {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('currentToken')}`
+                }
+            )
+        }
+        return httpOptions;
     }
 }
