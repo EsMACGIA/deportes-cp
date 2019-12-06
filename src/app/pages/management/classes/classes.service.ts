@@ -15,10 +15,6 @@ export class ClassesService extends BaseService{
         return this.getBase('comissions/listClasses/' + id + '/', this.setHeaders())
     }
 
-    getClasses(id):Observable<any>{
-        return this.getBase('comissions/listClasses/' + id + '/', this.setHeaders())
-    }
-
     createClass(Class:ClassesModel):Observable<any>{
         return this.postBase(Class,'classes/', this.setHeaders())
     }
