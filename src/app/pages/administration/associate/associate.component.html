@@ -1,0 +1,42 @@
+<div *ngIf="spinner">
+  <nb-card [nbSpinner]="true" nbSpinnerSize="giant" nbSpinnerStatus="primary">
+    <nb-card-header>
+      Listado de Clases
+    </nb-card-header>
+  </nb-card>
+</div>
+
+  <div *ngIf="!spinner">
+  <nb-card>
+    <nb-card-header>
+      Listado de Clases
+    </nb-card-header>
+    <nb-card-body>
+      <ng2-smart-table 
+        [settings]="settings"
+        [source]="source"
+        (edit)="associateCommission($event)"
+      >
+      </ng2-smart-table>
+    </nb-card-body>
+  </nb-card>
+  </div>
+  
+  
+  <ng-template #dialog let-data let-ref="dialogRef">
+    <nb-card>
+      <nb-card-header>Confirmación de eliminar clase</nb-card-header>
+      <nb-card-body>¿Está seguro que desea eliminar la clase {{ data }}?</nb-card-body>
+      <nb-card-footer>
+          <div class="row">
+            <div class="col-sm-6">
+                <button nbButton (click)="confirmDelete()">Confirmar</button>
+              </div>
+              <div class="col-sm-6">
+                <button nbButton (click)="ref.close()">Cancelar</button>
+              </div>
+          </div>
+      </nb-card-footer>
+    </nb-card>
+  </ng-template>
+  

@@ -21,11 +21,15 @@ import {CommonModule} from '@angular/common';
 //Services
 import {CommissionsService} from './commissions/commissions.service';
 import {TrainersService} from './trainers/trainers.service';
+import {AssociateService} from './associate-commission/associate-commission.service';
+
 import { NbDialogService} from '@nebular/theme'
 
 //Models
 import {CommissionsModel} from './commissions/commissions.model';
 import {TrainersModel} from './trainers/trainers.model';
+import {AssociateModel} from './associate-commission/associate-commission.model';
+
 
 @NgModule({
   imports: [
@@ -57,6 +61,8 @@ import {TrainersModel} from './trainers/trainers.model';
     CommissionsModel,
     TrainersService,
     TrainersModel,
+    AssociateService,
+    AssociateModel
   ],
 })
 export class AdministrationModule { }

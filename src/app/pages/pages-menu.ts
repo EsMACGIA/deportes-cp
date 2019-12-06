@@ -12,7 +12,11 @@ export const MENU_ADMIN: NbMenuItem[] = [
       {
         title : 'Entrenadores',
         link : '/pages/administration/trainers',
-      }
+      },
+      {
+        title : 'Asociar Entrenadores',
+        link : '/pages/administration/associate'
+      },
     ]
   },
   {
@@ -44,7 +48,7 @@ export const MENU_COMMISSION: NbMenuItem[] = [
       {
         title : 'Entrenadores',
         link : '/pages/administration/trainers',
-      }
+      },
     ]
   },
   {

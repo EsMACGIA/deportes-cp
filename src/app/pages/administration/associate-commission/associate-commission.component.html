@@ -1,0 +1,61 @@
+<div *ngIf="spinner">
+  <nb-card [nbSpinner]="true" nbSpinnerSize="giant" nbSpinnerStatus="primary">
+    <nb-card-header>
+      Listado de Entrenadores asociados
+    </nb-card-header>
+  </nb-card>
+</div>
+
+  <div *ngIf="!spinner">
+  <nb-card>
+    <nb-card-header>
+      Listado de Entrenadores asociados
+    </nb-card-header>
+    <nb-card-body>
+      <ng2-smart-table 
+        [settings]="settings"
+        [source]="source"
+        (create)="openModal(dialog,$event)"
+        (delete)="openModal(dialog1,$event)"
+      >
+      </ng2-smart-table>
+    </nb-card-body>
+  </nb-card>
+  </div>
+  
+  
+  <ng-template #dialog1 let-data let-ref="dialogRefa">
+    <nb-card>
+      <nb-card-header>Confirmación de desasociar entrenador</nb-card-header>
+      <nb-card-body>¿Está seguro que desea desasociar al entrenador {{ data }}?</nb-card-body>
+      <nb-card-footer>
+          <div class="row">
+            <div class="col-sm-6">
+                <button nbButton (click)="confirmDelete()">Confirmar</button>
+              </div>
+              <div class="col-sm-6">
+                <button nbButton (click)="ref.close()">Cancelar</button>
+              </div>
+          </div>
+      </nb-card-footer>
+    </nb-card>
+  </ng-template>
+
+  <ng-template #dialog let-data let-ref="dialogRef">
+      <nb-card>
+        <nb-card-header>Asociar entrenadores - Lista de entrenadores</nb-card-header>
+        <nb-card-body>
+            <p>Seleccione los entrenadores que desea asociar a la comisión</p>
+          <ng2-smart-table [(settings)]="settings2" [source]="source2" (userRowSelect)="onUserRowSelect($event)">
+          </ng2-smart-table>
+        </nb-card-body>
+        <nb-card-footer>
+              <div class="row">
+                <div class="col-sm-6">
+                    <button nbButton (click)="saveData()">Guardar</button>
+                  </div>
+              </div>
+          </nb-card-footer>
+        
+      </nb-card>
+  </ng-template>
