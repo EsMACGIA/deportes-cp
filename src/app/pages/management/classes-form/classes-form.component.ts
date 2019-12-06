@@ -154,7 +154,7 @@ export class ClassesFormComponent {
     private dialogService: NbDialogService,
     private commissionService:CommissionsService
     ) {
-      for (let i =0; i<=12;i++){
+      for (let i =1; i<=12;i++){
         this.hours[i] = i
       }
       for (let i = 0; i<=59;i++){
