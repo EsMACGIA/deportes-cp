@@ -152,13 +152,13 @@ export class TrainersFormComponent {
             Object.assign(this.trainer2, this.trainer)
             if (this.match){
                 delete this.trainer2.confirmPassword;
+                this.commissionsListToSend = []
                 if (this.type_user == 'admin'){
-                  this.commissionsListToSend = []
                   for (let i = 0;i<this.commissions.length;i++){
                     this.commissionsListToSend[i] = this.commissions[i].id
                   }
-                  this.trainer2.comissions = this.commissionsListToSend;
                 }
+                this.trainer2.comissions = this.commissionsListToSend;
                 this.trainersService.createTrainer(this.trainer2).subscribe(data=>{
                     if (data && !data.error){
                         console.log("Yay")
@@ -187,13 +187,13 @@ export class TrainersFormComponent {
                 delete this.trainer2.confirmPassword;
                 delete this.trainer2.ci;
                 delete this.trainer2.email;
+                this.commissionsListToSend = []
                 if (this.type_user == 'admin'){
-                  this.commissionsListToSend = []
                   for (let i = 0;i<this.commissions.length;i++){
                     this.commissionsListToSend[i] = this.commissions[i].id
                   }
-                  this.trainer2.comissions = this.commissionsListToSend;
                 }
+                this.trainer2.comissions = this.commissionsListToSend;
                 //console.log(this.trainer2)
                 this.trainersService.updateTrainer(this.trainer2).subscribe(data=>{
                     if (data && !data.error){

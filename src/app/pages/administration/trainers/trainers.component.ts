@@ -15,48 +15,11 @@ import { TrainersModel } from '../trainers/trainers.model';
 export class TrainersComponent {
 
   trainerList = [];
+  private currentUser:any;
+  private type_user:string;
+  private settings;
 
-  //Settings of Smart Table
-  settings = {
-    actions: {columnTitle: 'Acciones',},
-    mode: 'external',
-    add: {
-      addButtonContent: '<i class="nb-plus"></i>',
-      createButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-    },
-    edit: {
-      editButtonContent: '<i class="nb-edit"></i>',
-      saveButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-    },
-    delete: {
-      deleteButtonContent: '<i class="nb-trash"></i>',
-      confirmDelete: true,
-    },
-    columns: {
-      id: {
-        title: 'ID',
-        type: 'number',
-      },
-      name: {
-        title: 'Primer nombre',
-        type: 'string',
-      },
-      lastname: {
-        title: 'Apellido',
-        type: 'string',
-      },
-      email: {
-        title: 'E-mail',
-        type: 'string',
-      },
-      ci: {
-        title: 'Cedula',
-        type: 'number'
-      },
-    },
-  };
+  
 
   //Toastr configuration
   position:NbGlobalPosition = NbGlobalPhysicalPosition.TOP_RIGHT;
@@ -80,7 +43,95 @@ export class TrainersComponent {
     private router: Router,
     private dialogService: NbDialogService,
     private toastrService: NbToastrService) {
+      this.currentUser = JSON.parse(localStorage.getItem('currentUser'))
+      console.log(this.currentUser)
+      this.type_user = this.currentUser.role
       this.getTrainers();
+      if (this.type_user == 'admin'){
+        //Settings of Smart Table
+        this.settings = {
+        actions: {columnTitle: 'Acciones',},
+        mode: 'external',
+        add: {
+          addButtonContent: '<i class="nb-plus"></i>',
+          createButtonContent: '<i class="nb-checkmark"></i>',
+          cancelButtonContent: '<i class="nb-close"></i>',
+        },
+        edit: {
+          editButtonContent: '<i class="nb-edit"></i>',
+          saveButtonContent: '<i class="nb-checkmark"></i>',
+          cancelButtonContent: '<i class="nb-close"></i>',
+        },
+        delete: {
+          deleteButtonContent: '<i class="nb-trash"></i>',
+          confirmDelete: true,
+        },
+        columns: {
+          id: {
+            title: 'ID',
+            type: 'number',
+          },
+          name: {
+            title: 'Primer nombre',
+            type: 'string',
+          },
+          lastname: {
+            title: 'Apellido',
+            type: 'string',
+          },
+          email: {
+            title: 'E-mail',
+            type: 'string',
+          },
+          ci: {
+            title: 'Cedula',
+            type: 'number'
+          },
+        },
+        };
+
+      }else{
+        //Settings of Smart Table
+        this.settings = {
+          actions: {
+            columnTitle: 'Acciones',
+            delete:false,
+          },
+          mode: 'external',
+          add: {
+            addButtonContent: '<i class="nb-plus"></i>',
+            createButtonContent: '<i class="nb-checkmark"></i>',
+            cancelButtonContent: '<i class="nb-close"></i>',
+          },
+          edit: {
+            editButtonContent: '<i class="nb-edit"></i>',
+            saveButtonContent: '<i class="nb-checkmark"></i>',
+            cancelButtonContent: '<i class="nb-close"></i>',
+          },
+          columns: {
+            id: {
+              title: 'ID',
+              type: 'number',
+            },
+            name: {
+              title: 'Primer nombre',
+              type: 'string',
+            },
+            lastname: {
+              title: 'Apellido',
+              type: 'string',
+            },
+            email: {
+              title: 'E-mail',
+              type: 'string',
+            },
+            ci: {
+              title: 'Cedula',
+              type: 'number'
+            },
+          },
+          };        
+      }
   }
 
   getTrainers() {
