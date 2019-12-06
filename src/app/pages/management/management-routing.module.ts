@@ -4,12 +4,13 @@ import { Routes, RouterModule } from '@angular/router';
 import { ManagementComponent } from './management.component';
 
 // Components
-import { AthletesComponent } from './athletes/athletes.component'
-import { AthletesFormComponent } from './athletes-form/athletes-form.component'
-import { ClassesComponent } from './classes/classes.component'
-import { ClassesFormComponent } from './classes-form/classes-form.component'
-import { RequestsComponent } from './requests/requests.component'
-import { RequestsFormComponent } from './requests-form/requests-form.component'
+import { AthletesComponent } from './athletes/athletes.component';
+import { AthletesFormComponent } from './athletes-form/athletes-form.component';
+import { ClassesComponent } from './classes/classes.component';
+import { ClassesFormComponent } from './classes-form/classes-form.component';
+import { RequestsComponent } from './requests/requests.component';
+import { RequestsFormComponent } from './requests-form/requests-form.component';
+import { ClassListComponent } from './class-list/class-list.component';
 
 import { AuthGuard } from '../../auth/auth.guard';
 
@@ -53,6 +54,12 @@ const routes: Routes = [{
       canActivate: [ AuthGuard ],
       data: { roles: ['admin', 'commission'] }
     },
+    {
+      path: 'class-list',
+      component: ClassListComponent,
+      canActivate: [ AuthGuard ],
+      data: { roles: ['admin', 'commission', 'trainer'] }
+    },
   ],
 }];
 
@@ -69,5 +76,6 @@ export const routedComponents = [
   ClassesComponent,
   ClassesFormComponent,
   RequestsComponent,
-  RequestsFormComponent
+  RequestsFormComponent,
+  ClassListComponent
 ];

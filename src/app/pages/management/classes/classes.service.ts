@@ -9,12 +9,10 @@ export class ClassesService extends BaseService{
 
     getClassList():Observable<any>{
         return this.getBase('classes/', this.setHeaders())
-        //return this.data
     }
 
     getClasses(id):Observable<any>{
         return this.getBase('comissions/listClasses/' + id + '/', this.setHeaders())
-        //return this.data
     }
 
     createClass(Class:ClassesModel):Observable<any>{
@@ -27,5 +25,13 @@ export class ClassesService extends BaseService{
 
     deleteClass(Class:ClassesModel):Observable<any>{
         return this.deleteBase(Class,'classes/' + Class.id + '/', this.setHeaders())
+    }
+
+    getTrainerClasses(id) {
+        return this.getBase('trainers/listClasses/' + id, this.setHeaders())
+    }
+
+    getAthletesInClass(id) {
+        return this.getBase('classes/athletes/' + id, this.setHeaders())
     }
 }
