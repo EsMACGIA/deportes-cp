@@ -35,10 +35,10 @@ export class RequestsComponent {
         title: 'Fecha de nacimiento',
         type: 'string',
       },
-      ci: {
-        title: 'Cedula',
-        type: 'string',
-      },
+      // ci: {
+      //   title: 'Cedula',
+      //   type: 'string',
+      // },
       lastname: {
         title: 'Apellido de Atleta',
         type: 'string',

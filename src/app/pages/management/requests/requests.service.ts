@@ -10,7 +10,7 @@ export class RequestsService extends BaseService{
         return this.getBase('requests/', this.setHeaders())
     }
 
-    createRequest(request:RequestModel):Observable<any>{
+    createRequest(request):Observable<any>{
         return this.postBase(request,'requests/', this.setHeaders())
     }
     deleteRequest(request:RequestModel):Observable<any>{
