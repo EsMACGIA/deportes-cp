@@ -15,48 +15,9 @@ import { TrainersModel } from '../trainers/trainers.model';
 export class TrainersComponent {
 
   trainerList = [];
-
-  //Settings of Smart Table
-  settings = {
-    actions: {columnTitle: 'Acciones',},
-    mode: 'external',
-    add: {
-      addButtonContent: '<i class="nb-plus"></i>',
-      createButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-    },
-    edit: {
-      editButtonContent: '<i class="nb-edit"></i>',
-      saveButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-    },
-    delete: {
-      deleteButtonContent: '<i class="nb-trash"></i>',
-      confirmDelete: true,
-    },
-    columns: {
-      id: {
-        title: 'ID',
-        type: 'number',
-      },
-      name: {
-        title: 'Primer nombre',
-        type: 'string',
-      },
-      lastname: {
-        title: 'Apellido',
-        type: 'string',
-      },
-      email: {
-        title: 'E-mail',
-        type: 'string',
-      },
-      ci: {
-        title: 'Cedula',
-        type: 'number'
-      },
-    },
-  };
+  private currentUser:any;
+  private type_user:string;
+  private settings;
 
   //Toastr configuration
   position:NbGlobalPosition = NbGlobalPhysicalPosition.TOP_RIGHT;
@@ -69,6 +30,7 @@ export class TrainersComponent {
   
   //Variable to load info to smart table
   source: LocalDataSource = new LocalDataSource();
+  spinner = true;
 
   //Var to difference if open edit or add
   private edit: boolean = false; 
@@ -80,29 +42,129 @@ export class TrainersComponent {
     private router: Router,
     private dialogService: NbDialogService,
     private toastrService: NbToastrService) {
+      this.currentUser = JSON.parse(localStorage.getItem('currentUser'))
+      console.log(this.currentUser)
+      this.type_user = this.currentUser.role
+      this.getTrainers();
+      if (this.type_user == 'admin'){
+        //Settings of Smart Table
+        this.settings = {
+        actions: {columnTitle: 'Acciones',},
+        mode: 'external',
+        add: {
+          addButtonContent: '<i class="nb-plus"></i>',
+          createButtonContent: '<i class="nb-checkmark"></i>',
+          cancelButtonContent: '<i class="nb-close"></i>',
+        },
+        edit: {
+          editButtonContent: '<i class="nb-edit"></i>',
+          saveButtonContent: '<i class="nb-checkmark"></i>',
+          cancelButtonContent: '<i class="nb-close"></i>',
+        },
+        delete: {
+          deleteButtonContent: '<i class="nb-trash"></i>',
+          confirmDelete: true,
+        },
+        columns: {
+          id: {
+            title: 'ID',
+            type: 'number',
+            width: '100px',
+          },
+          name: {
+            title: 'Primer nombre',
+            type: 'string',
+          },
+          lastname: {
+            title: 'Apellido',
+            type: 'string',
+          },
+          email: {
+            title: 'E-mail',
+            type: 'string',
+          },
+          ci: {
+            title: 'Cedula',
+            type: 'number'
+          },
+        },
+        };
 
-      this.loadTrainers();
-  }
-
-  /*Load the Trainers to table */
-/*
-  loadTrainers(){
-    this.trainersService.getTrainerList().subscribe(data=>{
-      if (data){
-        console.log('Estoy recibiendo los entrenadores',data)
-        this.trainerList = data
-        this.source.load(this.trainerList)
+      }else{
+        //Settings of Smart Table
+        this.settings = {
+          actions: {
+            columnTitle: 'Acciones',
+            delete:false,
+          },
+          mode: 'external',
+          add: {
+            addButtonContent: '<i class="nb-plus"></i>',
+            createButtonContent: '<i class="nb-checkmark"></i>',
+            cancelButtonContent: '<i class="nb-close"></i>',
+          },
+          edit: {
+            editButtonContent: '<i class="nb-edit"></i>',
+            saveButtonContent: '<i class="nb-checkmark"></i>',
+            cancelButtonContent: '<i class="nb-close"></i>',
+          },
+          columns: {
+            id: {
+              title: 'ID',
+              type: 'number',
+              width: '100px',
+            },
+            name: {
+              title: 'Primer nombre',
+              type: 'string',
+            },
+            lastname: {
+              title: 'Apellido',
+              type: 'string',
+            },
+            email: {
+              title: 'E-mail',
+              type: 'string',
+            },
+            ci: {
+              title: 'Cedula',
+              type: 'number'
+            },
+          },
+          };        
       }
-    })
   }
-*/
 
-  loadTrainers(){
-    let data = this.trainersService.getTrainerList().subscribe(data=>{
+  getTrainers() {
+    let currentUser = JSON.parse(localStorage.getItem('currentUser'))
+
+    if (currentUser.role == 'admin') {
+      this.loadAllTrainers();
+    } else if (currentUser.role == 'commission') {
+      this.loadTrainersInComission(currentUser.id);
+    }
+  }
+  
+  loadAllTrainers(){
+    this.trainersService.getTrainerList().subscribe(data=>{
       if (data){
         console.log('Recibiendo Entrenadores', data);
         this.trainerList = data;
         this.source.load(this.trainerList);
+        this.spinner = false;
+
+      }
+    });
+  }
+
+  loadTrainersInComission(id) {
+    console.log('Cargo los entrenadores en la comission');
+    this.trainersService.getTrainersInCommission(id).subscribe(data => {
+      console.log('Data: ', data);
+      if (data) {
+        this.trainerList = data;
+        this.source.load(this.trainerList);
+        this.spinner = false;
       }
     });
   }
@@ -139,11 +201,9 @@ export class TrainersComponent {
     this.trainersService.deleteTrainer(this.trainer).subscribe(data=>{
       if (data){
         if (!data.error){
-
-          console.log(data)
           this.showToast('success','Se ha eliminado un entrenador exitosamente','Se ha eliminado el entrenador ' + this.trainer.name + ' de manera exitosa.')
           this.dialogRef.close();
-          this.loadTrainers();
+          this.getTrainers();
         }else{
           this.showToast('danger','Hubo un error al eliminar el entrenador',data.error.error)
           this.dialogRef.close();

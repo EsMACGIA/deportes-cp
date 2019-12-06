@@ -30,15 +30,16 @@ export class RequestsComponent {
       id: {
         title: 'ID',
         type: 'number',
+        width: '100px'
       },
       birthday: {
         title: 'Fecha de nacimiento',
         type: 'string',
       },
-      ci: {
-        title: 'Cedula',
-        type: 'string',
-      },
+      // ci: {
+      //   title: 'Cedula',
+      //   type: 'string',
+      // },
       lastname: {
         title: 'Apellido de Atleta',
         type: 'string',
@@ -63,6 +64,8 @@ export class RequestsComponent {
   };
 
   source: LocalDataSource = new LocalDataSource();
+  spinner = true;
+
   private edit: boolean;
   private request: RequestModel;
   private requestsList : any;
@@ -90,6 +93,7 @@ export class RequestsComponent {
         this.requestsList = data
         this.source.load(this.requestsList)
         console.log(this.requestsList);
+        this.spinner = false
       }
     });
   }

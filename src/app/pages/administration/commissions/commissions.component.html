@@ -1,13 +1,24 @@
-<nb-card>
+<div *ngIf="spinner">
+  <nb-card [nbSpinner]="true" nbSpinnerSize="giant" nbSpinnerStatus="primary">
+    <nb-card-header>
+      Comisiones
+    </nb-card-header>
+  </nb-card>
+</div>
+
+<div *ngIf="!spinner">
+  <nb-card>
     <nb-card-header>
       Comisiones
     </nb-card-header>
     <nb-card-body>
-        <ng2-smart-table [settings]="settings" [source]="source" (delete)="openModal(dialog,$event)"
-        (create)="createCommissionsForm()" (edit)="editCommissionsForm($event)">
-        </ng2-smart-table>
-    </nb-card-body>
-</nb-card>
+      <ng2-smart-table [settings]="settings" [source]="source" (delete)="openModal(dialog,$event)"
+      (create)="createCommissionsForm()" (edit)="editCommissionsForm($event)">
+    </ng2-smart-table>
+  </nb-card-body>
+  </nb-card>
+</div>
+
 
 
 <ng-template #dialog let-data let-ref="dialogRef">

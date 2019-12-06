@@ -17,7 +17,7 @@ export class ClassesComponent {
   
   classList = [];
 
-  settings = {
+  settings_1 = {
     mode: 'external',
     actions: {
       columnTitle: 'Acciones'
@@ -40,6 +40,7 @@ export class ClassesComponent {
       id: {
         title: 'ID',
         type: 'number',
+        width: '100px'
       },
       description: {
         title: 'descripción',
@@ -58,7 +59,47 @@ export class ClassesComponent {
         type: 'string',
       }
     },
-  };
+  }
+
+  settings_2 = {
+    mode: 'external',
+    actions: {
+      columnTitle: 'Acciones'
+    },
+    add: {
+      addButtonContent: '<i class="nb-plus"></i>',
+      createButtonContent: '<i class="nb-checkmark"></i>',
+      cancelButtonContent: '<i class="nb-close"></i>',
+    },
+    edit: {
+      editButtonContent: '<i class="nb-edit"></i>',
+      saveButtonContent: '<i class="nb-checkmark"></i>',
+      cancelButtonContent: '<i class="nb-close"></i>',
+    },
+    delete: {
+      deleteButtonContent: '<i class="nb-trash"></i>',
+      confirmDelete: true,
+    },
+    columns: {
+      id: {
+        title: 'ID',
+        type: 'number',
+        width: '100px'
+      },
+      description: {
+        title: 'descripción',
+        type: 'string',
+      },
+      trainer_name: {
+        title: 'Nombre Entrenador',
+        type: 'string',
+      },
+      trainer_lastname: {
+        title: 'Apellido Entrenador',
+        type: 'string',
+      }
+    }
+  }
 
 
   //Toastr configuration
@@ -71,11 +112,14 @@ export class ClassesComponent {
   preventDuplicates = false;
 
   source: LocalDataSource = new LocalDataSource();
+  spinner = true;
 
   //Var to difference if open edit or add
   private edit: boolean = false; 
   private clase : ClassesModel = new ClassesModel();
   private dialogRef : any;
+
+  private currentUser;
 
   constructor(
     private router: Router,
@@ -111,18 +155,39 @@ export class ClassesComponent {
 
     ]
     //this.source.load(data);
-    this.loadClasses();
+    this.getClasses();
     
   }
 
   loadClasses(){
-    let data = this.classesService.getClassList().subscribe(data=>{
+    this.classesService.getClassList().subscribe(data=>{
       if (data){
         console.log('Recibiendo Clases', data);
         this.classList = data;
         this.source.load(this.classList);
       }
     });
+  }
+
+  loadClassesId(id){
+    this.classesService.getClasses(id).subscribe(data=>{
+      if (data){
+        console.log('Recibiendo Clases', data);
+        this.classList = data;
+        this.source.load(this.classList)
+      }
+    })
+  }
+
+  getClasses(){
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'))
+    if (this.currentUser.role == 'admin'){
+      this.loadClasses()
+    }
+    else if(this.currentUser.role == 'commission'){
+      this.loadClassesId(this.currentUser.id)
+    }
+    this.spinner = false
   }
 
   createClassForm() {
@@ -159,7 +224,7 @@ export class ClassesComponent {
           console.log(data)
           this.showToast('success','Se ha eliminado una clase exitosamente','Se ha eliminado la clase ' + this.clase.description + ' de manera exitosa.')
           this.dialogRef.close();
-          this.loadClasses();
+          this.getClasses();
         }else{
           this.showToast('danger','Hubo un error al eliminar la clase',data.error.error)
           this.dialogRef.close();
