@@ -8,8 +8,11 @@ import {ClassesModel} from './classes.model';
 export class ClassesService extends BaseService{
 
     getClassList():Observable<any>{
-        return this.getBase('classes/')
-        //return this.data
+        return this.getBase('classes/', this.setHeaders())
+    }
+
+    getClasses(id):Observable<any>{
+        return this.getBase('comissions/listClasses/' + id + '/', this.setHeaders())
     }
 
     getClasses(id):Observable<any>{
@@ -17,14 +20,22 @@ export class ClassesService extends BaseService{
     }
 
     createClass(Class:ClassesModel):Observable<any>{
-        return this.postBase(Class,'classes/')
+        return this.postBase(Class,'classes/', this.setHeaders())
     }
 
     updateClass(Class:ClassesModel):Observable<any>{
-        return this.putBase(Class,'classes/')
+        return this.putBase(Class,'classes/', this.setHeaders())
     }
 
     deleteClass(Class:ClassesModel):Observable<any>{
-        return this.deleteBase(Class,'classes/' + Class.id + '/')
+        return this.deleteBase(Class,'classes/' + Class.id + '/', this.setHeaders())
+    }
+
+    getTrainerClasses(id) {
+        return this.getBase('trainers/listClasses/' + id, this.setHeaders())
+    }
+
+    getAthletesInClass(id) {
+        return this.getBase('classes/athletes/' + id, this.setHeaders())
     }
 }

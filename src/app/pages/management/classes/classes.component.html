@@ -13,14 +13,26 @@
   </nb-card-header>
 
   <nb-card-body>
-    <ng2-smart-table 
-      [settings]="settings" 
-      [source]="source" 
-      (create)="createClassForm()" 
-      (edit)="editClassForm($event)"
-      (delete)="openModal(dialog,$event)"
-    >
-    </ng2-smart-table>
+    <div *ngIf="currentUser.role == 'admin'">
+      <ng2-smart-table 
+        [settings]="settings_1"
+        [source]="source" 
+        (create)="createClassForm()" 
+        (edit)="editClassForm($event)"
+        (delete)="openModal(dialog,$event)"
+      >
+      </ng2-smart-table>
+    </div>
+    <div *ngIf="currentUser.role != 'admin'">
+      <ng2-smart-table 
+        [settings]="settings_2"
+        [source]="source" 
+        (create)="createClassForm()" 
+        (edit)="editClassForm($event)"
+        (delete)="openModal(dialog,$event)"
+      >
+      </ng2-smart-table>
+    </div>
   </nb-card-body>
 </nb-card>
 </div>
