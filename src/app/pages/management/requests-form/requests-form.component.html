@@ -1,61 +1,80 @@
 <nb-card>
   <nb-card-header>{{ cardTitle }}</nb-card-header>
   <nb-card-body>
-    <form #requestForm="ngForm" (ngSubmit)="!edit ? addRequestForm(requestForm) : editRequestForm(requestForm)">
-    <div class="row">
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label for="athlete_id'" class="label">Atleta (*)</label>
-          <div>
-              <select selected="1" id="athlete_id" name="athlete_id" [(ngModel)]="request.athlete_id" #athlete="ngModel" required>
-                <option *ngFor="let athlete of athletesList" [value]="athlete.id">{{athlete.name}}</option>
-              </select>
-            </div>        
-        </div>
-        <div *ngIf="athlete.errors && requestForm.submitted" class="alert alert-danger">
-            <div *ngIf="athlete.errors.required">
-                El atleta es obligatorio
-            </div>
-        </div>
-      </div>
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label for="class_id" class="label">Clase (*)</label>
-          <div>
-              <select id="class_id" name="class_id" [(ngModel)]="request.class_id" #class="ngModel" required>
-                <option *ngFor="let class of classList" [value]="class.id">{{class.description}}</option>
-              </select>
-            </div>          
-        </div>
-        <div *ngIf="class.errors && requestForm.submitted" class="alert alert-danger">
-            <div *ngIf="class.errors.required">
-                La clase es obligatoria
-            </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
+    <form #requestForm="ngForm">
+      <div class="row">
         <div class="col-sm-6">
-            <div class="form-group">
-              <label for="retire" class="label">Acción (*)</label>
-              <div>
-                  <select selected="1" id="retire" name="retire" [(ngModel)]="request.retire" #retire="ngModel" required>
-                    <option value="0">Ingreso</option>
-                    <option value="1">Retiro</option>
-                  </select>
-                </div> 
-                <div *ngIf="retire.errors && requestForm.submitted" class="alert alert-danger">
-                    <div *ngIf="retire.errors.required">
-                         Seleccionar una opción de acción es obligatorio
-                    </div>
-                </div>        
-            </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1" class="label">Clase (*)</label>
+            <input type="email" nbInput fullWidth disabled id="exampleInputEmail1" placeholder="{{selectedClass ? selectedClass.description : 'Seleccione...' }}">
+            <button class="button-margin" nbButton fullWidth (click)="selectClass(dialogClasses, $event)">Seleccionar Clase</button>
           </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label for="exampleInputEmail1" class="label">Atleta (*)</label>
+            <input type="email" nbInput fullWidth disabled id="exampleInputEmail1" placeholder="{{selectedAthlete ? selectedAthlete.name : 'Seleccione...' }}">
+            <button class="button-margin" nbButton fullWidth (click)="selectAthlete(dialogAthletes, $event)">Seleccionar Atleta</button>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div *ngIf="classRequired" class="alert alert-danger">
+            La clase es obligatoria
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div *ngIf="athleteRequired" class="alert alert-danger">
+            El atleta es obligatorio
+          </div>
+        </div>
+      </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="retire" class="label">Acción (*)</label>
+          <div>
+            <nb-select selected="{{ false }}" id="retire" name="retire" [(ngModel)]="retire" required>
+              <nb-option value="{{ false }}">Ingreso</nb-option>
+              <nb-option value="{{ true }}">Retiro</nb-option>
+            </nb-select>
+          </div> 
+        </div>
+      </div>
     </div>
     <div>
-        <label class="label">Los campos con (*) son obligatorios</label>
-      </div>
-    <button type="submit" nbButton>Agregar</button>
+      <label class="label">Los campos con (*) son obligatorios</label>
+    </div>
+    <button nbButton (click)="sendRequest()">Enviar Solicitud</button>
   </form>
   </nb-card-body>
 </nb-card>
+
+<ng-template #dialogAthletes let-data let-ref="dialogRefAthletes">
+  <nb-card>
+    <nb-card-header>Seleccionar Atleta</nb-card-header>
+    <nb-card-body>
+        <p>Seleccione el atleta a solicitar inscripción</p>
+      <ng2-smart-table 
+        [(settings)]="settingsAthletes" 
+        [source]="sourceAthletes" 
+        (userRowSelect)="selectingAthlete($event)"
+      >
+      </ng2-smart-table>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+<ng-template #dialogClasses let-data let-ref="dialogRefClasses">
+  <nb-card>
+    <nb-card-header>Seleccionar Clase</nb-card-header>
+    <nb-card-body>
+        <p>Seleccione la clase a inscribir</p>
+      <ng2-smart-table 
+        [(settings)]="settingsClasses" 
+        [source]="sourceClasses" 
+        (userRowSelect)="selectingClass($event)"
+      >
+      </ng2-smart-table>
+    </nb-card-body>
+  </nb-card>
+</ng-template>

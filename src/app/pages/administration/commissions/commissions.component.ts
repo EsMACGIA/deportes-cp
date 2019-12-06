@@ -92,6 +92,14 @@ export class CommissionsComponent {
       });
     }
 
+    createCommissionsForm(){
+      this.edit = false;
+      this.commission = new CommissionsModel();
+      let navigationExtras: NavigationExtras = {
+        queryParams: { commission : this.commission, edit : this.edit}
+      };
+      this.router.navigate(['pages/administration/commissions/form'], navigationExtras);
+    }
 
   editCommissionsForm(event){
     this.edit = true;

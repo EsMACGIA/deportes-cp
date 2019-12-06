@@ -25,4 +25,7 @@ export class TrainersService extends BaseService{
     deleteTrainer(Trainer:TrainersModel):Observable<any>{
         return this.deleteBase(Trainer,'trainers/' + Trainer.id + '/', this.setHeaders())
     }
+    getCommissionsForTrainer(Trainer:TrainersModel):Observable<any>{
+        return this.getBase('trainers/listComissions/' + Trainer.id + '/', this.setHeaders() )
+    }
 }
