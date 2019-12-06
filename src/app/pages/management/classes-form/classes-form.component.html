@@ -1,9 +1,28 @@
 <nb-card>
   <nb-card-header>Formulario de clases</nb-card-header>
+  
   <nb-card-body>
+
+
     <form #classForm="ngForm" (ngSubmit)="!edit ? addClassForm(classForm) : editClassForm(classForm)">
-      
+        <label class="label">Entrenador (*)</label>
       <div class="form-group">
+          <div class="row show-grid">
+              <div class="col-md-3 offset-md-3">
+                <button nbButton fullWidth [size]="medium" (click)="openModal(dialog, $event)">
+                  Seleccionar
+                </button>
+              </div>
+                <div class="col-md-6">
+                  <input type="text" nbInput fullWidth disabled id="trainer_name" name="trainer_name" [(ngModel)]="trainer.name" #trainer_name="ngModel"/>
+                </div>
+              </div>
+
+          <div *ngIf="trainer_name.errors && classForm.submitted" class="alert alert-danger">
+            <div *ngIf="trainer_name.errors.required">
+                El Entrenador es obligatorio
+            </div>
+          </div>
         <label for="description" class="label">Descripción</label>
         <input type="text" nbInput fullWidth id="description" name="description" placeholder="Descripción" [(ngModel)]="clase.description" #description="ngModel" required>
       </div>
@@ -14,15 +33,31 @@
       </div>
 
       <div class="form-group">
-        <label for="trainer_id" class="label col-sm-4 col-form-label">Entrenador (*)</label>
-        <select [(ngModel)]="clase.trainer_id" name="trainer_id" #trainer_id="ngModel" required [disabled]="edit">
-          <option *ngFor="let t of trainers" [value]="t.id">{{t.name}} {{t.lastname}}</option>
-        </select>
+        <label for="" class="label">Horarios (*)</label>
+        <ng2-smart-table 
+          [settings]="settingsSchedules" 
+          [source]="sourceSchedules" (create)="addSchedule(dialog2)" (edit)="editSchedule(dialog2,$event)" (delete)="deleteSchedule($event)">
+        </ng2-smart-table>
       </div>
-      <div *ngIf="trainer_id.errors && classForm.submitted" class="alert alert-danger">
-        <div *ngIf="trainer_id.errors.required">
-            El Entrenador es obligatorio
-        </div>
+
+      <label class="label">Comisión (*)</label>
+      <div class="form-group" *ngIf="type_user=='admin'">
+          <div class="row show-grid">
+              <div class="col-md-3 offset-md-3">
+                <button nbButton fullWidth [size]="medium" (click)="openModal(dialog3, $event)">
+                  Seleccionar
+                </button>
+              </div>
+                <div class="col-md-6">
+                  <input type="text" nbInput fullWidth disabled id="commission_name" name="comission_name" [(ngModel)]="commission.name" #commission_name="ngModel"/>
+                </div>
+              </div>
+
+          <div *ngIf="commission_name.errors && classForm.submitted" class="alert alert-danger">
+            <div *ngIf="commssion_name.errors.required">
+                La comision es obligatoria
+            </div>
+          </div>
       </div>
 
       <div>
@@ -33,3 +68,76 @@
     </form>
   </nb-card-body>
 </nb-card>
+
+<ng-template #dialog let-data let-ref="dialogRef">
+    <nb-card>
+      <nb-card-header>Buscar Entrenador</nb-card-header>
+      <nb-card-body>
+        <p>Seleccione el entrenador que va a impartir la clase:</p>
+        <ng2-smart-table 
+          [settings]="settingsTrainers" 
+          [source]="source" (edit)="addTrainer($event)"
+        >
+        </ng2-smart-table>
+      </nb-card-body>
+    </nb-card>
+</ng-template>
+
+<ng-template #dialog3 let-data let-ref="dialog3Ref">
+    <nb-card>
+      <nb-card-header>Buscar Comision</nb-card-header>
+      <nb-card-body>
+        <p>Seleccione la comision asociada a la clase:</p>
+        <ng2-smart-table 
+          [settings]="settingsCommissions" 
+          [source]="sourceCommission" (edit)="addCommision($event)"
+        >
+        </ng2-smart-table>
+      </nb-card-body>
+    </nb-card>
+</ng-template>
+
+<ng-template #dialog2 let-data let-ref="dialog2Ref">
+    <nb-card>
+      <nb-card-header>Agregar horario</nb-card-header>
+      <nb-card-body>
+        <p>Seleccione el día de la semana</p>
+          <nb-select [(ngModel)]="weekday">Días de la semana
+            <nb-option value="0">Lunes</nb-option>
+            <nb-option value="1">Martes</nb-option>
+            <nb-option value="2">Miércoles</nb-option>
+            <nb-option value="3">Jueves</nb-option>
+            <nb-option value="4">Viernes</nb-option>
+            <nb-option value="5">Sábado</nb-option>
+            <nb-option value="6">Domingo</nb-option>
+          </nb-select>
+          <p>Seleccione la hora de inicio</p>
+          <nb-select [(ngModel)]="start_hour">
+            <nb-option *ngFor="let hour of hours" value="{{hour}}">{{hour}}</nb-option>
+          </nb-select>:
+          <nb-select [(ngModel)]="start_minute">
+            <nb-option  *ngFor="let minute of minutes" value="{{minute}}">{{minute}}</nb-option>
+          </nb-select>
+          <nb-select [(ngModel)]="start_meridian">
+            <nb-option value="am">am</nb-option>
+            <nb-option value="pm">pm</nb-option>
+          </nb-select>
+
+          <p>Seleccione la hora final</p>
+          <nb-select [(ngModel)]="end_hour">
+              <nb-option *ngFor="let hour of hours" value="{{hour}}">{{hour}}</nb-option>
+            </nb-select>:
+            <nb-select [(ngModel)]="end_minute">
+              <nb-option  *ngFor="let minute of minutes" value="{{minute}}">{{minute}}</nb-option>
+            </nb-select>  
+            <nb-select [(ngModel)]="end_meridian">
+                <nb-option value="am">am</nb-option>
+                <nb-option value="pm">pm</nb-option>
+              </nb-select>
+
+      </nb-card-body>
+      <nb-card-footer>
+          <button (click)="saveTime()" nbButton status="primary">Guardar</button>
+      </nb-card-footer>
+    </nb-card>
+</ng-template>
