@@ -20,7 +20,8 @@ export class ClassesComponent {
   settings_1 = {
     mode: 'external',
     actions: {
-      columnTitle: 'Acciones'
+      columnTitle: 'Acciones',
+      edit: false,
     },
     add: {
       addButtonContent: '<i class="nb-plus"></i>',

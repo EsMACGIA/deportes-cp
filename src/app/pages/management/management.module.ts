@@ -11,7 +11,9 @@ import {
   NbDialogModule,
   NbActionsModule,
   NbDatepickerModule,
-  NbSpinnerModule
+  NbSpinnerModule,
+  NbLayoutModule,
+
 
 } from '@nebular/theme';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
@@ -32,6 +34,7 @@ import {ClassesModel} from './classes/classes.model';
 //Services
 import {AthletesService} from './athletes/athletes.service';
 import {RequestsService} from './requests/requests.service';
+import {CommissionsService} from '../administration/commissions/commissions.service';
 
 //Models
 
@@ -54,6 +57,7 @@ import {RequestsService} from './requests/requests.service';
     FormsModule,
     Ng2SmartTableModule,
     NbSpinnerModule,
+    NbLayoutModule,
 
   ],
   
@@ -68,7 +72,8 @@ import {RequestsService} from './requests/requests.service';
     TrainersService,
     AthletesService,
     RequestsService,
-    ExcelService
+    ExcelService,
+    CommissionsService,
   ],
 })
 export class ManagementModule { }
