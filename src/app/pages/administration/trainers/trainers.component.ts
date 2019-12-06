@@ -39,6 +39,7 @@ export class TrainersComponent {
       id: {
         title: 'ID',
         type: 'number',
+        width: '100px'
       },
       name: {
         title: 'Primer nombre',
