@@ -4,12 +4,15 @@ import { Routes, RouterModule } from '@angular/router';
 import { ManagementComponent } from './management.component';
 
 // Components
-import { AthletesComponent } from './athletes/athletes.component'
-import { AthletesFormComponent } from './athletes-form/athletes-form.component'
-import { ClassesComponent } from './classes/classes.component'
-import { ClassesFormComponent } from './classes-form/classes-form.component'
-// import { RequestsComponent } from './requests/requests.component'
-import { RequestsFormComponent } from './requests-form/requests-form.component'
+import { AthletesComponent } from './athletes/athletes.component';
+import { AthletesFormComponent } from './athletes-form/athletes-form.component';
+import { ClassesComponent } from './classes/classes.component';
+import { ClassesFormComponent } from './classes-form/classes-form.component';
+import { RequestsComponent } from './requests/requests.component';
+import { RequestsFormComponent } from './requests-form/requests-form.component';
+import { ClassListComponent } from './class-list/class-list.component';
+
+import { AuthGuard } from '../../auth/auth.guard';
 
 const routes: Routes = [{
   path: '',
@@ -17,28 +20,46 @@ const routes: Routes = [{
   children: [
     {
       path: 'athletes',
-      component: AthletesComponent
+      component: AthletesComponent,
+      canActivate: [ AuthGuard ],
+      data: { roles: ['admin', 'commission'] }
     },
     {
       path: 'athletes-form',
-      component: AthletesFormComponent
+      component: AthletesFormComponent,
+      canActivate: [ AuthGuard ],
+      data: { roles: ['admin', 'commission'] }
     },
     {
       path: 'classes',
-      component: ClassesComponent
+      component: ClassesComponent,
+      canActivate: [ AuthGuard ],
+      data: { roles: ['admin', 'commission'] }
     },
     {
       path: 'classes-form',
-      component: ClassesFormComponent
+      component: ClassesFormComponent,
+      canActivate: [ AuthGuard ],
+      data: { roles: ['admin', 'commission'] }
     },
-    // {
-    //   path: 'requests',
-    //   component: RequestsComponent
-    // },
-    // {
-    //   path: 'requests-form',
-    //   component: RequestsFormComponent
-    // },
+    {
+      path: 'requests',
+      component: RequestsComponent,
+      canActivate: [ AuthGuard ],
+      data: { roles: ['admin', 'commission'] }
+    },
+    {
+      path: 'requests-form',
+      component: RequestsFormComponent,
+      canActivate: [ AuthGuard ],
+      data: { roles: ['admin', 'commission'] }
+    },
+    {
+      path: 'class-list',
+      component: ClassListComponent,
+      canActivate: [ AuthGuard ],
+      data: { roles: ['admin', 'commission', 'trainer'] }
+    },
   ],
 }];
 
@@ -54,6 +75,7 @@ export const routedComponents = [
   AthletesFormComponent,
   ClassesComponent,
   ClassesFormComponent,
-  // RequestsComponent,
-  // RequestsFormComponent
+  RequestsComponent,
+  RequestsFormComponent,
+  ClassListComponent
 ];

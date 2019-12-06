@@ -31,13 +31,12 @@ export const MENU_ADMIN: NbMenuItem[] = [
       {
         title: 'Solicitudes',
         link: '/pages/management/requests'
+      },
+      {
+        title: 'Listados',
+        link: '/pages/management/class-list'
       }
     ]
-  },
-  {
-    title: 'Auth Test',
-    icon: 'people-outline',
-    link: '/auth'
   }
 ];
 
@@ -67,20 +66,24 @@ export const MENU_COMMISSION: NbMenuItem[] = [
       {
         title: 'Generar Solicitud',
         link: '/pages/management/requests-form'
+      },
+      {
+        title: 'Listados',
+        link: '/pages/management/class-list'
       }
     ]
-  },
-  {
-    title: 'Auth Test',
-    icon: 'people-outline',
-    link: '/auth'
   }
 ]
 
 export const MENU_TRAINER: NbMenuItem[] = [
   {
-    title: 'Auth Test',
-    icon: 'people-outline',
-    link: '/auth'
+    title: 'Gestión',
+    icon: 'edit-2-outline',
+    children: [
+      {
+        title: 'Listados',
+        link: '/pages/management/class-list'
+      }
+    ]
   }
 ]

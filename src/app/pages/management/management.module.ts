@@ -10,7 +10,9 @@ import {
   NbCheckboxModule,
   NbDialogModule,
   NbActionsModule,
-  NbDatepickerModule
+  NbDatepickerModule,
+  NbSpinnerModule
+
 } from '@nebular/theme';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { FormsModule } from '@angular/forms';
@@ -18,12 +20,19 @@ import { FormsModule } from '@angular/forms';
 import { ThemeModule } from '../../@theme/theme.module';
 
 import { ManagementRoutingModule, routedComponents } from './management-routing.module';
+import {ClassesService} from './classes/classes.service';
 
-//Services
-import {AthletesService} from './athletes/athletes.service';
+import {TrainersService} from '../administration/trainers/trainers.service';
+import { ExcelService } from './class-list/excel.service';
 
 //Models
 import {AthletesModel} from './athletes/athletes.model';
+import {ClassesModel} from './classes/classes.model';
+//Services
+import {AthletesService} from './athletes/athletes.service';
+import {RequestsService} from './requests/requests.service';
+
+//Models
 
 
 @NgModule({
@@ -43,6 +52,8 @@ import {AthletesModel} from './athletes/athletes.model';
     ThemeModule,
     FormsModule,
     Ng2SmartTableModule,
+    NbSpinnerModule,
+
   ],
   
 
@@ -51,7 +62,12 @@ import {AthletesModel} from './athletes/athletes.model';
   ],
   providers: [
     AthletesModel,
+    ClassesService,
+    ClassesModel,
+    TrainersService,
     AthletesService,
+    RequestsService,
+    ExcelService
   ],
 })
 export class ManagementModule { }

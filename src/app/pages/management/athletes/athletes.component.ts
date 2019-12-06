@@ -44,6 +44,7 @@ export class AthletesComponent {
       id: {
         title: 'ID',
         type: 'number',
+        width: '100px'
       },
       stock_number: {
         title: 'N° Acción',
@@ -86,6 +87,8 @@ export class AthletesComponent {
   private athletesList:AthletesModel[];
   private athlete:AthletesModel = new AthletesModel();
   private dialogRef : any;
+  spinner = true;
+
   //Var to difference if open edit or add
   private edit: boolean = false; 
 
@@ -101,6 +104,8 @@ export class AthletesComponent {
       if (data){
         this.athletesList = data
         this.source.load(this.athletesList)
+        this.spinner = false
+
       }
     });
   }

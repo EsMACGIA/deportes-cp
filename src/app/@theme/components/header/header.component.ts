@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService } from '@nebular/theme';
 
-import { UserData } from '../../../@core/data/users';
 import { LayoutService } from '../../../@core/utils';
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
+
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'ngx-header',
@@ -44,18 +45,28 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(private sidebarService: NbSidebarService,
               private menuService: NbMenuService,
               private themeService: NbThemeService,
-              private userService: UserData,
               private layoutService: LayoutService,
               private breakpointService: NbMediaBreakpointsService,
-              private router: Router) {
+              private router: Router,
+              private authService: AuthService) {
   }
 
   ngOnInit() {
-    this.currentTheme = this.themeService.currentTheme;
+    
+    let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    let name = '';
 
-    this.userService.getUsers()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((users: any) => this.user = users.nick);
+    if(currentUser.role == 'admin') {
+      name = 'Administrador';
+    } else if (currentUser.role == 'commission') {
+      name = currentUser.name;
+    } else {
+      name = currentUser.name + ' ' + currentUser.lastname;
+    } 
+    
+    this.user = { name };
+
+    this.currentTheme = this.themeService.currentTheme;
 
     const { xl } = this.breakpointService.getBreakpointsMap();
     this.themeService.onMediaQueryChange()
@@ -74,8 +85,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.menuService.onItemClick().subscribe((event) => {
       if (event.item.title === 'Cerrar sesión') {
-        localStorage.removeItem('token');
-        this.router.navigate(['/'])
+        this.authService.logout();
+        this.router.navigate(['/auth/login'])
       }
     });
   }

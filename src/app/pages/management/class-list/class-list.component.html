@@ -1,0 +1,73 @@
+<div *ngIf="spinner">
+  <nb-card [nbSpinner]="true" nbSpinnerSize="giant" nbSpinnerStatus="primary">
+    <nb-card-header>
+      Selección de Clase
+    </nb-card-header>
+  </nb-card>
+</div>
+
+<div *ngIf="!spinner">
+  <nb-card>
+    <nb-card-header>
+      Listado de Atletas en Clase
+    </nb-card-header>
+
+    <nb-card-body>
+      <div class="row show-grid">
+        <div class="col-md-6">
+          <input type="text" nbInput fullWidth placeholder="{{class}}" disabled/>
+        </div>
+        <div class="col-md-3 offset-md-3">
+          <button nbButton fullWidth [size]="medium" (click)="openModal(dialog, $event)">
+            Seleccionar Clase
+          </button>
+        </div>
+      </div>
+    </nb-card-body>
+  </nb-card>
+  <div *ngIf="athletesArray">
+  </div>
+  <nb-card *ngIf="athletesArray">
+    <nb-card-header>
+      Listado de Atletas en Clase
+    </nb-card-header>
+    <nb-card-body>
+      <ng2-smart-table 
+        [settings]="settingsAthletes" 
+        [source]="sourceAthletes" 
+        (create)="createClassForm()" 
+        (edit)="editClassForm($event)"
+        (delete)="openModal(dialog,$event)"
+      >
+      </ng2-smart-table>
+
+      <div class="row show-grid">
+        <div class="col-md-3 offset-md-3">
+        </div>
+        <div class="col-md-3 offset-md-3">
+          <button nbButton fullWidth *ngIf="athletesArray.length > 0" [size]="medium" (click)="exportAsXLSX()">
+            Descargar Excel
+          </button>
+          <button nbButton fullWidth disabled *ngIf="athletesArray.length <= 0" [size]="medium" (click)="exportAsXLSX()">
+            Descargar Excel
+          </button>
+        </div>
+      </div>
+    </nb-card-body>
+  </nb-card>
+</div>
+
+<ng-template #dialog let-data let-ref="dialogRef">
+    <nb-card>
+      <nb-card-header>Buscar Clase</nb-card-header>
+      <nb-card-body>
+        <p>Seleccione la clase de la cual desea conocer su listado:</p>
+        <ng2-smart-table 
+          [settings]="settingsClasses" 
+          [source]="sourceClasses" 
+          (userRowSelect)="selectClass($event)"
+        >
+        </ng2-smart-table>
+      </nb-card-body>
+    </nb-card>
+</ng-template>

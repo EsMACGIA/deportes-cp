@@ -7,7 +7,7 @@ import {AthletesModel} from './athletes.model';
 export class AthletesService extends BaseService{
 
     getAthletesList():Observable<any>{
-        return this.getBase('athletes/')
+        return this.getBase('athletes/', this.setHeaders())
     }
 
     createAthletes(athletes:AthletesModel):Observable<any>{
