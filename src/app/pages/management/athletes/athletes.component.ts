@@ -44,6 +44,7 @@ export class AthletesComponent {
       id: {
         title: 'ID',
         type: 'number',
+        width: '100px'
       },
       stock_number: {
         title: 'N° Acción',

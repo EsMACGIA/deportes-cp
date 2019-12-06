@@ -16,15 +16,15 @@ export class ClassesService extends BaseService{
     }
 
     createClass(Class:ClassesModel):Observable<any>{
-        return this.postBase(Class,'classes/')
+        return this.postBase(Class,'classes/', this.setHeaders())
     }
 
     updateClass(Class:ClassesModel):Observable<any>{
-        return this.putBase(Class,'classes/')
+        return this.putBase(Class,'classes/', this.setHeaders())
     }
 
     deleteClass(Class:ClassesModel):Observable<any>{
-        return this.deleteBase(Class,'classes/' + Class.id + '/')
+        return this.deleteBase(Class,'classes/' + Class.id + '/', this.setHeaders())
     }
 
     getTrainerClasses(id) {
