@@ -13,10 +13,10 @@ import { NgForm } from '@angular/forms';
   })
 export class CommissionsFormComponent {
 
-  private match : boolean = true;
-  private commission: CommissionsModel = this.router.getCurrentNavigation().extras.queryParams.commission;
-  private commission2: CommissionsModel = new CommissionsModel();
-  private edit : boolean = this.router.getCurrentNavigation().extras.queryParams.edit;
+  match : boolean = true;
+  commission: CommissionsModel = this.router.getCurrentNavigation().extras.queryParams.commission;
+  commission2: CommissionsModel = new CommissionsModel();
+  edit : boolean = this.router.getCurrentNavigation().extras.queryParams.edit;
 
   //Toastr configuration
   position:NbGlobalPosition = NbGlobalPhysicalPosition.TOP_RIGHT;

@@ -110,15 +110,50 @@
                 </div>
             </div>
         </div>
-
-        <div>
-            <label class="label">Los campos con (*) son obligatorios</label>
-        </div>
         <div>
             <label *ngIf="edit" class="label">Si no desea cambiar la contraseña, debe dejar esos campos vacíos</label>
         </div>
-
-        <button type="submit" nbButton status="primary">Guardar</button>
+        <div *ngIf="type_user=='admin'">
+            <label class="label">Asociar Comisiones</label>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <ng2-smart-table [settings]="settings" [source]="source" (delete)="disassociateTrainer($event)"
+                        (create)="openModal(dialog,$event)">
+                        </ng2-smart-table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <label class="label">Los campos con (*) son obligatorios</label>
+        </div>
+        <div class="row save-button">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <button type="submit" nbButton status="primary">Guardar</button>
+                </div>
+            </div>
+        </div>
         </form>
     </nb-card-body>
 </nb-card>
+
+<ng-template #dialog let-data let-ref="dialogRef">
+    <nb-card>
+      <nb-card-header>Asociar comisiones - Lista de comisiones</nb-card-header>
+      <nb-card-body>
+          <p>Seleccione las comisiones que desea asociar al entrenador</p>
+        <ng2-smart-table [(settings)]="settings2" [source]="source2" (edit)="addCommission($event)" (userRowSelect)="onUserRowSelect($event)">
+        </ng2-smart-table>
+      </nb-card-body>
+      <nb-card-footer>
+            <div class="row">
+              <div class="col-sm-6">
+                  <button nbButton (click)="saveData()">Guardar</button>
+                </div>
+            </div>
+        </nb-card-footer>
+      
+    </nb-card>
+</ng-template>
