@@ -157,10 +157,10 @@ export class AssociateCommissionComponent {
     })
   }
 
-  confirmDelete(dialog:TemplateRef<any>){
+  confirmDelete(dialog1:TemplateRef<any>){
     this.association.comission_id = this.commissionId;
     this.association.trainer_id = this.trainer.id;
-    console.log(this.association)
+    //console.log(this.association)
     this.AssociateService.deleteAssociation(this.association).subscribe(data=>{
       if (data){
         if (!data.error){
