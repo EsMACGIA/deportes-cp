@@ -141,16 +141,16 @@
 
 <ng-template #dialog let-data let-ref="dialogRef">
     <nb-card>
-      <nb-card-header>Asociar comisiones</nb-card-header>
+      <nb-card-header>Asociar comisiones - Lista de comisiones</nb-card-header>
       <nb-card-body>
-          <p>Para añadir una comisión presione el botón de +</p>
-        <ng2-smart-table [(settings)]="settings2" [source]="source2" (edit)="addCommission($event)">
+          <p>Seleccione las comisiones que desea asociar al entrenador</p>
+        <ng2-smart-table [(settings)]="settings2" [source]="source2" (edit)="addCommission($event)" (userRowSelect)="onUserRowSelect($event)">
         </ng2-smart-table>
       </nb-card-body>
       <nb-card-footer>
             <div class="row">
               <div class="col-sm-6">
-                  <button nbButton (click)="closeModal()">Cerrar</button>
+                  <button nbButton (click)="saveData()">Guardar</button>
                 </div>
             </div>
         </nb-card-footer>

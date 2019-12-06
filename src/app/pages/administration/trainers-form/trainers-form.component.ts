@@ -25,6 +25,7 @@ export class TrainersFormComponent {
     private match : boolean = true;
     private edit : boolean = this.router.getCurrentNavigation().extras.queryParams.edit;
     private commissionsList:CommissionsModel[];
+    private tempComisssionList:CommissionsModel[];
 
     //Settings of Smart Table
     settings = {
@@ -33,9 +34,6 @@ export class TrainersFormComponent {
       edit: false,
       },
     mode: 'external',
-    editor: {
-      type: 'checkbox',
-    },
     add: {
       addButtonContent: '<i class="nb-edit"></i>',
     },
@@ -60,16 +58,16 @@ export class TrainersFormComponent {
   };
 
   settings2 = {
+    selectMode: 'multi',
     actions: {
-      columnTitle: 'Acciones',
+      columnTitle: '',
       add:false,
       delete: false,
-      position:'right',
+      edit: false,
+      select: true,
+      position:'left',
       },
     mode: 'external',
-    edit:{
-      editButtonContent: '<i class="nb-plus"></i>',
-    },
     columns: {
       id: {
         title: 'ID',
@@ -251,6 +249,7 @@ export class TrainersFormComponent {
       }
 
       openModal(dialog: TemplateRef<any>,event) {
+        this.tempComisssionList = [];
         this.loadAllCommissions();
         Object.assign(this.trainer,event.data) //Instance all fields of user with the event data
         this.dialogRef = this.dialogService.open(
@@ -258,7 +257,28 @@ export class TrainersFormComponent {
           { context: this.trainer.name });
       }
 
-      closeModal(){
+      onUserRowSelect(event){
+        if (event.isSelected == null){
+          this.tempComisssionList = event.select
+        }else{
+          let commission = event.data
+          if (event.isSelected){
+            this.tempComisssionList.push(event.data)
+          }else{
+            for (let i = 0;i<this.tempComisssionList.length;i++){
+              if (commission == this.tempComisssionList[i].id){
+                this.tempComisssionList.splice(i,1)
+              }
+          }
+          }
+        }
+      }
+
+      saveData(){
+        for (let i =0;i<this.tempComisssionList.length;i++){
+          this.commissions.push(this.commissionsList[i])
+        }
+        this.source.load(this.commissions)
         this.dialogRef.close();
       }
 }
