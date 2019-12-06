@@ -75,13 +75,13 @@
             <div>
               <input nbInput
                   placeholder="Fecha de Nacimiento"
-                  [nbDatepicker]="formpicker" id="birthday" name="birthday" [(ngModel)]="athlete.birthday" #birthday="ngModel" required>
+                  [nbDatepicker]="formpicker" id="birthday" name="birthday" [(ngModel)]="athlete.birthday" #birthday="ngModel" required [disabled]="edit">
               <nb-datepicker #formpicker></nb-datepicker>
             </div>
           </div>
           <div *ngIf="birthday?.errors && athleteForm.submitted" class="alert alert-danger">
             <div *ngIf="birthday?.errors?.required">
-                    La fecha de naciemiento es obligatoria
+                    La fecha de nacimiento es obligatoria
             </div>
           </div>
         </div>
