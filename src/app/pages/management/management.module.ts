@@ -23,6 +23,7 @@ import { ManagementRoutingModule, routedComponents } from './management-routing.
 import {ClassesService} from './classes/classes.service';
 
 import {TrainersService} from '../administration/trainers/trainers.service';
+import { ExcelService } from './class-list/excel.service';
 
 //Models
 import {AthletesModel} from './athletes/athletes.model';
@@ -66,6 +67,7 @@ import {RequestsService} from './requests/requests.service';
     TrainersService,
     AthletesService,
     RequestsService,
+    ExcelService
   ],
 })
 export class ManagementModule { }
