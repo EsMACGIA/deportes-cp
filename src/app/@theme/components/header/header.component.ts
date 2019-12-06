@@ -54,8 +54,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     
     let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    console.log('currentUser: ', currentUser);
-
     let name = '';
 
     if(currentUser.role == 'admin') {
@@ -65,8 +63,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     } else {
       name = currentUser.name + ' ' + currentUser.lastname;
     } 
-
-    console.log('Name: ', name);
+    
     this.user = { name };
 
     this.currentTheme = this.themeService.currentTheme;

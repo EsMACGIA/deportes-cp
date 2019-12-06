@@ -40,6 +40,7 @@ export class CommissionsComponent {
       id: {
         title: 'ID',
         type: 'number',
+        width: '100px'
       },
       name: {
         title: 'Nombre',
@@ -64,6 +65,7 @@ export class CommissionsComponent {
   private commissionsList:CommissionsModel[];
   private commission:CommissionsModel = new CommissionsModel();
   private dialogRef : any;
+  spinner = true;
   //Var to difference if open edit or add
   private edit: boolean = false; 
 
@@ -78,25 +80,17 @@ export class CommissionsComponent {
     this.loadCommissions();
   }
 
-  loadCommissions(){
-    this.commissionsService.getCommissionsList().subscribe(data=>{
-      if (data){
-        console.log('Estoy recibiendo los usuarios',data)
-        this.commissionsList = data
-        this.source.load(this.commissionsList)
-        console.log(this.commissionsList)
-      }
-    });
-  }
-
-  createCommissionsForm(){
-    this.edit = false;
-    this.commission = new CommissionsModel();
-    let navigationExtras: NavigationExtras = {
-      queryParams: { commission : this.commission, edit : this.edit }
-    };
-    this.router.navigate(['pages/administration/commissions/form'], navigationExtras);
-  }
+    loadCommissions(){
+      this.commissionsService.getCommissionsList().subscribe(data=>{
+        if (data){
+          console.log('Estoy recibiendo los usuarios',data)
+          this.commissionsList = data
+          this.source.load(this.commissionsList)
+          console.log(this.commissionsList)
+          this.spinner = false
+        }
+      });
+    }
 
 
   editCommissionsForm(event){

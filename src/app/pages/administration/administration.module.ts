@@ -12,7 +12,7 @@ import {
   NbRadioModule,
   NbSelectModule,
   NbDialogModule,
-
+  NbSpinnerModule
 } from '@nebular/theme';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { FormsModule } from '@angular/forms';
@@ -42,6 +42,7 @@ import {TrainersModel} from './trainers/trainers.model';
       NbDialogModule,
       FormsModule,
       CommonModule,
+      NbSpinnerModule,
       NbDialogModule,
 
       

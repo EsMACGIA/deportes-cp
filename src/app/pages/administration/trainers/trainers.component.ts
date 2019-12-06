@@ -19,8 +19,6 @@ export class TrainersComponent {
   private type_user:string;
   private settings;
 
-  
-
   //Toastr configuration
   position:NbGlobalPosition = NbGlobalPhysicalPosition.TOP_RIGHT;
   status: NbComponentStatus = 'success'
@@ -32,6 +30,7 @@ export class TrainersComponent {
   
   //Variable to load info to smart table
   source: LocalDataSource = new LocalDataSource();
+  spinner = true;
 
   //Var to difference if open edit or add
   private edit: boolean = false; 
@@ -70,6 +69,7 @@ export class TrainersComponent {
           id: {
             title: 'ID',
             type: 'number',
+            width: '100px',
           },
           name: {
             title: 'Primer nombre',
@@ -112,6 +112,7 @@ export class TrainersComponent {
             id: {
               title: 'ID',
               type: 'number',
+              width: '100px',
             },
             name: {
               title: 'Primer nombre',
@@ -150,6 +151,8 @@ export class TrainersComponent {
         console.log('Recibiendo Entrenadores', data);
         this.trainerList = data;
         this.source.load(this.trainerList);
+        this.spinner = false;
+
       }
     });
   }
@@ -161,6 +164,7 @@ export class TrainersComponent {
       if (data) {
         this.trainerList = data;
         this.source.load(this.trainerList);
+        this.spinner = false;
       }
     });
   }

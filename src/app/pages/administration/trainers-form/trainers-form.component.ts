@@ -21,14 +21,14 @@ import { isPlatformBrowser } from '@angular/common';
   })
 
 export class TrainersFormComponent {
-    private trainer : TrainersModel = this.router.getCurrentNavigation().extras.queryParams.trainer;
-    private trainer2:any;
-    private match : boolean = true;
-    private edit : boolean = this.router.getCurrentNavigation().extras.queryParams.edit;
-    private commissionsList:CommissionsModel[] = [];
-    private tempComisssionList:CommissionsModel[];
-    private commissionsListToSend:number[];
-    private commissions:CommissionsModel[];
+    public trainer : TrainersModel = this.router.getCurrentNavigation().extras.queryParams.trainer;
+    public trainer2:any;
+    public match : boolean = true;
+    public edit : boolean = this.router.getCurrentNavigation().extras.queryParams.edit;
+    public commissionsList:CommissionsModel[] = [];
+    public tempComisssionList:CommissionsModel[];
+    public commissionsListToSend:number[];
+    public commissions:CommissionsModel[];
 
     //Settings of Smart Table
     settings = {
@@ -48,6 +48,7 @@ export class TrainersFormComponent {
       id: {
         title: 'ID de la comisión',
         type: 'number',
+        width: '100px',
       },
       name: {
         title: 'Nombre de la comisión',
@@ -76,6 +77,7 @@ export class TrainersFormComponent {
       id: {
         title: 'ID de la comisión',
         type: 'number',
+        width: '100px',
       },
       name: {
         title: 'Nombre de la comisión',
@@ -96,9 +98,9 @@ export class TrainersFormComponent {
     hasIcon = true;
     index = 1; 
     preventDuplicates = false;
-    private currentUser:any;
-    private type_user:string;
-    private dialogRef : any;
+    public currentUser:any;
+    public type_user:string;
+    public dialogRef : any;
     //Variable to load info to smart table
     source: LocalDataSource = new LocalDataSource();
     //Variable to load info of all commissions
@@ -106,12 +108,12 @@ export class TrainersFormComponent {
 
 
   constructor(
-        private trainersService:TrainersService, 
-        private trainersModel:TrainersModel,
-        private router:Router,
-        private toastrService: NbToastrService,
-        private dialogService: NbDialogService,
-        private commissionsService:CommissionsService) {
+        public trainersService:TrainersService, 
+        public trainersModel:TrainersModel,
+        public router:Router,
+        public toastrService: NbToastrService,
+        public dialogService: NbDialogService,
+        public commissionsService:CommissionsService) {
           this.currentUser = JSON.parse(localStorage.getItem('currentUser'))
           console.log(this.currentUser)
           this.type_user = this.currentUser.role
@@ -242,7 +244,7 @@ export class TrainersFormComponent {
       )
     }
 
-    private showToast(type: NbComponentStatus, title: string, body: string) {
+    public showToast(type: NbComponentStatus, title: string, body: string) {
         const config = {
           status: type,
           destroyByClick: this.destroyByClick,
