@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef } from '@angular/core';
+import { LocalDataSource } from 'ng2-smart-table';
 //Services
 import {ClassesService} from '../classes/classes.service';
 import {AthletesService} from '../athletes/athletes.service';
 import {RequestsService} from '../requests/requests.service';
 //Models
+import { NbDialogService } from '@nebular/theme';
 import {RequestModel} from '../requests/request.model';
 import {AthletesModel} from '../athletes/athletes.model'
 import { NgForm } from '@angular/forms';
@@ -24,11 +26,109 @@ export class RequestsFormComponent {
   private edit : boolean = this.router.getCurrentNavigation().extras.queryParams.edit;
   private request: RequestModel = this.router.getCurrentNavigation().extras.queryParams.request;
   private request2: RequestModel = new RequestModel();
+  private athletesList:AthletesModel[];
+  private tempAthletesList:AthletesModel[];
+  private classesList:AthletesModel[];
+  private tempClassesList:AthletesModel[];
 
+  private athletes = [
+    {
+      birthday: "2009-04-06T00:00:00.000Z",
+      ci: "",
+      id: 21,
+      lastname: "Castro",
+      name: "Aurivan",
+      sex: "F",
+      stock_number: 672
+    },
+    {
+      birthday: "2009-04-06T00:00:00.000Z",
+      ci: "",
+      id: 22,
+      lastname: "Castro",
+      name: "Juan",
+      sex: "H",
+      stock_number: 673
+    },
+    {
+      birthday: "2009-04-06T00:00:00.000Z",
+      ci: "",
+      id: 23,
+      lastname: "Castro",
+      name: "Jose",
+      sex: "H",
+      stock_number: 674
+    },
+  ]
+  private classes = [
+    {
+      id : 5,
+      description: "descripcion",
+      commision_id: 1,
+      schedules: [1,2],
+      trainder_id: 0 
+      
+    },
+  ]
 
+    //Settings of Smart Table
+    settings = {
+      actions: {
+        columnTitle: 'Acciones',
+        edit: false,
+        },
+      mode: 'external',
+      add: {
+        addButtonContent: '<i class="nb-edit"></i>',
+      },
+      delete: {
+        deleteButtonContent: '<i class="nb-close"></i>',
+        confirmDelete: true,
+      },
+      columns: {
+        id: {
+          title: 'ID',
+          type: 'number',
+        },
+        name: {
+          title: 'Nombre',
+          type: 'string',
+        },
+        email: {
+          title: 'E-mail',
+          type: 'string',
+        },
+      },
+    };
+  
+    settings2 = {
+      actions: {
+        columnTitle: '',
+        add:false,
+        delete: false,
+        edit: false,
+        select: true,
+        position:'left',
+        },
+      mode: 'external',
+      columns: {
+        id: {
+          title: 'ID',
+          type: 'number',
+        },
+        name: {
+          title: 'Nombre',
+          type: 'string',
+        },
+        email: {
+          title: 'E-mail',
+          type: 'string',
+        },
+      },
+    };
 
-  classList = [];
-  athletesList = [];
+  // classList = [];
+  // athletesList = [];
 
   //Toastr configuration
   position:NbGlobalPosition = NbGlobalPhysicalPosition.TOP_RIGHT;
@@ -39,39 +139,52 @@ export class RequestsFormComponent {
   index = 1;
   preventDuplicates = false;
 
-  constructor (private classesService:ClassesService, private athletesService:AthletesService, private requestsService:RequestsService,
-     private router:Router,private toastrService: NbToastrService) {
-      console.log(this.edit);
+  private currentUser : any;
+  private type_user : string;
+  private dialogRef : any;
 
+  //Variable to load info to smart table
+  source: LocalDataSource = new LocalDataSource();
+  //Variable to load info of all athletes
+  source2 : LocalDataSource = new LocalDataSource();
+
+  constructor (private classesService:ClassesService, private athletesService:AthletesService, private requestsService:RequestsService,
+     private router:Router,private dialogService: NbDialogService, private toastrService: NbToastrService) {
+      console.log(this.edit);
+      this.currentUser = JSON.parse(localStorage.getItem('currentUser'))
+          console.log(this.currentUser)
+          this.type_user = this.currentUser.role
+          console.log(this.currentUser.role)
+            this.source.load(this.athletes)
     if (this.type == 'add') {
       this.cardTitle = 'Agrega Solicitud';
     } else if (this.type == 'edit'){
       this.cardTitle = 'Editar Solicitud';
     }
 
-    this.loadClasses();
-    this.loadAthletes();
+    // this.loadClasses();
+    // this.loadAthletes();
   }
 
-  loadClasses(){
-    let data = this.classesService.getClassList().subscribe(data=>{
-      if (data){
-        console.log('Recibiendo Clases', data);
-        this.classList = data;
-        return this.classList
-      }
-    });
-  }
+  // loadClasses(){
+  //   let data = this.classesService.getClassList().subscribe(data=>{
+  //     if (data){
+  //       console.log('Recibiendo Clases', data);
+  //       this.classList = data;
+  //       return this.classList
+  //     }
+  //   });
+  // }
 
-  loadAthletes(){
-    let data = this.athletesService.getAthletesList().subscribe(data=>{
-      if (data){
-        console.log('Recibiendo Clases', data);
-        this.athletesList = data;
-        return this.athletesList
-      }
-    });
-  }
+  // loadAthletes(){
+  //   let data = this.athletesService.getAthletesList().subscribe(data=>{
+  //     if (data){
+  //       console.log('Recibiendo Clases', data);
+  //       this.athletesList = data;
+  //       return this.athletesList
+  //     }
+  //   });
+  // }
 
   addRequestForm(requestForm:NgForm){
     if (requestForm.valid){
@@ -144,10 +257,79 @@ private showToast(type: NbComponentStatus, title: string, body: string){
     preventDuplicates: this.preventDuplicates,
   };
 
+
+
   this.index += 1;
   this.toastrService.show(
     body,
     title,
     config);
+
+}
+
+loadAllAthletes(){
+  this.athletesService.getAthletesList().subscribe( data =>{
+    if (data){
+      if (!data.error){
+        this.athletesList = data;
+        for (let i = 0;i<this.athletes.length;i++){
+          for (let j = 0;j<this.athletesList.length;j++){
+            if(this.athletes[i].id == this.athletesList[j].id){
+              console.log('Test')
+              this.athletesList.splice(j,1)
+            }
+          }
+        }
+        this.source2.load(this.athletesList);
+      }else{
+        this.showToast('danger','Hubo un error al cargar los atletas',data.error.error)
+      }
+    }
+  }
+  )
+}
+
+loadAllClasses(){
+  this.classesService.getClassList().subscribe( data =>{
+    if (data){
+      if (!data.error){
+        this.classesList = data;
+        for (let i = 0;i<this.classes.length;i++){
+          for (let j = 0;j<this.classesList.length;j++){
+            if(this.classes[i].id == this.classesList[j].id){
+              console.log('Test')
+              this.classesList.splice(j,1)
+            }
+          }
+        }
+        this.source2.load(this.classesList);
+      }else{
+        this.showToast('danger','Hubo un error al cargar las clases',data.error.error)
+      }
+    }
+  }
+  )
+}
+
+
+openModal(dialog: TemplateRef<any>,event) {
+  this.tempAthletesList = [];
+  this.loadAllAthletes();
+  Object.assign(this.request,event.data) //Instance all fields of user with the event data
+  this.dialogRef = this.dialogService.open(
+    dialog,
+    { context: 'hola' });
+}
+openModal2(dialog: TemplateRef<any>,event) {
+  this.tempClassesList = [];
+  this.loadAllClasses();
+  Object.assign(this.request,event.data) //Instance all fields of user with the event data
+  this.dialogRef = this.dialogService.open(
+    dialog,
+    { context: 'hola' });
+}
+
+selectAthlete(event){
+  console.log(event)
 }
 }

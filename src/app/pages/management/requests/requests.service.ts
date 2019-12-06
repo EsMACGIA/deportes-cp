@@ -7,17 +7,17 @@ import {RequestModel} from './request.model';
 export class RequestsService extends BaseService{
 
     getRequestsList():Observable<any>{
-        return this.getBase('requests/')
+        return this.getBase('requests/', this.setHeaders())
     }
 
     createRequest(request:RequestModel):Observable<any>{
-        return this.postBase(request,'requests/')
+        return this.postBase(request,'requests/', this.setHeaders())
     }
     deleteRequest(request:RequestModel):Observable<any>{
-        return this.deleteBase(request,'requests/' + request.id + '/')
+        return this.deleteBase(request,'requests/' + request.id + '/', this.setHeaders())
     }
 
     updateRequest(request:RequestModel):Observable<any>{
-        return this.putBase(request,'requests/')
+        return this.putBase(request,'requests/', this.setHeaders())
     }
 }
