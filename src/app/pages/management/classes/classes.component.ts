@@ -166,6 +166,8 @@ export class ClassesComponent {
         console.log('Recibiendo Clases', data);
         this.classList = data;
         this.source.load(this.classList);
+        this.spinner = false;
+
       }
     });
   }
@@ -176,6 +178,8 @@ export class ClassesComponent {
         console.log('Recibiendo Clases', data);
         this.classList = data;
         this.source.load(this.classList)
+        this.spinner = false;
+
       }
     })
   }
@@ -184,11 +188,12 @@ export class ClassesComponent {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'))
     if (this.currentUser.role == 'admin'){
       this.loadClasses()
+
     }
     else if(this.currentUser.role == 'commission'){
       this.loadClassesId(this.currentUser.id)
+      
     }
-    this.spinner = false
   }
 
   createClassForm() {
