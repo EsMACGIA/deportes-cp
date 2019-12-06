@@ -84,6 +84,8 @@ export class BaseService {
      */
     deleteBase(element: Object, endpoint:string, httpOptions = this.httpOptions):Observable<any>{
         let apiURL = `${this.API_URL}${endpoint}`
+        console.log('URL', apiURL)
+        console.log('Element: ', element)
         return this.http.delete(apiURL, httpOptions).pipe(
             catchError(this.handleError<any>('deleteBase'))
         )

@@ -16,7 +16,7 @@ export class AssociateService extends BaseService{
         return this.postBase(Class,'trainers/addComission/', this.setHeaders())
     }
 
-    deleteAssociation(Class:AssociateModel):Observable<any>{
+    deleteAssociation(Class):Observable<any>{
         return this.deleteBase(Class,'trainers/deleteComission/', this.setHeaders())
     }
 }
