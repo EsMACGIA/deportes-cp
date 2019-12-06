@@ -11,6 +11,7 @@ import {TrainersModel} from '../trainers/trainers.model';
 import {Router} from '@angular/router'
 import { NbDialogService } from '@nebular/theme';
 import {CommissionsModel} from '../commissions/commissions.model';
+import { isPlatformBrowser } from '@angular/common';
 
 
 @Component({
@@ -21,11 +22,13 @@ import {CommissionsModel} from '../commissions/commissions.model';
 
 export class TrainersFormComponent {
     private trainer : TrainersModel = this.router.getCurrentNavigation().extras.queryParams.trainer;
-    private trainer2:TrainersModel = new TrainersModel();
+    private trainer2:any;
     private match : boolean = true;
     private edit : boolean = this.router.getCurrentNavigation().extras.queryParams.edit;
-    private commissionsList:CommissionsModel[];
+    private commissionsList:CommissionsModel[] = [];
     private tempComisssionList:CommissionsModel[];
+    private commissionsListToSend:number[];
+    private commissions:CommissionsModel[];
 
     //Settings of Smart Table
     settings = {
@@ -43,18 +46,19 @@ export class TrainersFormComponent {
     },
     columns: {
       id: {
-        title: 'ID',
+        title: 'ID de la comisión',
         type: 'number',
       },
       name: {
-        title: 'Nombre',
+        title: 'Nombre de la comisión',
         type: 'string',
       },
       email: {
-        title: 'E-mail',
+        title: 'E-mail de la comisión',
         type: 'string',
       },
     },
+    noDataMessage	: "Ninguna comisión asociada todavía",
   };
 
   settings2 = {
@@ -70,15 +74,15 @@ export class TrainersFormComponent {
     mode: 'external',
     columns: {
       id: {
-        title: 'ID',
+        title: 'ID de la comisión',
         type: 'number',
       },
       name: {
-        title: 'Nombre',
+        title: 'Nombre de la comisión',
         type: 'string',
       },
       email: {
-        title: 'E-mail',
+        title: 'E-mail de la comisión',
         type: 'string',
       },
     },
@@ -100,24 +104,6 @@ export class TrainersFormComponent {
     //Variable to load info of all commissions
     source2 : LocalDataSource = new LocalDataSource();
 
-    private commissions = [
-      {
-        id: 3,
-        name: 'Natacion',
-        email: 'natacion@cp.com'
-      },
-      {
-        id: 4,
-        name: 'Karate',
-        email: 'karate@cp.com'
-      },
-      {
-        id: 5,
-        name: 'Danza',
-        email: 'danza@cp.com'
-      },
-    ]
-
 
   constructor(
         private trainersService:TrainersService, 
@@ -130,7 +116,28 @@ export class TrainersFormComponent {
           console.log(this.currentUser)
           this.type_user = this.currentUser.role
           console.log(this.currentUser.role)
-            this.source.load(this.commissions)
+          this.commissions = [];
+          if (this.type_user == 'admin' && this.edit){
+            console.log(this.trainer)
+            trainersService.getCommissionsForTrainer(this.trainer).subscribe(data=>{
+              if (data){
+                if (!data.error){
+                  console.log(data);
+                  for (let i = 0; i < data.length; i ++){
+                    let commision:CommissionsModel = new CommissionsModel;
+                    commision.id = data[i].commission_id
+                    commision.name = data[i].comission_name
+                    commision.email = data[i].comission_email
+                    this.commissions.push(commision)
+                  }
+                  this.source.load(this.commissions)
+                }else{
+                  this.showToast('danger','Hubo un error al cargar las comisiones asociadas al entrenador',data.error.error)
+                }
+                
+              }
+            })
+          }
           
     }
 
@@ -141,9 +148,17 @@ export class TrainersFormComponent {
             }else{
                 this.match = false;
             }
+            this.trainer2 = {}
             Object.assign(this.trainer2, this.trainer)
             if (this.match){
                 delete this.trainer2.confirmPassword;
+                if (this.type_user == 'admin'){
+                  this.commissionsListToSend = []
+                  for (let i = 0;i<this.commissions.length;i++){
+                    this.commissionsListToSend[i] = this.commissions[i].id
+                  }
+                  this.trainer2.comissions = this.commissionsListToSend;
+                }
                 this.trainersService.createTrainer(this.trainer2).subscribe(data=>{
                     if (data && !data.error){
                         console.log("Yay")
@@ -166,11 +181,19 @@ export class TrainersFormComponent {
             }else{
                 this.match = false;
             }
+            this.trainer2 = {}
             Object.assign(this.trainer2, this.trainer)
             if (this.match){
                 delete this.trainer2.confirmPassword;
                 delete this.trainer2.ci;
                 delete this.trainer2.email;
+                if (this.type_user == 'admin'){
+                  this.commissionsListToSend = []
+                  for (let i = 0;i<this.commissions.length;i++){
+                    this.commissionsListToSend[i] = this.commissions[i].id
+                  }
+                  this.trainer2.comissions = this.commissionsListToSend;
+                }
                 //console.log(this.trainer2)
                 this.trainersService.updateTrainer(this.trainer2).subscribe(data=>{
                     if (data && !data.error){
@@ -188,17 +211,6 @@ export class TrainersFormComponent {
         }
     }
 
-    addCommission(event){
-      console.log('AAA=[.')
-      for (let i = 0;i<this.commissionsList.length;i++){
-        if (event.data.id == this.commissionsList[i].id){
-          this.commissionsList.splice(i,1)
-          this.source2.load(this.commissionsList)
-        }
-      }
-      this.commissions.push(event.data)
-      this.source.load(this.commissions)
-    }
 
     disassociateTrainer(event){
       for (let i = 0;i<this.commissions.length;i++){
@@ -217,7 +229,6 @@ export class TrainersFormComponent {
             for (let i = 0;i<this.commissions.length;i++){
               for (let j = 0;j<this.commissionsList.length;j++){
                 if(this.commissions[i].id == this.commissionsList[j].id){
-                  console.log('Test')
                   this.commissionsList.splice(j,1)
                 }
               }
